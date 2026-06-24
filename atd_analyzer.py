@@ -23,6 +23,17 @@ HEADING_RANK = {"h1": 1, "h2": 2, "h3": 3, "h4": 4, "h5": 5, "h6": 6}
 
 SKIP_TAGS_ATD = {"div", "section", "article", "main", "ul", "ol", "table", "form", "td", "th"}
 
+_PRICE_RE = re.compile(r'[₹$€£¥]\s*[\d,]+')
+_PRODUCT_KEYWORDS = {"shop now", "buy now", "add to cart", "add to bag", "new arrival", "sold out", "out of stock", "in stock"}
+
+def _is_product_content(text: str) -> bool:
+    lower = text.lower()
+    if _PRICE_RE.search(lower):
+        return True
+    if any(kw in lower for kw in _PRODUCT_KEYWORDS):
+        return True
+    return False
+
 
 # ── Helpers ────────────────────────────────────────────────────────
 
@@ -183,6 +194,10 @@ def _deduplicate_atd(diffs):
             seen[key] = d
         else:
             seen[key].count = getattr(seen[key], "count", 1) + getattr(d, "count", 1)
+            existing_vp = getattr(seen[key], "viewport", "") or ""
+            new_vp = getattr(d, "viewport", "") or ""
+            if new_vp and new_vp not in existing_vp:
+                seen[key].viewport = f"{existing_vp}, {new_vp}" if existing_vp else new_vp
     unique = list(seen.values())
     severity_rank = {"critical": 0, "major": 1, "minor": 2}
     unique.sort(key=lambda d: (severity_rank.get(d.severity, 3), -getattr(d, "count", 1)))
@@ -748,13 +763,13 @@ def compare_text_formatting(
     live_texts = {}
     for el in live_elements:
         text = (el.text or "").strip()
-        if text and len(text) >= 3 and el.tag not in SKIP_TAGS_ATD:
+        if text and len(text) >= 3 and el.tag not in SKIP_TAGS_ATD and not _is_product_content(text):
             live_texts.setdefault(el.tag, {})[text[:80]] = el
 
     uat_texts = {}
     for el in uat_elements:
         text = (el.text or "").strip()
-        if text and len(text) >= 3 and el.tag not in SKIP_TAGS_ATD:
+        if text and len(text) >= 3 and el.tag not in SKIP_TAGS_ATD and not _is_product_content(text):
             uat_texts.setdefault(el.tag, {})[text[:80]] = el
 
     currency_pattern = re.compile(r'[₹$€£¥]\s*[\d,]+')
@@ -819,7 +834,7 @@ def compare_navigation_elements(
     for el in live_elements:
         if el.tag in nav_tags:
             text = (el.text or "").strip()
-            if text and 2 <= len(text) <= 60:
+            if text and 2 <= len(text) <= 40 and not _is_product_content(text):
                 key = text.lower()
                 live_nav.add(key)
                 live_nav_els[key] = el
@@ -829,7 +844,7 @@ def compare_navigation_elements(
     for el in uat_elements:
         if el.tag in nav_tags:
             text = (el.text or "").strip()
-            if text and 2 <= len(text) <= 60:
+            if text and 2 <= len(text) <= 40 and not _is_product_content(text):
                 key = text.lower()
                 uat_nav.add(key)
                 uat_nav_els[key] = el
@@ -867,35 +882,6 @@ def compare_navigation_elements(
                 count=count,
             ))
 
-    if extra_on_uat:
-        important_extra = [t for t in extra_on_uat if len(t) > 3]
-        if important_extra:
-            sample = important_extra[0]
-            representative = uat_nav_els[sample]
-            all_items = ", ".join(f'"{t}"' for t in sorted(important_extra))
-            count = len(important_extra)
-
-            section_name = get_section_name(representative.bounding_box, uat_sections)
-            element_name = humanize_element(representative.tag, representative.text)
-            crop_uat = annotate_crop(uat_screenshot, representative.bounding_box, color="orange", label="UAT - EXTRA")
-
-            diffs.append(Difference(
-                category="Extra Elements (Live vs UAT)",
-                severity="major",
-                element=representative.selector,
-                property="extra-nav-element",
-                value1=f"EXTRA on UAT ({count} items): {all_items}",
-                value2=f"Not on Live",
-                description=f"ATD: {count} element(s) on UAT but not on Live",
-                human_description=f"{count} element(s) appear on UAT but NOT on Live: {all_items}",
-                section_name=section_name,
-                element_name=element_name,
-                navigation=f"Open {uat_url} → {section_name} → Find {element_name}",
-                crop1_bytes=b"",
-                crop2_bytes=crop_uat,
-                count=count,
-            ))
-
     return diffs
 
 
@@ -912,7 +898,7 @@ def compare_element_styles(
     live_by_text = {}
     for el in live_elements:
         text = (el.text or "").strip()
-        if text and len(text) >= 2 and el.tag not in SKIP_TAGS_ATD:
+        if text and len(text) >= 2 and el.tag not in SKIP_TAGS_ATD and not _is_product_content(text):
             key = (el.tag, text[:50].lower())
             if key not in live_by_text:
                 live_by_text[key] = el
@@ -920,7 +906,7 @@ def compare_element_styles(
     uat_by_text = {}
     for el in uat_elements:
         text = (el.text or "").strip()
-        if text and len(text) >= 2 and el.tag not in SKIP_TAGS_ATD:
+        if text and len(text) >= 2 and el.tag not in SKIP_TAGS_ATD and not _is_product_content(text):
             key = (el.tag, text[:50].lower())
             if key not in uat_by_text:
                 uat_by_text[key] = el
@@ -991,7 +977,7 @@ def compare_content_visibility(
 ):
     diffs = []
 
-    important_tags = {"h1", "h2", "h3", "h4", "h5", "h6", "button", "label", "a", "p", "span", "li", "nav", "footer"}
+    important_tags = {"h1", "h2", "h3", "h4", "h5", "h6", "button", "label"}
 
     live_content = set()
     live_content_els = {}
@@ -1000,6 +986,8 @@ def compare_content_visibility(
             continue
         text = (el.text or "").strip()
         if not text or len(text) < 3 or len(text) > 100:
+            continue
+        if _is_product_content(text):
             continue
         key = text.lower()
         live_content.add(key)
@@ -1013,6 +1001,8 @@ def compare_content_visibility(
             continue
         text = (el.text or "").strip()
         if not text or len(text) < 3 or len(text) > 100:
+            continue
+        if _is_product_content(text):
             continue
         key = text.lower()
         uat_content.add(key)

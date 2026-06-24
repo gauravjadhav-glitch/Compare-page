@@ -182,6 +182,7 @@
     .atd-no-visual { color: var(--gray); font-size: 10px; background: var(--light); padding: 6px 8px; border-radius: 4px; text-align: center; white-space: nowrap; }
     .atd-verify { font-size: 11px; color: #1E40AF; background: #EFF6FF; border: 1px solid #BFDBFE; padding: 8px 10px; border-radius: 6px; margin-top: 8px; line-height: 1.6; }
     .atd-fix { font-size: 11px; color: #166534; background: #F0FDF4; border: 1px solid #BBF7D0; padding: 6px 10px; border-radius: 6px; margin-top: 6px; line-height: 1.5; }
+    .atd-device { font-size: 11px; font-weight: 600; color: #4F46E5; background: #EEF2FF; padding: 3px 8px; border-radius: 4px; display: inline-block; white-space: nowrap; }
 
     @media print {
         .toolbar, .tabs, .lightbox { display: none !important; }
@@ -261,6 +262,16 @@
                     <option value="major">Major</option>
                     <option value="minor">Minor</option>
                 </select>
+                <select onchange="filterATD('{{ loop.index0 }}');" id="atd-fdev-{{ loop.index0 }}">
+                    <option value="all">All Devices</option>
+                    {% set devices = [] %}
+                    {% for diff in result.differences %}
+                    {% if diff.device not in devices %}
+                    {% if devices.append(diff.device) %}{% endif %}
+                    <option value="{{ diff.device }}">{{ diff.device }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
             </div>
 
             <div style="overflow-x:auto;">
@@ -268,6 +279,7 @@
                 <thead>
                     <tr>
                         <th style="width:36px">#</th>
+                        <th style="width:100px">Device</th>
                         <th style="width:135px">Bug Type</th>
                         <th style="width:75px">Severity</th>
                         <th style="width:130px">Section / Element</th>
@@ -279,8 +291,9 @@
                 </thead>
                 <tbody>
                     {% for diff in result.differences %}
-                    <tr class="atd-row sev-{{ diff.severity }}" data-sev="{{ diff.severity }}" data-search="{{ diff.human_description|lower }} {{ diff.section_name|lower }} {{ diff.element_name|lower }} {{ diff.category|lower }}">
+                    <tr class="atd-row sev-{{ diff.severity }}" data-sev="{{ diff.severity }}" data-dev="{{ diff.device }}" data-search="{{ diff.human_description|lower }} {{ diff.section_name|lower }} {{ diff.element_name|lower }} {{ diff.category|lower }} {{ diff.device|lower }}">
                         <td>{{ loop.index }}{% if diff.count > 1 %} <span class="count-badge" style="font-size:10px;">&times;{{ diff.count }}</span>{% endif %}</td>
+                        <td><span class="atd-device">{{ diff.device }}</span></td>
                         <td><span class="atd-cat {% if 'Accessibility' in diff.category %}cat-accessibility{% elif 'Performance' in diff.category %}cat-performance{% elif 'Broken' in diff.category or 'Console' in diff.category %}cat-network{% elif 'Interaction' in diff.category %}cat-interaction{% endif %}">{{ diff.category }}</span></td>
                         <td><span class="sev-badge {{ diff.severity }}">{{ diff.severity }}</span></td>
                         <td class="atd-element">
@@ -515,10 +528,14 @@ function search(pi,term){
 }
 function filterATD(pi){
     const sev=document.getElementById('atd-fsev-'+pi).value;
+    const devEl=document.getElementById('atd-fdev-'+pi);
+    const dev=devEl?devEl.value:'all';
     const table=document.getElementById('atd-table-'+pi);
     if(!table) return;
     table.querySelectorAll('.atd-row').forEach(r=>{
-        r.style.display=(sev==='all'||r.dataset.sev===sev)?'':'none';
+        const sevOk=sev==='all'||r.dataset.sev===sev;
+        const devOk=dev==='all'||r.dataset.dev===dev;
+        r.style.display=(sevOk&&devOk)?'':'none';
     });
 }
 function searchATD(pi,term){

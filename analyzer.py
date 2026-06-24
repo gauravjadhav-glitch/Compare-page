@@ -23,6 +23,7 @@ class Difference:
     crop1_bytes: bytes
     crop2_bytes: bytes
     count: int = 1
+    viewport: str = ""
 
 
 @dataclasses.dataclass
@@ -198,9 +199,13 @@ def annotate_crop(screenshot_bytes: bytes, bb: dict, color: str = "red", label: 
 
     padding = 40
     x, y, w, h = bb.get("x", 0), bb.get("y", 0), bb.get("width", 100), bb.get("height", 50)
+    w = max(w, 1)
+    h = max(h, 1)
     crop = crop_region(screenshot_bytes, x, y, w, h, padding=padding)
 
     img = Image.open(io.BytesIO(crop))
+    if img.width < 1 or img.height < 1:
+        return screenshot_bytes
     draw = ImageDraw.Draw(img)
 
     box_x = min(padding, img.width - 2)
@@ -229,7 +234,8 @@ def annotate_crop(screenshot_bytes: bytes, bb: dict, color: str = "red", label: 
     max_crop_width = 300
     if img.width > max_crop_width:
         ratio = max_crop_width / img.width
-        img = img.resize((max_crop_width, int(img.height * ratio)), Image.LANCZOS)
+        new_h = max(1, int(img.height * ratio))
+        img = img.resize((max_crop_width, new_h), Image.LANCZOS)
 
     buf = io.BytesIO()
     img.convert("RGB").save(buf, format="JPEG", quality=60)
@@ -674,6 +680,12 @@ def compare_visual(screenshot1: bytes, screenshot2: bytes, threshold: int = 30) 
     img1 = Image.open(io.BytesIO(screenshot1)).convert("RGB")
     img2 = Image.open(io.BytesIO(screenshot2)).convert("RGB")
 
+    cap = 30000
+    if img1.height > cap:
+        img1 = img1.crop((0, 0, img1.width, cap))
+    if img2.height > cap:
+        img2 = img2.crop((0, 0, img2.width, cap))
+
     max_w = max(img1.width, img2.width)
     max_h = max(img1.height, img2.height)
 
@@ -748,9 +760,12 @@ def _find_diff_regions(mask, block_size=50):
 
 def _image_to_bytes(img: Image.Image) -> bytes:
     max_width = 1200
+    max_height = 60000
     if img.width > max_width:
         ratio = max_width / img.width
-        img = img.resize((max_width, int(img.height * ratio)), Image.LANCZOS)
+        img = img.resize((max_width, max(1, int(img.height * ratio))), Image.LANCZOS)
+    if img.height > max_height:
+        img = img.crop((0, 0, img.width, max_height))
     buf = io.BytesIO()
     img.convert("RGB").save(buf, format="JPEG", quality=55)
     return buf.getvalue()

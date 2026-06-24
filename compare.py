@@ -24,8 +24,8 @@ from scraper import (
 
 VIEWPORTS = {
     "desktop": {"width": 1920, "height": 1080},
-    "tablet": {"width": 768, "height": 1024},
-    "mobile": {"width": 375, "height": 812},
+    "ipad-pro": {"width": 1024, "height": 1366},
+    "iphone-14-pro": {"width": 393, "height": 852},
 }
 
 SECTION_ORDER = ["header", "navigation", "hero", "content", "footer"]
@@ -277,6 +277,8 @@ Available sections: all, header, navigation, hero, content, footer
                 )
 
                 atd_combined = atd_diffs_page1 + atd_diffs_page2 + cross_page_diffs + extra_diffs
+                for d in atd_combined:
+                    d.viewport = display_vp
                 all_atd_diffs.extend(atd_combined)
                 crit = sum(1 for d in atd_combined if d.severity == "critical")
                 maj = sum(1 for d in atd_combined if d.severity == "major")

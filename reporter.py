@@ -160,6 +160,7 @@ def generate_report(url1: str, url2: str, results: list, output_dir: str, sectio
                 "suggested_fix": SUGGESTED_FIXES.get(d.property, "Review this element and ensure it matches the reference page."),
                 "verification": VERIFICATION_STEPS.get(d.property, ""),
                 "count": getattr(d, "count", 1),
+                "device": getattr(d, "viewport", "") or "All",
             })
 
             total_bugs += 1
