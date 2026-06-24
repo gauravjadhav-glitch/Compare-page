@@ -180,7 +180,8 @@
     .atd-visual-label { font-size: 8px; font-weight: 700; margin-bottom: 2px; letter-spacing: 0.5px; }
     .atd-visual-pair { display: flex; gap: 4px; align-items: flex-start; justify-content: center; }
     .atd-no-visual { color: var(--gray); font-size: 10px; background: var(--light); padding: 6px 8px; border-radius: 4px; text-align: center; white-space: nowrap; }
-    .atd-fix { font-size: 11px; color: #166534; background: #F0FDF4; padding: 4px 8px; border-radius: 4px; margin-top: 6px; display: block; }
+    .atd-verify { font-size: 11px; color: #1E40AF; background: #EFF6FF; border: 1px solid #BFDBFE; padding: 8px 10px; border-radius: 6px; margin-top: 8px; line-height: 1.6; }
+    .atd-fix { font-size: 11px; color: #166534; background: #F0FDF4; border: 1px solid #BBF7D0; padding: 6px 10px; border-radius: 6px; margin-top: 6px; line-height: 1.5; }
 
     @media print {
         .toolbar, .tabs, .lightbox { display: none !important; }
@@ -205,7 +206,7 @@
         <div class="url-badge"><div class="lbl">Reference Page (Page 1)</div><div class="val">https://sunglasshut.in/product/burberry-j4kmwn_x4i0</div></div>
         <div class="url-badge"><div class="lbl">Compared Page (Page 2)</div><div class="val">https://sunglasshutlife.fynd.io/product/ar8146587486-13906099?size=50</div></div>
     </div>
-    <div class="report-meta">Report generated: 2026-06-24 13:47:38</div>
+    <div class="report-meta">Report generated: 2026-06-24 14:42:34</div>
 </div>
 
 <div class="container">
@@ -217,17 +218,17 @@
             
             
             
-            <div class="stat total"><div class="num">68</div><div class="lbl">Total Bugs</div></div>
-            <div class="stat crit"><div class="num">8</div><div class="lbl">Critical</div></div>
+            <div class="stat total"><div class="num">66</div><div class="lbl">Total Bugs</div></div>
+            <div class="stat crit"><div class="num">7</div><div class="lbl">Critical</div></div>
             <div class="stat maj"><div class="num">35</div><div class="lbl">Major</div></div>
-            <div class="stat min"><div class="num">25</div><div class="lbl">Minor</div></div>
+            <div class="stat min"><div class="num">24</div><div class="lbl">Minor</div></div>
         </div>
         
         <div style="margin-top:8px;">
             
             <div class="cat-row">
                 <div class="cat-name">Broken Resources</div>
-                <span class="pill c">2 Critical</span>
+                <span class="pill c">1 Critical</span>
                 <span class="pill m">2 Major</span>
                 <span class="pill n">4 Minor</span>
             </div>
@@ -340,8 +341,8 @@
             <div class="cat-row">
                 <div class="cat-name">Console Errors</div>
                 
-                <span class="pill m">2 Major</span>
-                <span class="pill n">4 Minor</span>
+                <span class="pill m">3 Major</span>
+                <span class="pill n">3 Minor</span>
             </div>
             
             <div class="cat-row">
@@ -369,7 +370,7 @@
         <!-- ATD CONSISTENCY TABLE -->
         <div class="bug-section">
             <h2>ATD Consistency Report — ATD Consistency
-                <span style="font-size:13px;color:var(--gray);font-weight:400;margin-left:6px;">(68 issues)</span>
+                <span style="font-size:13px;color:var(--gray);font-weight:400;margin-left:6px;">(66 issues)</span>
             </h2>
 
             
@@ -399,7 +400,7 @@
                 </thead>
                 <tbody>
                     
-                    <tr class="atd-row sev-critical" data-sev="critical" data-search="[compared page] image failed to load (net::err_aborted): https://hdn-1.fynd.com/misc/pictures/free-icon/resize-w:400/cgbwfyobj-zone4-m... network https://hdn-1.fynd.com/misc/pictures/free-icon/... broken resources">
+                    <tr class="atd-row sev-critical" data-sev="critical" data-search="[compared page] image failed to load (net::err_aborted): https://hdn-1.fynd.com/misc/pictures/free-icon/resize-w:400/ziebabtur-women-d... network https://hdn-1.fynd.com/misc/pictures/free-icon/... broken resources">
                         <td>1 <span class="count-badge" style="font-size:10px;">&times;9</span></td>
                         <td><span class="atd-cat cat-network">Broken Resources</span></td>
                         <td><span class="sev-badge critical">critical</span></td>
@@ -407,9 +408,17 @@
                             https://hdn-1.fynd.com/misc/pictures/free-icon/...
                             <span class="atd-section-label">Network</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Image failed to load (net::ERR_ABORTED): https://hdn-1.fynd.com/misc/pictures/free-icon/resize-w:400/CgBWFyObJ-ZONE4-M...</td>
+                        <td class="atd-desc">
+                            [Compared Page] Image failed to load (net::ERR_ABORTED): https://hdn-1.fynd.com/misc/pictures/free-icon/resize-w:400/ZiEbabtUR-Women-d...
+                            
+                            <div class="atd-verify">How to verify: 1) Open the page in Chrome. 2) Look for broken image icons (small square with a torn corner). 3) Or open DevTools → Network tab → filter by 'Img' → look for red 404 entries. 4) The image URL needs to be fixed or the image file needs to be uploaded.</div>
+                            
+                            
+                            <div class="atd-fix">Fix the broken image: check the URL path and ensure the file exists on the server.</div>
+                            
+                        </td>
                         <td><code>net::ERR_ABORTED</code></td>
-                        <td><code>https://hdn-1.fynd.com/misc/pictures/free-icon/resize-w:400/CgBWFyObJ-ZONE4-M...</code></td>
+                        <td><code>https://hdn-1.fynd.com/misc/pictures/free-icon/resize-w:400/ZiEbabtUR-Women-d...</code></td>
                         <td>
                             
                             <div class="atd-no-visual">No visual</div>
@@ -417,27 +426,35 @@
                         </td>
                     </tr>
                     
-                    <tr class="atd-row sev-critical" data-sev="critical" data-search="font mismatch: 7 element(s) use 'inter' on uat but 'roboto' on live (e.g. "women", "ray-ban", "men") header minor heading ("women") font mismatch (live vs uat)">
+                    <tr class="atd-row sev-critical" data-sev="critical" data-search="font mismatch: 7 element(s) use 'inter' on uat but 'roboto' on live (e.g. "men", "new arrivals", "sale") header minor heading ("men") font mismatch (live vs uat)">
                         <td>2 <span class="count-badge" style="font-size:10px;">&times;7</span></td>
                         <td><span class="atd-cat ">Font Mismatch (Live vs UAT)</span></td>
                         <td><span class="sev-badge critical">critical</span></td>
                         <td class="atd-element">
-                            Minor Heading ("Women")
+                            Minor Heading ("Men")
                             <span class="atd-section-label">Header</span>
                         </td>
-                        <td class="atd-desc">Font mismatch: 7 element(s) use 'inter' on UAT but 'roboto' on Live (e.g. "Women", "Ray-Ban", "Men")</td>
-                        <td><code>UAT: inter (7 elements: "Women", "Ray-Ban", "Men")</code></td>
+                        <td class="atd-desc">
+                            Font mismatch: 7 element(s) use 'inter' on UAT but 'roboto' on Live (e.g. "Men", "New Arrivals", "Sale")
+                            
+                            <div class="atd-verify">How to verify: 1) Open both Live and UAT pages side by side. 2) Right-click the flagged element on UAT → Inspect → Computed tab → check font-family. 3) Do the same on Live. 4) The font names should match. If UAT shows a different font, the CSS or font file needs updating.</div>
+                            
+                            
+                            <div class="atd-fix">Update the UAT font-family to match the Live site. Ensure font files are loaded and CSS references the correct family name.</div>
+                            
+                        </td>
+                        <td><code>UAT: inter (7 elements: "Men", "New Arrivals", "Sale")</code></td>
                         <td><code>Live: roboto</code></td>
                         <td>
                             
                             <div class="atd-visual-pair">
                                 <div class="atd-visual-box">
                                     <div class="atd-visual-label" style="color:var(--green);">LIVE</div>
-                                    <img class="atd-crop-thumb" src="data:image/jpeg;base64,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" alt="Live" onclick="zoom(this.src)" style="border-color:#BBF7D0;">
+                                    <img class="atd-crop-thumb" src="data:image/jpeg;base64,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" alt="Live" onclick="zoom(this.src)" style="border-color:#BBF7D0;">
                                 </div>
                                 <div class="atd-visual-box">
                                     <div class="atd-visual-label" style="color:var(--major);">UAT</div>
-                                    <img class="atd-crop-thumb" src="data:image/jpeg;base64,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" alt="UAT" onclick="zoom(this.src)" style="border-color:var(--major-border);">
+                                    <img class="atd-crop-thumb" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCABeAG0DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD06iiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiuSgiWQSlifkjLDHrxXHi8W8O4pRve/W2xvRo+1Td7WOtorkhEptHlydwcL7YIP+FTTW0cMUbnexBxKoIGCRkY4/ziuRZpJq/Jp6/8A3eDSdub8P8AgnT0Vy1wlvHHGUSXdIm4EuCByR6e1aHh7/l4/wCA/wBa1o5h7SsqXLv5+V+yIqYXlg53/r7zZooor0jkCiiigAooooAKKKKAGTSpBEZJW2ovU4zXK28qxO28Eo6lWx1wa6HV/wDkGTf8B/8AQhXPeHNSF3q15p99bWwSMZt3EYywXG8E9yNyn8a8vGUZ4iuoRduVX+9/8A7KFSNOm5NbuxKk1uipGBI8fmB3JABOO2M0fbWkWZZwCJBn5UAO7qDUOj65Bcrqt3f2tulnbuhtgkOWdGJC8dy3GB71dk1vSYbW5mutOmt3tfL8yGS3XftdtqsACQRn0OeDWP8AZ1ZaKasX9ap9YlOeVZFhCg/JHtOfXJP9a19Chli8/wA2N0ztxuUjPWs65v7O7ilhispbS4gdN8csQRtrBsEYzkHB/Kunp4TBuGJbk9Y2/FNBXrqVJJLcKKKK9k4AooooAKKKKACiiigCnq//ACDJv+A/+hCuRn0zzdOdYb+KC7N08iSAOdsbxhHU8dcc/UDmu5dFkUq6hlPUEZFRfZLX/n2h/wC+BXJUpVfa+0ptbW1v3Nozhycsk9zk7vTbOeHUYIrmGOKYW/2ZSjkL5Q4DDA4OMcHpUS2Mb2lyuzT7WWV4NoiMr/KkgdssV744GPxrsfslr/z7Q/8AfAo+yWv/AD7Q/wDfAotiu8fuf+YXo9n+H+RzepCObVpryKZGSSGKMLhgwKmQknIxj5x3rqqh+yWv/PtD/wB8CpqqhSqRnKdRq7tt5XFUnFxUY9AooorpMgooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD//2Q==" alt="UAT" onclick="zoom(this.src)" style="border-color:var(--major-border);">
                                 </div>
                             </div>
                             
@@ -452,7 +469,15 @@
                             Button ("Account")
                             <span class="atd-section-label">Page Content</span>
                         </td>
-                        <td class="atd-desc">Font mismatch on Button: UAT uses 'montserrat' but Live uses 'roboto' (6 elements affected)</td>
+                        <td class="atd-desc">
+                            Font mismatch on Button: UAT uses 'montserrat' but Live uses 'roboto' (6 elements affected)
+                            
+                            <div class="atd-verify">How to verify: 1) Open both Live and UAT pages side by side. 2) Right-click the flagged element on UAT → Inspect → Computed tab → check font-family. 3) Do the same on Live. 4) The font names should match. If UAT shows a different font, the CSS or font file needs updating.</div>
+                            
+                            
+                            <div class="atd-fix">Update the UAT font-family to match the Live site. Ensure font files are loaded and CSS references the correct family name.</div>
+                            
+                        </td>
                         <td><code>UAT: montserrat (6 Button elements)</code></td>
                         <td><code>Live: roboto</code></td>
                         <td>
@@ -471,33 +496,23 @@
                         </td>
                     </tr>
                     
-                    <tr class="atd-row sev-critical" data-sev="critical" data-search="[compared page] font failed to load (net::err_aborted): https://fonts.gstatic.com/s/montserrat/v31/jtuhjig1_i6t8kchkm4532vjot5-qnfgpc... network https://fonts.gstatic.com/s/montserrat/v31/jtuh... broken resources">
-                        <td>4 <span class="count-badge" style="font-size:10px;">&times;6</span></td>
-                        <td><span class="atd-cat cat-network">Broken Resources</span></td>
-                        <td><span class="sev-badge critical">critical</span></td>
-                        <td class="atd-element">
-                            https://fonts.gstatic.com/s/montserrat/v31/JTUH...
-                            <span class="atd-section-label">Network</span>
-                        </td>
-                        <td class="atd-desc">[Compared Page] Font failed to load (net::ERR_ABORTED): https://fonts.gstatic.com/s/montserrat/v31/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpC...</td>
-                        <td><code>net::ERR_ABORTED</code></td>
-                        <td><code>https://fonts.gstatic.com/s/montserrat/v31/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpC...</code></td>
-                        <td>
-                            
-                            <div class="atd-no-visual">No visual</div>
-                            
-                        </td>
-                    </tr>
-                    
                     <tr class="atd-row sev-critical" data-sev="critical" data-search="[compared page] broken hierarchy: 2 body elements (weight 600) are bolder than <h5> heading (weight 500) page content text ("account") typography hierarchy">
-                        <td>5 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
+                        <td>4 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
                         <td><span class="atd-cat ">Typography Hierarchy</span></td>
                         <td><span class="sev-badge critical">critical</span></td>
                         <td class="atd-element">
                             Text ("Account")
                             <span class="atd-section-label">Page Content</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Broken hierarchy: 2 body elements (weight 600) are BOLDER than <h5> heading (weight 500)</td>
+                        <td class="atd-desc">
+                            [Compared Page] Broken hierarchy: 2 body elements (weight 600) are BOLDER than <h5> heading (weight 500)
+                            
+                            <div class="atd-verify">How to verify: 1) Visually scan the page — headings should look bigger and bolder than the text below them. 2) If body text looks the same size or bolder than a heading, that's the bug. 3) Right-click both → Inspect → compare font-size and font-weight in Computed tab.</div>
+                            
+                            
+                            <div class="atd-fix">Fix typography hierarchy: headings should be larger/bolder than body text, and h1 > h2 > h3 in size.</div>
+                            
+                        </td>
                         <td><code>Body weight: 600, heading <h5> weight: 500</code></td>
                         <td><code>Body text should be lighter than <h5> heading</code></td>
                         <td>
@@ -511,14 +526,22 @@
                     </tr>
                     
                     <tr class="atd-row sev-critical" data-sev="critical" data-search="style mismatch on <button>: font-size is 14px on uat but 12px on live. 1 element(s) affected (e.g. "add to bag") page content button ("add to bag") style mismatch (live vs uat)">
-                        <td>6</td>
+                        <td>5</td>
                         <td><span class="atd-cat ">Style Mismatch (Live vs UAT)</span></td>
                         <td><span class="sev-badge critical">critical</span></td>
                         <td class="atd-element">
                             Button ("Add to bag")
                             <span class="atd-section-label">Page Content</span>
                         </td>
-                        <td class="atd-desc">Style mismatch on <button>: font-size is 14px on UAT but 12px on Live. 1 element(s) affected (e.g. "add to bag")</td>
+                        <td class="atd-desc">
+                            Style mismatch on <button>: font-size is 14px on UAT but 12px on Live. 1 element(s) affected (e.g. "add to bag")
+                            
+                            <div class="atd-verify">How to verify: 1) Open both Live and UAT pages. 2) Right-click the same element on both → Inspect → Computed tab. 3) Compare font-size, font-weight, and color values. 4) UAT should match Live exactly.</div>
+                            
+                            
+                            <div class="atd-fix">Update the element's style (font-weight, font-size, or color) to match the Live site.</div>
+                            
+                        </td>
                         <td><code>UAT font-size: 14px</code></td>
                         <td><code>Live font-size: 12px</code></td>
                         <td>
@@ -538,14 +561,22 @@
                     </tr>
                     
                     <tr class="atd-row sev-critical" data-sev="critical" data-search="1 content element(s) visible on live but missing on uat: "burberry - burberry women cateye sunglasses" hero banner / top area main heading ("burberry - burberry women cateye sunglasses") content visibility (live vs uat)">
-                        <td>7</td>
+                        <td>6</td>
                         <td><span class="atd-cat ">Content Visibility (Live vs UAT)</span></td>
                         <td><span class="sev-badge critical">critical</span></td>
                         <td class="atd-element">
                             Main Heading ("BURBERRY - BURBERRY WOMEN CATEYE SU
                             <span class="atd-section-label">Hero Banner / Top Area</span>
                         </td>
-                        <td class="atd-desc">1 content element(s) visible on Live but MISSING on UAT: "burberry - burberry women cateye sunglasses"</td>
+                        <td class="atd-desc">
+                            1 content element(s) visible on Live but MISSING on UAT: "burberry - burberry women cateye sunglasses"
+                            
+                            <div class="atd-verify">How to verify: 1) Open the Live page and find the flagged content. 2) Open the UAT page and check the same location. 3) If the content is missing on UAT, it needs to be restored.</div>
+                            
+                            
+                            <div class="atd-fix">Restore this content — it is visible on the Live site but missing on UAT.</div>
+                            
+                        </td>
                         <td><code>Missing on UAT (1 items): "burberry - burberry women cateye sunglasses"</code></td>
                         <td><code>Visible on Live</code></td>
                         <td>
@@ -559,14 +590,22 @@
                     </tr>
                     
                     <tr class="atd-row sev-critical" data-sev="critical" data-search="[reference page] text is hard to read: contrast ratio is 3.9:1 but needs at least 4.5:1. text color: rgb(255, 255, 255), background: rgb(128, 128, 128) hero banner / top area button "add to bag" accessibility (contrast)">
-                        <td>8</td>
+                        <td>7</td>
                         <td><span class="atd-cat cat-accessibility">Accessibility (Contrast)</span></td>
                         <td><span class="sev-badge critical">critical</span></td>
                         <td class="atd-element">
                             button "Add to bag"
                             <span class="atd-section-label">Hero Banner / Top Area</span>
                         </td>
-                        <td class="atd-desc">[Reference Page] Text is hard to read: contrast ratio is 3.9:1 but needs at least 4.5:1. Text color: rgb(255, 255, 255), Background: rgb(128, 128, 128)</td>
+                        <td class="atd-desc">
+                            [Reference Page] Text is hard to read: contrast ratio is 3.9:1 but needs at least 4.5:1. Text color: rgb(255, 255, 255), Background: rgb(128, 128, 128)
+                            
+                            <div class="atd-verify">How to verify: 1) Look at the flagged text — is it hard to read against its background? 2) Open DevTools → Inspect the element → in Styles panel, hover over the color value → Chrome shows the contrast ratio. 3) It should be at least 4.5:1 for normal text, 3:1 for large text.</div>
+                            
+                            
+                            <div class="atd-fix">Increase the color contrast ratio to meet WCAG AA (4.5:1 for text, 3:1 for large text).</div>
+                            
+                        </td>
                         <td><code>Ratio 3.9:1</code></td>
                         <td><code>Required 4.5:1 (WCAG AA)</code></td>
                         <td>
@@ -580,14 +619,22 @@
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="[reference page] this a has no text label. users with screen readers won't know what it does. hero banner / top area a (div:nth-of-type(1) > div:nth-of-type(1) > div > di) accessibility (aria)">
-                        <td>9 <span class="count-badge" style="font-size:10px;">&times;116</span></td>
+                        <td>8 <span class="count-badge" style="font-size:10px;">&times;116</span></td>
                         <td><span class="atd-cat cat-accessibility">Accessibility (ARIA)</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             a (div:nth-of-type(1) > div:nth-of-type(1) > div >
                             <span class="atd-section-label">Hero Banner / Top Area</span>
                         </td>
-                        <td class="atd-desc">[Reference Page] This a has no text label. Users with screen readers won't know what it does.</td>
+                        <td class="atd-desc">
+                            [Reference Page] This a has no text label. Users with screen readers won't know what it does.
+                            
+                            <div class="atd-verify">How to verify: 1) Right-click the element → Inspect. 2) Check if it has aria-label='...' in the HTML. 3) If a button/link has no visible text and no aria-label, it's not accessible.</div>
+                            
+                            
+                            <div class="atd-fix">Add an aria-label or visible text label to this interactive element.</div>
+                            
+                        </td>
                         <td><code>No label or aria-label</code></td>
                         <td><code>Needs accessible label</code></td>
                         <td>
@@ -608,17 +655,16 @@ men
 kids
 sale
 oakley meta", "oakley meta", "order status", "our story", "perfect pair promise", "prada (top brand)", "privacy & security", "product description", "product information
-›", "quick links", "ray-ban (top brand)", "ray-ban meta faq", "ray-ban meta-warranty", "sale/special offers", "scuderia ferrari (new arrival)", "shop all sunglass hut", "sub menu", "sunglass hut", "support@sunglasshut.in", "terms & conditions", "warranty", "wishlist" top of page button ("product information
-›") extra elements (live vs uat)">
-                        <td>10 <span class="count-badge" style="font-size:10px;">&times;39</span></td>
+›", "quick links", "ray-ban (top brand)", "ray-ban meta faq", "ray-ban meta-warranty", "sale/special offers", "scuderia ferrari (new arrival)", "shop all sunglass hut", "sub menu", "sunglass hut", "support@sunglasshut.in", "terms & conditions", "warranty", "wishlist" page content button ("check") extra elements (live vs uat)">
+                        <td>9 <span class="count-badge" style="font-size:10px;">&times;39</span></td>
                         <td><span class="atd-cat ">Extra Elements (Live vs UAT)</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
-                            Button ("Product Information
-›")
-                            <span class="atd-section-label">Top of Page</span>
+                            Button ("CHECK")
+                            <span class="atd-section-label">Page Content</span>
                         </td>
-                        <td class="atd-desc">39 element(s) appear on UAT but NOT on Live: "919321412829", "about us", "account", "burberry (top brand)", "bvlgari", "check", "contact us", "country: india", "create account", "delivery & shipping", "dolce&gabbana", "fees & payments", "find a store", "help & info", "instagram", "lens guide", "monday-sunday: 10:00 am-7:00 pm", "new arrivals
+                        <td class="atd-desc">
+                            39 element(s) appear on UAT but NOT on Live: "919321412829", "about us", "account", "burberry (top brand)", "bvlgari", "check", "contact us", "country: india", "create account", "delivery & shipping", "dolce&gabbana", "fees & payments", "find a store", "help & info", "instagram", "lens guide", "monday-sunday: 10:00 am-7:00 pm", "new arrivals
 ray-ban
 brands
 women
@@ -626,7 +672,14 @@ men
 kids
 sale
 oakley meta", "oakley meta", "order status", "our story", "perfect pair promise", "prada (top brand)", "privacy & security", "product description", "product information
-›", "quick links", "ray-ban (top brand)", "ray-ban meta faq", "ray-ban meta-warranty", "sale/special offers", "scuderia ferrari (new arrival)", "shop all sunglass hut", "sub menu", "sunglass hut", "support@sunglasshut.in", "terms & conditions", "warranty", "wishlist"</td>
+›", "quick links", "ray-ban (top brand)", "ray-ban meta faq", "ray-ban meta-warranty", "sale/special offers", "scuderia ferrari (new arrival)", "shop all sunglass hut", "sub menu", "sunglass hut", "support@sunglasshut.in", "terms & conditions", "warranty", "wishlist"
+                            
+                            <div class="atd-verify">How to verify: 1) Open the UAT page → look at the navigation/footer links. 2) Open the Live page → compare the same area. 3) Note which links appear on UAT but not on Live. 4) Verify with the team if these new links are intentional.</div>
+                            
+                            
+                            <div class="atd-fix">Verify whether these extra navigation elements should appear — they are not on the Live site.</div>
+                            
+                        </td>
                         <td><code>EXTRA on UAT (39 items): "919321412829", "about us", "account", "burberry (top brand)", "bvlgari", "check", "contact us", "country: india", "create account", "delivery & shipping", "dolce&gabbana", "fees & payments", "find a store", "help & info", "instagram", "lens guide", "monday-sunday: 10:00 am-7:00 pm", "new arrivals
 ray-ban
 brands
@@ -641,21 +694,29 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                             
                             <div class="atd-visual-box">
                                 <div class="atd-visual-label" style="color:var(--major);">ELEMENT</div>
-                                <img class="atd-crop-thumb" src="data:image/jpeg;base64,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" alt="Element" onclick="zoom(this.src)">
+                                <img class="atd-crop-thumb" src="data:image/jpeg;base64,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" alt="Element" onclick="zoom(this.src)">
                             </div>
                             
                         </td>
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="[reference page] image has no alt text. screen readers cannot describe this image to visually impaired users. hero banner / top area img (160x70px) accessibility (alt text)">
-                        <td>11 <span class="count-badge" style="font-size:10px;">&times;19</span></td>
+                        <td>10 <span class="count-badge" style="font-size:10px;">&times;19</span></td>
                         <td><span class="atd-cat cat-accessibility">Accessibility (Alt Text)</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             img (160x70px)
                             <span class="atd-section-label">Hero Banner / Top Area</span>
                         </td>
-                        <td class="atd-desc">[Reference Page] Image has no alt text. Screen readers cannot describe this image to visually impaired users.</td>
+                        <td class="atd-desc">
+                            [Reference Page] Image has no alt text. Screen readers cannot describe this image to visually impaired users.
+                            
+                            <div class="atd-verify">How to verify: 1) Right-click the image → Inspect. 2) Check if the <img> tag has an alt='...' attribute. 3) If alt is empty or missing, screen reader users won't know what the image shows.</div>
+                            
+                            
+                            <div class="atd-fix">Add descriptive alt text to this image so screen readers can describe it to users.</div>
+                            
+                        </td>
                         <td><code>(empty)</code></td>
                         <td><code>Needs descriptive alt text</code></td>
                         <td>
@@ -668,16 +729,24 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                         </td>
                     </tr>
                     
-                    <tr class="atd-row sev-major" data-sev="major" data-search="9 heading(s) visible on uat but not on live: "help & info", "ar8146587486", "need help?", "about us", "quick links", "follow us", "oakley meta", "₹ 23,090", "select delivery location" footer minor heading ("help & info") content visibility (live vs uat)">
-                        <td>12 <span class="count-badge" style="font-size:10px;">&times;9</span></td>
+                    <tr class="atd-row sev-major" data-sev="major" data-search="9 heading(s) visible on uat but not on live: "help & info", "follow us", "quick links", "select delivery location", "₹ 23,090", "about us", "ar8146587486", "oakley meta", "need help?" footer minor heading ("help & info") content visibility (live vs uat)">
+                        <td>11 <span class="count-badge" style="font-size:10px;">&times;9</span></td>
                         <td><span class="atd-cat ">Content Visibility (Live vs UAT)</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             Minor Heading ("Help & Info")
                             <span class="atd-section-label">Footer</span>
                         </td>
-                        <td class="atd-desc">9 heading(s) visible on UAT but NOT on Live: "help & info", "ar8146587486", "need help?", "about us", "quick links", "follow us", "oakley meta", "₹ 23,090", "select delivery location"</td>
-                        <td><code>Visible on UAT only (9 headings): "help & info", "ar8146587486", "need help?", "about us", "quick links", "follow us", "oakley meta", "₹ 23,090", "select delivery location"</code></td>
+                        <td class="atd-desc">
+                            9 heading(s) visible on UAT but NOT on Live: "help & info", "follow us", "quick links", "select delivery location", "₹ 23,090", "about us", "ar8146587486", "oakley meta", "need help?"
+                            
+                            <div class="atd-verify">How to verify: 1) Open the UAT page and find the flagged content. 2) Open the Live page and check if the same content exists. 3) If it only shows on UAT, confirm with the design/product team whether it should be visible.</div>
+                            
+                            
+                            <div class="atd-fix">Verify if this content should be visible — it appears on UAT but not on the Live site.</div>
+                            
+                        </td>
+                        <td><code>Visible on UAT only (9 headings): "help & info", "follow us", "quick links", "select delivery location", "₹ 23,090", "about us", "ar8146587486", "oakley meta", "need help?"</code></td>
                         <td><code>Not visible on Live</code></td>
                         <td>
                             
@@ -690,14 +759,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="font mismatch on span: uat uses 'montserrat' but live uses 'roboto' (7 elements affected) page content text ("account") font mismatch (live vs uat)">
-                        <td>13 <span class="count-badge" style="font-size:10px;">&times;7</span></td>
+                        <td>12 <span class="count-badge" style="font-size:10px;">&times;7</span></td>
                         <td><span class="atd-cat ">Font Mismatch (Live vs UAT)</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             Text ("Account")
                             <span class="atd-section-label">Page Content</span>
                         </td>
-                        <td class="atd-desc">Font mismatch on Span: UAT uses 'montserrat' but Live uses 'roboto' (7 elements affected)</td>
+                        <td class="atd-desc">
+                            Font mismatch on Span: UAT uses 'montserrat' but Live uses 'roboto' (7 elements affected)
+                            
+                            <div class="atd-verify">How to verify: 1) Open both Live and UAT pages side by side. 2) Right-click the flagged element on UAT → Inspect → Computed tab → check font-family. 3) Do the same on Live. 4) The font names should match. If UAT shows a different font, the CSS or font file needs updating.</div>
+                            
+                            
+                            <div class="atd-fix">Update the UAT font-family to match the Live site. Ensure font files are loaded and CSS references the correct family name.</div>
+                            
+                        </td>
                         <td><code>UAT: montserrat (7 Span elements)</code></td>
                         <td><code>Live: roboto</code></td>
                         <td>
@@ -717,14 +794,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="text truncation differs: 6 element(s) have different text lengths. e.g. uat has 16 chars vs live has 7 chars footer link ("ray-ban meta faq") text formatting (live vs uat)">
-                        <td>14 <span class="count-badge" style="font-size:10px;">&times;6</span></td>
+                        <td>13 <span class="count-badge" style="font-size:10px;">&times;6</span></td>
                         <td><span class="atd-cat ">Text Formatting (Live vs UAT)</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             Link ("Ray-Ban Meta Faq")
                             <span class="atd-section-label">Footer</span>
                         </td>
-                        <td class="atd-desc">Text truncation differs: 6 element(s) have different text lengths. E.g. UAT has 16 chars vs Live has 7 chars</td>
+                        <td class="atd-desc">
+                            Text truncation differs: 6 element(s) have different text lengths. E.g. UAT has 16 chars vs Live has 7 chars
+                            
+                            <div class="atd-verify">How to verify: 1) Open both Live and UAT pages. 2) Find the flagged text on both pages. 3) Compare the text length — if UAT shows fewer characters or adds '...' where Live doesn't, that's the truncation bug.</div>
+                            
+                            
+                            <div class="atd-fix">Fix text truncation — ensure the same content length is displayed as on the Live site.</div>
+                            
+                        </td>
                         <td><code>UAT: "Ray-Ban Meta Faq" (16 chars)</code></td>
                         <td><code>Live: "Ray-Ban" (7 chars)</code></td>
                         <td>
@@ -744,14 +829,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="[compared page] link text casing inconsistent: 5 element(s) are mixed (e.g. "shop all sunglass hu", "find a store", "ray-ban (top brand)") but 40/47 use title case page content link ("shop all sunglass hut") text case">
-                        <td>15 <span class="count-badge" style="font-size:10px;">&times;5</span></td>
+                        <td>14 <span class="count-badge" style="font-size:10px;">&times;5</span></td>
                         <td><span class="atd-cat ">Text Case</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             Link ("Shop All Sunglass hut")
                             <span class="atd-section-label">Page Content</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Link text casing inconsistent: 5 element(s) are Mixed (e.g. "Shop All Sunglass hu", "Find a Store", "Ray-Ban (TOP BRAND)") but 40/47 use Title Case</td>
+                        <td class="atd-desc">
+                            [Compared Page] Link text casing inconsistent: 5 element(s) are Mixed (e.g. "Shop All Sunglass hu", "Find a Store", "Ray-Ban (TOP BRAND)") but 40/47 use Title Case
+                            
+                            <div class="atd-verify">How to verify: 1) Look at all buttons or links of the same type on the page. 2) Check if they all use the same text style — ALL CAPS, Title Case, or lowercase. 3) If most use Title Case but one uses lowercase (or vice versa), that's the inconsistency.</div>
+                            
+                            
+                            <div class="atd-fix">Standardize text casing: pick ALL CAPS, Title Case, or Sentence case and apply consistently across similar elements.</div>
+                            
+                        </td>
                         <td><code>Mixed (5 elements): "Shop All Sunglass hu", "Find a Store", "Ray-Ban (TOP BRAND)"</code></td>
                         <td><code>Title Case (used by 40/47 Links)</code></td>
                         <td>
@@ -764,15 +857,23 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                         </td>
                     </tr>
                     
-                    <tr class="atd-row sev-major" data-sev="major" data-search="style mismatch on <li>: font-weight is 600 on uat but 400 on live. 4 element(s) affected (e.g. "ray-ban", "women", "new arrivals") top of page list item ("ray-ban") style mismatch (live vs uat)">
-                        <td>16 <span class="count-badge" style="font-size:10px;">&times;4</span></td>
+                    <tr class="atd-row sev-major" data-sev="major" data-search="style mismatch on <li>: font-weight is 600 on uat but 400 on live. 4 element(s) affected (e.g. "brands", "women", "ray-ban") top of page list item ("brands") style mismatch (live vs uat)">
+                        <td>15 <span class="count-badge" style="font-size:10px;">&times;4</span></td>
                         <td><span class="atd-cat ">Style Mismatch (Live vs UAT)</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
-                            List Item ("Ray-Ban")
+                            List Item ("Brands")
                             <span class="atd-section-label">Top of Page</span>
                         </td>
-                        <td class="atd-desc">Style mismatch on <li>: font-weight is 600 on UAT but 400 on Live. 4 element(s) affected (e.g. "ray-ban", "women", "new arrivals")</td>
+                        <td class="atd-desc">
+                            Style mismatch on <li>: font-weight is 600 on UAT but 400 on Live. 4 element(s) affected (e.g. "brands", "women", "ray-ban")
+                            
+                            <div class="atd-verify">How to verify: 1) Open both Live and UAT pages. 2) Right-click the same element on both → Inspect → Computed tab. 3) Compare font-size, font-weight, and color values. 4) UAT should match Live exactly.</div>
+                            
+                            
+                            <div class="atd-fix">Update the element's style (font-weight, font-size, or color) to match the Live site.</div>
+                            
+                        </td>
                         <td><code>UAT font-weight: 600</code></td>
                         <td><code>Live font-weight: 400</code></td>
                         <td>
@@ -780,26 +881,34 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                             <div class="atd-visual-pair">
                                 <div class="atd-visual-box">
                                     <div class="atd-visual-label" style="color:var(--green);">LIVE</div>
-                                    <img class="atd-crop-thumb" src="data:image/jpeg;base64,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" alt="Live" onclick="zoom(this.src)" style="border-color:#BBF7D0;">
+                                    <img class="atd-crop-thumb" src="data:image/jpeg;base64,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" alt="Live" onclick="zoom(this.src)" style="border-color:#BBF7D0;">
                                 </div>
                                 <div class="atd-visual-box">
                                     <div class="atd-visual-label" style="color:var(--major);">UAT</div>
-                                    <img class="atd-crop-thumb" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCAB5ABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD06iiigAooooAKKKKACiqer/8AIMm/4D/6EKK83GZh9Wmoct9L7/8AAOqhhvax5r2Jt7etG9/WjFGK9I5Sjq04Fk0bt8z42jHXBFFV9d/5Yf8AAv6UV8xmk3LENPpZfr+p6+DilST7mvRRRX055Bka7/yw/wCBf0oo13/lh/wL+lFfK5l/vUvl+SPZwn8Ff11NeiiivqjxjI13/lh/wL+lFGu/8sP+Bf0or5XMv96l8vyR7OE/gr+upr0UUV9UeMU7+y+2eX+82bM/w5znH+FFXQpNFclTBUKsnOcbt+bNoYipBcsXoJSoMmkp0feusxH0UUUARU6PvTadH3oAfRRRQB//2Q==" alt="UAT" onclick="zoom(this.src)" style="border-color:var(--major-border);">
+                                    <img class="atd-crop-thumb" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCAB5ABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD0jFGKWigBMUUtFABRRRQAUVT1X/kHS/h/MUV5uMzD6tNQ5b6X3/4B1UMN7WPNexcooor0jlKOryotk0bHDPjaMdcEZoqtrv8Ayw/4F/SivmM0m5Yhp9LL9f1PXwcUqSfc16KKcg5zX055Bj68CPs+f9r+lFO8Q/8ALv8A8C/pRXyuZf71L5fkj2cJ/BX9dTUp0fem06PvX1R4xk+If+Xf/gX9KKPEP/Lv/wAC/pRXyuZf71L5fkj2cJ/BX9dTUp0fem06PvX1R4xW1Gw+2+X+92bM/wAOc5x7+1FXKK5KmCoVZOc43b82bQxFSC5YvQip0fem06PvXWYj6KKKAIqdH3ptOj70APooooA//9k=" alt="UAT" onclick="zoom(this.src)" style="border-color:var(--major-border);">
                                 </div>
                             </div>
                             
                         </td>
                     </tr>
                     
-                    <tr class="atd-row sev-major" data-sev="major" data-search="style mismatch on <li>: font-size is 16px on uat but 14px on live. 4 element(s) affected (e.g. "ray-ban", "women", "new arrivals") top of page list item ("ray-ban") style mismatch (live vs uat)">
-                        <td>17 <span class="count-badge" style="font-size:10px;">&times;4</span></td>
+                    <tr class="atd-row sev-major" data-sev="major" data-search="style mismatch on <li>: font-size is 16px on uat but 14px on live. 4 element(s) affected (e.g. "brands", "women", "ray-ban") top of page list item ("brands") style mismatch (live vs uat)">
+                        <td>16 <span class="count-badge" style="font-size:10px;">&times;4</span></td>
                         <td><span class="atd-cat ">Style Mismatch (Live vs UAT)</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
-                            List Item ("Ray-Ban")
+                            List Item ("Brands")
                             <span class="atd-section-label">Top of Page</span>
                         </td>
-                        <td class="atd-desc">Style mismatch on <li>: font-size is 16px on UAT but 14px on Live. 4 element(s) affected (e.g. "ray-ban", "women", "new arrivals")</td>
+                        <td class="atd-desc">
+                            Style mismatch on <li>: font-size is 16px on UAT but 14px on Live. 4 element(s) affected (e.g. "brands", "women", "ray-ban")
+                            
+                            <div class="atd-verify">How to verify: 1) Open both Live and UAT pages. 2) Right-click the same element on both → Inspect → Computed tab. 3) Compare font-size, font-weight, and color values. 4) UAT should match Live exactly.</div>
+                            
+                            
+                            <div class="atd-fix">Update the element's style (font-weight, font-size, or color) to match the Live site.</div>
+                            
+                        </td>
                         <td><code>UAT font-size: 16px</code></td>
                         <td><code>Live font-size: 14px</code></td>
                         <td>
@@ -807,11 +916,11 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                             <div class="atd-visual-pair">
                                 <div class="atd-visual-box">
                                     <div class="atd-visual-label" style="color:var(--green);">LIVE</div>
-                                    <img class="atd-crop-thumb" src="data:image/jpeg;base64,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" alt="Live" onclick="zoom(this.src)" style="border-color:#BBF7D0;">
+                                    <img class="atd-crop-thumb" src="data:image/jpeg;base64,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" alt="Live" onclick="zoom(this.src)" style="border-color:#BBF7D0;">
                                 </div>
                                 <div class="atd-visual-box">
                                     <div class="atd-visual-label" style="color:var(--major);">UAT</div>
-                                    <img class="atd-crop-thumb" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCAB5ABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD06iiigAooooAKKKKACiqer/8AIMm/4D/6EKK83GZh9Wmoct9L7/8AAOqhhvax5r2Jt7etG9/WjFGK9I5Sjq04Fk0bt8z42jHXBFFV9d/5Yf8AAv6UV8xmk3LENPpZfr+p6+DilST7mvRRRX055Bka7/yw/wCBf0oo13/lh/wL+lFfK5l/vUvl+SPZwn8Ff11NeiiivqjxjI13/lh/wL+lFGu/8sP+Bf0or5XMv96l8vyR7OE/gr+upr0UUV9UeMU7+y+2eX+82bM/w5znH+FFXQpNFclTBUKsnOcbt+bNoYipBcsXoJSoMmkp0feusxH0UUUARU6PvTadH3oAfRRRQB//2Q==" alt="UAT" onclick="zoom(this.src)" style="border-color:var(--major-border);">
+                                    <img class="atd-crop-thumb" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCAB5ABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD0jFGKWigBMUUtFABRRRQAUVT1X/kHS/h/MUV5uMzD6tNQ5b6X3/4B1UMN7WPNexcooor0jlKOryotk0bHDPjaMdcEZoqtrv8Ayw/4F/SivmM0m5Yhp9LL9f1PXwcUqSfc16KKcg5zX055Bj68CPs+f9r+lFO8Q/8ALv8A8C/pRXyuZf71L5fkj2cJ/BX9dTUp0fem06PvX1R4xk+If+Xf/gX9KKPEP/Lv/wAC/pRXyuZf71L5fkj2cJ/BX9dTUp0fem06PvX1R4xW1Gw+2+X+92bM/wAOc5x7+1FXKK5KmCoVZOc43b82bQxFSC5YvQip0fem06PvXWYj6KKKAIqdH3ptOj70APooooA//9k=" alt="UAT" onclick="zoom(this.src)" style="border-color:var(--major-border);">
                                 </div>
                             </div>
                             
@@ -819,14 +928,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="3 navigation element(s) present on live but missing on uat: "ai glasses", "burberry", "₹ 19,490" hero banner / top area link ("ai glasses") missing elements (live vs uat)">
-                        <td>18 <span class="count-badge" style="font-size:10px;">&times;3</span></td>
+                        <td>17 <span class="count-badge" style="font-size:10px;">&times;3</span></td>
                         <td><span class="atd-cat ">Missing Elements (Live vs UAT)</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             Link ("AI Glasses")
                             <span class="atd-section-label">Hero Banner / Top Area</span>
                         </td>
-                        <td class="atd-desc">3 navigation element(s) present on Live but MISSING on UAT: "ai glasses", "burberry", "₹ 19,490"</td>
+                        <td class="atd-desc">
+                            3 navigation element(s) present on Live but MISSING on UAT: "ai glasses", "burberry", "₹ 19,490"
+                            
+                            <div class="atd-verify">How to verify: 1) Open the Live page → look at the navigation/footer links. 2) Open the UAT page → compare the same area. 3) Note which links are present on Live but missing on UAT. 4) These need to be restored on UAT.</div>
+                            
+                            
+                            <div class="atd-fix">Restore the missing navigation/link element(s) that are present on the Live site.</div>
+                            
+                        </td>
                         <td><code>MISSING on UAT (3 items): "ai glasses", "burberry", "₹ 19,490"</code></td>
                         <td><code>Present on Live</code></td>
                         <td>
@@ -840,14 +957,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="[compared page] inconsistent font-size on button: 2 element(s) use 16 while 3/7 others use 14 page content button ("account") element consistency">
-                        <td>19 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
+                        <td>18 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
                         <td><span class="atd-cat ">Element Consistency</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             Button ("Account")
                             <span class="atd-section-label">Page Content</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Inconsistent font-size on Button: 2 element(s) use 16 while 3/7 others use 14</td>
+                        <td class="atd-desc">
+                            [Compared Page] Inconsistent font-size on Button: 2 element(s) use 16 while 3/7 others use 14
+                            
+                            <div class="atd-verify">How to verify: 1) Right-click on the flagged element → Inspect. 2) In DevTools Computed tab, check the flagged property (font-size, font-weight, or color). 3) Now right-click on another element of the same type (e.g., another button) → Inspect → compare the same property. 4) All elements of the same type should have identical values.</div>
+                            
+                            
+                            <div class="atd-fix">Standardize styling for all elements of the same type — use consistent font, size, weight, and color.</div>
+                            
+                        </td>
                         <td><code>font-size: 16 (2 elements)</code></td>
                         <td><code>font-size: 14 (used by 3/7 Buttons)</code></td>
                         <td>
@@ -861,14 +986,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="[compared page] inconsistent font-weight on button: 2 element(s) use 600 while 3/7 others use 400 page content button ("account") element consistency">
-                        <td>20 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
+                        <td>19 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
                         <td><span class="atd-cat ">Element Consistency</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             Button ("Account")
                             <span class="atd-section-label">Page Content</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Inconsistent font-weight on Button: 2 element(s) use 600 while 3/7 others use 400</td>
+                        <td class="atd-desc">
+                            [Compared Page] Inconsistent font-weight on Button: 2 element(s) use 600 while 3/7 others use 400
+                            
+                            <div class="atd-verify">How to verify: 1) Right-click on the flagged element → Inspect. 2) In DevTools Computed tab, check the flagged property (font-size, font-weight, or color). 3) Now right-click on another element of the same type (e.g., another button) → Inspect → compare the same property. 4) All elements of the same type should have identical values.</div>
+                            
+                            
+                            <div class="atd-fix">Standardize styling for all elements of the same type — use consistent font, size, weight, and color.</div>
+                            
+                        </td>
                         <td><code>font-weight: 600 (2 elements)</code></td>
                         <td><code>font-weight: 400 (used by 3/7 Buttons)</code></td>
                         <td>
@@ -882,14 +1015,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="[compared page] inconsistent font-weight on button: 2 element(s) use 500 while 3/7 others use 400 page content button ("check") element consistency">
-                        <td>21 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
+                        <td>20 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
                         <td><span class="atd-cat ">Element Consistency</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             Button ("CHECK")
                             <span class="atd-section-label">Page Content</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Inconsistent font-weight on Button: 2 element(s) use 500 while 3/7 others use 400</td>
+                        <td class="atd-desc">
+                            [Compared Page] Inconsistent font-weight on Button: 2 element(s) use 500 while 3/7 others use 400
+                            
+                            <div class="atd-verify">How to verify: 1) Right-click on the flagged element → Inspect. 2) In DevTools Computed tab, check the flagged property (font-size, font-weight, or color). 3) Now right-click on another element of the same type (e.g., another button) → Inspect → compare the same property. 4) All elements of the same type should have identical values.</div>
+                            
+                            
+                            <div class="atd-fix">Standardize styling for all elements of the same type — use consistent font, size, weight, and color.</div>
+                            
+                        </td>
                         <td><code>font-weight: 500 (2 elements)</code></td>
                         <td><code>font-weight: 400 (used by 3/7 Buttons)</code></td>
                         <td>
@@ -904,7 +1045,7 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="[compared page] inconsistent color on button: 1 element(s) use rgb(51,51,51) while 4/7 others use rgb(14,14,14) top of page button ("product information
 ›") element consistency">
-                        <td>22 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
+                        <td>21 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
                         <td><span class="atd-cat ">Element Consistency</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
@@ -912,7 +1053,15 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
 ›")
                             <span class="atd-section-label">Top of Page</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Inconsistent color on Button: 1 element(s) use rgb(51,51,51) while 4/7 others use rgb(14,14,14)</td>
+                        <td class="atd-desc">
+                            [Compared Page] Inconsistent color on Button: 1 element(s) use rgb(51,51,51) while 4/7 others use rgb(14,14,14)
+                            
+                            <div class="atd-verify">How to verify: 1) Right-click on the flagged element → Inspect. 2) In DevTools Computed tab, check the flagged property (font-size, font-weight, or color). 3) Now right-click on another element of the same type (e.g., another button) → Inspect → compare the same property. 4) All elements of the same type should have identical values.</div>
+                            
+                            
+                            <div class="atd-fix">Standardize styling for all elements of the same type — use consistent font, size, weight, and color.</div>
+                            
+                        </td>
                         <td><code>color: rgb(51,51,51) (1 elements)</code></td>
                         <td><code>color: rgb(14,14,14) (used by 4/7 Buttons)</code></td>
                         <td>
@@ -926,14 +1075,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="[compared page] inconsistent color on button: 1 element(s) use rgb(0,0,0) while 4/7 others use rgb(14,14,14) page content button ("product description") element consistency">
-                        <td>23 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
+                        <td>22 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
                         <td><span class="atd-cat ">Element Consistency</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             Button ("Product Description")
                             <span class="atd-section-label">Page Content</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Inconsistent color on Button: 1 element(s) use rgb(0,0,0) while 4/7 others use rgb(14,14,14)</td>
+                        <td class="atd-desc">
+                            [Compared Page] Inconsistent color on Button: 1 element(s) use rgb(0,0,0) while 4/7 others use rgb(14,14,14)
+                            
+                            <div class="atd-verify">How to verify: 1) Right-click on the flagged element → Inspect. 2) In DevTools Computed tab, check the flagged property (font-size, font-weight, or color). 3) Now right-click on another element of the same type (e.g., another button) → Inspect → compare the same property. 4) All elements of the same type should have identical values.</div>
+                            
+                            
+                            <div class="atd-fix">Standardize styling for all elements of the same type — use consistent font, size, weight, and color.</div>
+                            
+                        </td>
                         <td><code>color: rgb(0,0,0) (1 elements)</code></td>
                         <td><code>color: rgb(14,14,14) (used by 4/7 Buttons)</code></td>
                         <td>
@@ -948,7 +1105,7 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="[compared page] inconsistent color on button: 1 element(s) use rgb(51,51,51) while 4/7 others use rgb(14,14,14) top of page button ("product information
 ›") color consistency">
-                        <td>24 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
+                        <td>23 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
                         <td><span class="atd-cat ">Color Consistency</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
@@ -956,7 +1113,15 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
 ›")
                             <span class="atd-section-label">Top of Page</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Inconsistent color on Button: 1 element(s) use rgb(51,51,51) while 4/7 others use rgb(14,14,14)</td>
+                        <td class="atd-desc">
+                            [Compared Page] Inconsistent color on Button: 1 element(s) use rgb(51,51,51) while 4/7 others use rgb(14,14,14)
+                            
+                            <div class="atd-verify">How to verify: 1) Look at all elements of the same type (e.g., all buttons). 2) They should all be the same color. 3) Right-click each → Inspect → Computed tab → check color. 4) If one button is a different shade, that's the bug.</div>
+                            
+                            
+                            <div class="atd-fix">Use a single, consistent color value for all elements with the same semantic role.</div>
+                            
+                        </td>
                         <td><code>color: rgb(51,51,51) (1 elements)</code></td>
                         <td><code>color: rgb(14,14,14) (used by 4/7 Buttons)</code></td>
                         <td>
@@ -970,14 +1135,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="[compared page] inconsistent color on button: 1 element(s) use rgb(0,0,0) while 4/7 others use rgb(14,14,14) page content button ("product description") color consistency">
-                        <td>25 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
+                        <td>24 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
                         <td><span class="atd-cat ">Color Consistency</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             Button ("Product Description")
                             <span class="atd-section-label">Page Content</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Inconsistent color on Button: 1 element(s) use rgb(0,0,0) while 4/7 others use rgb(14,14,14)</td>
+                        <td class="atd-desc">
+                            [Compared Page] Inconsistent color on Button: 1 element(s) use rgb(0,0,0) while 4/7 others use rgb(14,14,14)
+                            
+                            <div class="atd-verify">How to verify: 1) Look at all elements of the same type (e.g., all buttons). 2) They should all be the same color. 3) Right-click each → Inspect → Computed tab → check color. 4) If one button is a different shade, that's the bug.</div>
+                            
+                            
+                            <div class="atd-fix">Use a single, consistent color value for all elements with the same semantic role.</div>
+                            
+                        </td>
                         <td><code>color: rgb(0,0,0) (1 elements)</code></td>
                         <td><code>color: rgb(14,14,14) (used by 4/7 Buttons)</code></td>
                         <td>
@@ -991,14 +1164,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="[reference page] non-standard font size 22px found on 1 elements (1x <h1>). standard type scale uses 20px or 24px hero banner / top area main heading ("burberry - burberry women cateye sunglasses") design system">
-                        <td>26</td>
+                        <td>25</td>
                         <td><span class="atd-cat ">Design System</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             Main Heading ("BURBERRY - BURBERRY WOMEN CATEYE SU
                             <span class="atd-section-label">Hero Banner / Top Area</span>
                         </td>
-                        <td class="atd-desc">[Reference Page] Non-standard font size 22px found on 1 elements (1x <h1>). Standard type scale uses 20px or 24px</td>
+                        <td class="atd-desc">
+                            [Reference Page] Non-standard font size 22px found on 1 elements (1x <h1>). Standard type scale uses 20px or 24px
+                            
+                            <div class="atd-verify">How to verify: 1) Right-click the element → Inspect → Computed tab → check font-size. 2) The value should be one of the standard sizes: 12, 14, 16, 18, 20, 24, 28, 32px. 3) Odd sizes like 15px or 17px indicate the design system scale is not being followed.</div>
+                            
+                            
+                            <div class="atd-fix">Replace this font size with the nearest value from the design system type scale (12, 14, 16, 18, 20, 24, 32px).</div>
+                            
+                        </td>
                         <td><code>22px (used by 1 elements: 1x <h1>)</code></td>
                         <td><code>Nearest standard sizes: 20px or 24px</code></td>
                         <td>
@@ -1012,14 +1193,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="[reference page] link text casing inconsistent: 1 element(s) are all caps (e.g. "burberry") but 8/9 use title case hero banner / top area link ("burberry") text case">
-                        <td>27</td>
+                        <td>26</td>
                         <td><span class="atd-cat ">Text Case</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             Link ("BURBERRY")
                             <span class="atd-section-label">Hero Banner / Top Area</span>
                         </td>
-                        <td class="atd-desc">[Reference Page] Link text casing inconsistent: 1 element(s) are ALL CAPS (e.g. "BURBERRY") but 8/9 use Title Case</td>
+                        <td class="atd-desc">
+                            [Reference Page] Link text casing inconsistent: 1 element(s) are ALL CAPS (e.g. "BURBERRY") but 8/9 use Title Case
+                            
+                            <div class="atd-verify">How to verify: 1) Look at all buttons or links of the same type on the page. 2) Check if they all use the same text style — ALL CAPS, Title Case, or lowercase. 3) If most use Title Case but one uses lowercase (or vice versa), that's the inconsistency.</div>
+                            
+                            
+                            <div class="atd-fix">Standardize text casing: pick ALL CAPS, Title Case, or Sentence case and apply consistently across similar elements.</div>
+                            
+                        </td>
                         <td><code>ALL CAPS (1 elements): "BURBERRY"</code></td>
                         <td><code>Title Case (used by 8/9 Links)</code></td>
                         <td>
@@ -1033,14 +1222,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="[compared page] non-standard font size 13px found on 1 elements (1x <button>). standard type scale uses 12px or 14px page content button ("product description") design system">
-                        <td>28</td>
+                        <td>27</td>
                         <td><span class="atd-cat ">Design System</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             Button ("Product Description")
                             <span class="atd-section-label">Page Content</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Non-standard font size 13px found on 1 elements (1x <button>). Standard type scale uses 12px or 14px</td>
+                        <td class="atd-desc">
+                            [Compared Page] Non-standard font size 13px found on 1 elements (1x <button>). Standard type scale uses 12px or 14px
+                            
+                            <div class="atd-verify">How to verify: 1) Right-click the element → Inspect → Computed tab → check font-size. 2) The value should be one of the standard sizes: 12, 14, 16, 18, 20, 24, 28, 32px. 3) Odd sizes like 15px or 17px indicate the design system scale is not being followed.</div>
+                            
+                            
+                            <div class="atd-fix">Replace this font size with the nearest value from the design system type scale (12, 14, 16, 18, 20, 24, 32px).</div>
+                            
+                        </td>
                         <td><code>13px (used by 1 elements: 1x <button>)</code></td>
                         <td><code>Nearest standard sizes: 12px or 14px</code></td>
                         <td>
@@ -1055,7 +1252,7 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="[compared page] inconsistent font-size on button: 1 element(s) use 12 while 3/7 others use 14 top of page button ("product information
 ›") element consistency">
-                        <td>29</td>
+                        <td>28</td>
                         <td><span class="atd-cat ">Element Consistency</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
@@ -1063,7 +1260,15 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
 ›")
                             <span class="atd-section-label">Top of Page</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Inconsistent font-size on Button: 1 element(s) use 12 while 3/7 others use 14</td>
+                        <td class="atd-desc">
+                            [Compared Page] Inconsistent font-size on Button: 1 element(s) use 12 while 3/7 others use 14
+                            
+                            <div class="atd-verify">How to verify: 1) Right-click on the flagged element → Inspect. 2) In DevTools Computed tab, check the flagged property (font-size, font-weight, or color). 3) Now right-click on another element of the same type (e.g., another button) → Inspect → compare the same property. 4) All elements of the same type should have identical values.</div>
+                            
+                            
+                            <div class="atd-fix">Standardize styling for all elements of the same type — use consistent font, size, weight, and color.</div>
+                            
+                        </td>
                         <td><code>font-size: 12 (1 elements)</code></td>
                         <td><code>font-size: 14 (used by 3/7 Buttons)</code></td>
                         <td>
@@ -1077,14 +1282,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="[compared page] inconsistent font-size on button: 1 element(s) use 13 while 3/7 others use 14 page content button ("product description") element consistency">
-                        <td>30</td>
+                        <td>29</td>
                         <td><span class="atd-cat ">Element Consistency</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             Button ("Product Description")
                             <span class="atd-section-label">Page Content</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Inconsistent font-size on Button: 1 element(s) use 13 while 3/7 others use 14</td>
+                        <td class="atd-desc">
+                            [Compared Page] Inconsistent font-size on Button: 1 element(s) use 13 while 3/7 others use 14
+                            
+                            <div class="atd-verify">How to verify: 1) Right-click on the flagged element → Inspect. 2) In DevTools Computed tab, check the flagged property (font-size, font-weight, or color). 3) Now right-click on another element of the same type (e.g., another button) → Inspect → compare the same property. 4) All elements of the same type should have identical values.</div>
+                            
+                            
+                            <div class="atd-fix">Standardize styling for all elements of the same type — use consistent font, size, weight, and color.</div>
+                            
+                        </td>
                         <td><code>font-size: 13 (1 elements)</code></td>
                         <td><code>font-size: 14 (used by 3/7 Buttons)</code></td>
                         <td>
@@ -1098,14 +1311,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="[compared page] inconsistent font-family on button: 1 element(s) use roboto while 6/7 others use montserrat page content button ("add to bag") element consistency">
-                        <td>31</td>
+                        <td>30</td>
                         <td><span class="atd-cat ">Element Consistency</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             Button ("Add to bag")
                             <span class="atd-section-label">Page Content</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Inconsistent font-family on Button: 1 element(s) use roboto while 6/7 others use montserrat</td>
+                        <td class="atd-desc">
+                            [Compared Page] Inconsistent font-family on Button: 1 element(s) use roboto while 6/7 others use montserrat
+                            
+                            <div class="atd-verify">How to verify: 1) Right-click on the flagged element → Inspect. 2) In DevTools Computed tab, check the flagged property (font-size, font-weight, or color). 3) Now right-click on another element of the same type (e.g., another button) → Inspect → compare the same property. 4) All elements of the same type should have identical values.</div>
+                            
+                            
+                            <div class="atd-fix">Standardize styling for all elements of the same type — use consistent font, size, weight, and color.</div>
+                            
+                        </td>
                         <td><code>font-family: roboto (1 elements)</code></td>
                         <td><code>font-family: montserrat (used by 6/7 Buttons)</code></td>
                         <td>
@@ -1119,14 +1340,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="[compared page] inconsistent color on button: 1 element(s) use rgb(255,255,255) while 4/7 others use rgb(14,14,14) page content button ("add to bag") element consistency">
-                        <td>32</td>
+                        <td>31</td>
                         <td><span class="atd-cat ">Element Consistency</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             Button ("Add to bag")
                             <span class="atd-section-label">Page Content</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Inconsistent color on Button: 1 element(s) use rgb(255,255,255) while 4/7 others use rgb(14,14,14)</td>
+                        <td class="atd-desc">
+                            [Compared Page] Inconsistent color on Button: 1 element(s) use rgb(255,255,255) while 4/7 others use rgb(14,14,14)
+                            
+                            <div class="atd-verify">How to verify: 1) Right-click on the flagged element → Inspect. 2) In DevTools Computed tab, check the flagged property (font-size, font-weight, or color). 3) Now right-click on another element of the same type (e.g., another button) → Inspect → compare the same property. 4) All elements of the same type should have identical values.</div>
+                            
+                            
+                            <div class="atd-fix">Standardize styling for all elements of the same type — use consistent font, size, weight, and color.</div>
+                            
+                        </td>
                         <td><code>color: rgb(255,255,255) (1 elements)</code></td>
                         <td><code>color: rgb(14,14,14) (used by 4/7 Buttons)</code></td>
                         <td>
@@ -1140,14 +1369,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="[compared page] button text casing inconsistent: 1 element(s) are sentence case (e.g. "add to bag") but 4/7 use title case page content button ("add to bag") text case">
-                        <td>33</td>
+                        <td>32</td>
                         <td><span class="atd-cat ">Text Case</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             Button ("Add to bag")
                             <span class="atd-section-label">Page Content</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Button text casing inconsistent: 1 element(s) are Sentence case (e.g. "Add to bag") but 4/7 use Title Case</td>
+                        <td class="atd-desc">
+                            [Compared Page] Button text casing inconsistent: 1 element(s) are Sentence case (e.g. "Add to bag") but 4/7 use Title Case
+                            
+                            <div class="atd-verify">How to verify: 1) Look at all buttons or links of the same type on the page. 2) Check if they all use the same text style — ALL CAPS, Title Case, or lowercase. 3) If most use Title Case but one uses lowercase (or vice versa), that's the inconsistency.</div>
+                            
+                            
+                            <div class="atd-fix">Standardize text casing: pick ALL CAPS, Title Case, or Sentence case and apply consistently across similar elements.</div>
+                            
+                        </td>
                         <td><code>Sentence case (1 elements): "Add to bag"</code></td>
                         <td><code>Title Case (used by 4/7 Buttons)</code></td>
                         <td>
@@ -1161,14 +1398,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="[compared page] button text casing inconsistent: 1 element(s) are all caps (e.g. "check") but 4/7 use title case page content button ("check") text case">
-                        <td>34</td>
+                        <td>33</td>
                         <td><span class="atd-cat ">Text Case</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             Button ("CHECK")
                             <span class="atd-section-label">Page Content</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Button text casing inconsistent: 1 element(s) are ALL CAPS (e.g. "CHECK") but 4/7 use Title Case</td>
+                        <td class="atd-desc">
+                            [Compared Page] Button text casing inconsistent: 1 element(s) are ALL CAPS (e.g. "CHECK") but 4/7 use Title Case
+                            
+                            <div class="atd-verify">How to verify: 1) Look at all buttons or links of the same type on the page. 2) Check if they all use the same text style — ALL CAPS, Title Case, or lowercase. 3) If most use Title Case but one uses lowercase (or vice versa), that's the inconsistency.</div>
+                            
+                            
+                            <div class="atd-fix">Standardize text casing: pick ALL CAPS, Title Case, or Sentence case and apply consistently across similar elements.</div>
+                            
+                        </td>
                         <td><code>ALL CAPS (1 elements): "CHECK"</code></td>
                         <td><code>Title Case (used by 4/7 Buttons)</code></td>
                         <td>
@@ -1182,14 +1427,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="[compared page] button text casing inconsistent: 1 element(s) are mixed (e.g. "shop all sunglass hu") but 4/7 use title case page content button ("shop all sunglass hut") text case">
-                        <td>35</td>
+                        <td>34</td>
                         <td><span class="atd-cat ">Text Case</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             Button ("Shop All Sunglass hut")
                             <span class="atd-section-label">Page Content</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Button text casing inconsistent: 1 element(s) are Mixed (e.g. "Shop All Sunglass hu") but 4/7 use Title Case</td>
+                        <td class="atd-desc">
+                            [Compared Page] Button text casing inconsistent: 1 element(s) are Mixed (e.g. "Shop All Sunglass hu") but 4/7 use Title Case
+                            
+                            <div class="atd-verify">How to verify: 1) Look at all buttons or links of the same type on the page. 2) Check if they all use the same text style — ALL CAPS, Title Case, or lowercase. 3) If most use Title Case but one uses lowercase (or vice versa), that's the inconsistency.</div>
+                            
+                            
+                            <div class="atd-fix">Standardize text casing: pick ALL CAPS, Title Case, or Sentence case and apply consistently across similar elements.</div>
+                            
+                        </td>
                         <td><code>Mixed (1 elements): "Shop All Sunglass hu"</code></td>
                         <td><code>Title Case (used by 4/7 Buttons)</code></td>
                         <td>
@@ -1203,14 +1456,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="[compared page] link text casing inconsistent: 1 element(s) are all caps (e.g. "sunglass hut") but 40/47 use title case top of page link ("sunglass hut") text case">
-                        <td>36</td>
+                        <td>35</td>
                         <td><span class="atd-cat ">Text Case</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             Link ("SUNGLASS HUT")
                             <span class="atd-section-label">Top of Page</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Link text casing inconsistent: 1 element(s) are ALL CAPS (e.g. "SUNGLASS HUT") but 40/47 use Title Case</td>
+                        <td class="atd-desc">
+                            [Compared Page] Link text casing inconsistent: 1 element(s) are ALL CAPS (e.g. "SUNGLASS HUT") but 40/47 use Title Case
+                            
+                            <div class="atd-verify">How to verify: 1) Look at all buttons or links of the same type on the page. 2) Check if they all use the same text style — ALL CAPS, Title Case, or lowercase. 3) If most use Title Case but one uses lowercase (or vice versa), that's the inconsistency.</div>
+                            
+                            
+                            <div class="atd-fix">Standardize text casing: pick ALL CAPS, Title Case, or Sentence case and apply consistently across similar elements.</div>
+                            
+                        </td>
                         <td><code>ALL CAPS (1 elements): "SUNGLASS HUT"</code></td>
                         <td><code>Title Case (used by 40/47 Links)</code></td>
                         <td>
@@ -1224,14 +1485,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="[compared page] link text casing inconsistent: 1 element(s) are lowercase (e.g. "support@sunglasshut.") but 40/47 use title case footer link ("support@sunglasshut.in") text case">
-                        <td>37</td>
+                        <td>36</td>
                         <td><span class="atd-cat ">Text Case</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             Link ("support@sunglasshut.in")
                             <span class="atd-section-label">Footer</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Link text casing inconsistent: 1 element(s) are lowercase (e.g. "support@sunglasshut.") but 40/47 use Title Case</td>
+                        <td class="atd-desc">
+                            [Compared Page] Link text casing inconsistent: 1 element(s) are lowercase (e.g. "support@sunglasshut.") but 40/47 use Title Case
+                            
+                            <div class="atd-verify">How to verify: 1) Look at all buttons or links of the same type on the page. 2) Check if they all use the same text style — ALL CAPS, Title Case, or lowercase. 3) If most use Title Case but one uses lowercase (or vice versa), that's the inconsistency.</div>
+                            
+                            
+                            <div class="atd-fix">Standardize text casing: pick ALL CAPS, Title Case, or Sentence case and apply consistently across similar elements.</div>
+                            
+                        </td>
                         <td><code>lowercase (1 elements): "support@sunglasshut."</code></td>
                         <td><code>Title Case (used by 40/47 Links)</code></td>
                         <td>
@@ -1245,14 +1514,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="[compared page] inconsistent color on button: 1 element(s) use rgb(255,255,255) while 4/7 others use rgb(14,14,14) page content button ("add to bag") color consistency">
-                        <td>38</td>
+                        <td>37</td>
                         <td><span class="atd-cat ">Color Consistency</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             Button ("Add to bag")
                             <span class="atd-section-label">Page Content</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Inconsistent color on Button: 1 element(s) use rgb(255,255,255) while 4/7 others use rgb(14,14,14)</td>
+                        <td class="atd-desc">
+                            [Compared Page] Inconsistent color on Button: 1 element(s) use rgb(255,255,255) while 4/7 others use rgb(14,14,14)
+                            
+                            <div class="atd-verify">How to verify: 1) Look at all elements of the same type (e.g., all buttons). 2) They should all be the same color. 3) Right-click each → Inspect → Computed tab → check color. 4) If one button is a different shade, that's the bug.</div>
+                            
+                            
+                            <div class="atd-fix">Use a single, consistent color value for all elements with the same semantic role.</div>
+                            
+                        </td>
                         <td><code>color: rgb(255,255,255) (1 elements)</code></td>
                         <td><code>color: rgb(14,14,14) (used by 4/7 Buttons)</code></td>
                         <td>
@@ -1266,14 +1543,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="[compared page] inconsistent font-weight on link: 1 element(s) use 400 while 8/9 use 600 at ~16px page content link ("shop all sunglass hut") font weight consistency">
-                        <td>39</td>
+                        <td>38</td>
                         <td><span class="atd-cat ">Font Weight Consistency</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             Link ("Shop All Sunglass hut")
                             <span class="atd-section-label">Page Content</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Inconsistent font-weight on Link: 1 element(s) use 400 while 8/9 use 600 at ~16px</td>
+                        <td class="atd-desc">
+                            [Compared Page] Inconsistent font-weight on Link: 1 element(s) use 400 while 8/9 use 600 at ~16px
+                            
+                            <div class="atd-verify">How to verify: 1) Right-click each element of the same type → Inspect → Computed tab → check font-weight. 2) All should show the same weight value (e.g., all 400 or all 700). 3) If one element has a different weight, that's the inconsistency.</div>
+                            
+                            
+                            <div class="atd-fix">Use consistent font-weight values for elements of the same type and size.</div>
+                            
+                        </td>
                         <td><code>font-weight: 400 (1 elements at ~16px)</code></td>
                         <td><code>font-weight: 600 (used by 8/9 similar Links)</code></td>
                         <td>
@@ -1287,14 +1572,20 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="[reference page] script failed to load (net::err_blocked_by_orb): https://cdn.mouseflow.com/projects/disabled.js network https://cdn.mouseflow.com/projects/disabled.js broken resources">
-                        <td>40</td>
+                        <td>39</td>
                         <td><span class="atd-cat cat-network">Broken Resources</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             https://cdn.mouseflow.com/projects/DISABLED.js
                             <span class="atd-section-label">Network</span>
                         </td>
-                        <td class="atd-desc">[Reference Page] Script failed to load (net::ERR_BLOCKED_BY_ORB): https://cdn.mouseflow.com/projects/DISABLED.js</td>
+                        <td class="atd-desc">
+                            [Reference Page] Script failed to load (net::ERR_BLOCKED_BY_ORB): https://cdn.mouseflow.com/projects/DISABLED.js
+                            
+                            
+                            <div class="atd-fix">Fix the broken script: ensure the JavaScript file URL is correct and deployed.</div>
+                            
+                        </td>
                         <td><code>net::ERR_BLOCKED_BY_ORB</code></td>
                         <td><code>https://cdn.mouseflow.com/projects/DISABLED.js</code></td>
                         <td>
@@ -1305,14 +1596,20 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="[reference page] script failed to load (net::err_connection_reset): https://wcdn.ril.com/cdn/menuconfig.js network https://wcdn.ril.com/cdn/menuconfig.js broken resources">
-                        <td>41</td>
+                        <td>40</td>
                         <td><span class="atd-cat cat-network">Broken Resources</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             https://wcdn.ril.com/cdn/menuconfig.js
                             <span class="atd-section-label">Network</span>
                         </td>
-                        <td class="atd-desc">[Reference Page] Script failed to load (net::ERR_CONNECTION_RESET): https://wcdn.ril.com/cdn/menuconfig.js</td>
+                        <td class="atd-desc">
+                            [Reference Page] Script failed to load (net::ERR_CONNECTION_RESET): https://wcdn.ril.com/cdn/menuconfig.js
+                            
+                            
+                            <div class="atd-fix">Fix the broken script: ensure the JavaScript file URL is correct and deployed.</div>
+                            
+                        </td>
                         <td><code>net::ERR_CONNECTION_RESET</code></td>
                         <td><code>https://wcdn.ril.com/cdn/menuconfig.js</code></td>
                         <td>
@@ -1323,14 +1620,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="[reference page] javascript error in browser console: failed to load resource: the server responded with a status of 401 () browser console console error console errors">
-                        <td>42</td>
+                        <td>41</td>
                         <td><span class="atd-cat cat-network">Console Errors</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             Console Error
                             <span class="atd-section-label">Browser Console</span>
                         </td>
-                        <td class="atd-desc">[Reference Page] JavaScript error in browser console: Failed to load resource: the server responded with a status of 401 ()</td>
+                        <td class="atd-desc">
+                            [Reference Page] JavaScript error in browser console: Failed to load resource: the server responded with a status of 401 ()
+                            
+                            <div class="atd-verify">How to verify: 1) Open DevTools → Console tab. 2) Look for red error messages. 3) These JavaScript errors can cause buttons not to work, content not to load, or other functional bugs.</div>
+                            
+                            
+                            <div class="atd-fix">Investigate the JavaScript console error and fix the underlying code issue.</div>
+                            
+                        </td>
                         <td><code>Failed to load resource: the server responded with a status of 401 ()</code></td>
                         <td><code></code></td>
                         <td>
@@ -1341,14 +1646,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-search="[reference page] text is hard to read: contrast ratio is 1.0:1 but needs at least 4.5:1. text color: rgb(255, 255, 255), background: rgba(0, 0, 0, 0) hero banner / top area span "add to bag" accessibility (contrast)">
-                        <td>43</td>
+                        <td>42</td>
                         <td><span class="atd-cat cat-accessibility">Accessibility (Contrast)</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
                             span "Add to bag"
                             <span class="atd-section-label">Hero Banner / Top Area</span>
                         </td>
-                        <td class="atd-desc">[Reference Page] Text is hard to read: contrast ratio is 1.0:1 but needs at least 4.5:1. Text color: rgb(255, 255, 255), Background: rgba(0, 0, 0, 0)</td>
+                        <td class="atd-desc">
+                            [Reference Page] Text is hard to read: contrast ratio is 1.0:1 but needs at least 4.5:1. Text color: rgb(255, 255, 255), Background: rgba(0, 0, 0, 0)
+                            
+                            <div class="atd-verify">How to verify: 1) Look at the flagged text — is it hard to read against its background? 2) Open DevTools → Inspect the element → in Styles panel, hover over the color value → Chrome shows the contrast ratio. 3) It should be at least 4.5:1 for normal text, 3:1 for large text.</div>
+                            
+                            
+                            <div class="atd-fix">Increase the color contrast ratio to meet WCAG AA (4.5:1 for text, 3:1 for large text).</div>
+                            
+                        </td>
                         <td><code>Ratio 1.0:1</code></td>
                         <td><code>Required 4.5:1 (WCAG AA)</code></td>
                         <td>
@@ -1362,14 +1675,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-search="[compared page] inconsistent font-family on link: 16 element(s) use inter while 31/48 others use roboto header link ("new arrivals") element consistency">
-                        <td>44 <span class="count-badge" style="font-size:10px;">&times;16</span></td>
+                        <td>43 <span class="count-badge" style="font-size:10px;">&times;16</span></td>
                         <td><span class="atd-cat ">Element Consistency</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
                         <td class="atd-element">
                             Link ("New Arrivals")
                             <span class="atd-section-label">Header</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Inconsistent font-family on Link: 16 element(s) use inter while 31/48 others use roboto</td>
+                        <td class="atd-desc">
+                            [Compared Page] Inconsistent font-family on Link: 16 element(s) use inter while 31/48 others use roboto
+                            
+                            <div class="atd-verify">How to verify: 1) Right-click on the flagged element → Inspect. 2) In DevTools Computed tab, check the flagged property (font-size, font-weight, or color). 3) Now right-click on another element of the same type (e.g., another button) → Inspect → compare the same property. 4) All elements of the same type should have identical values.</div>
+                            
+                            
+                            <div class="atd-fix">Standardize styling for all elements of the same type — use consistent font, size, weight, and color.</div>
+                            
+                        </td>
                         <td><code>font-family: inter (16 elements)</code></td>
                         <td><code>font-family: roboto (used by 31/48 Links)</code></td>
                         <td>
@@ -1383,14 +1704,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-search="[compared page] inconsistent color on link: 16 element(s) use rgb(14,14,14) while 30/48 others use rgb(85,85,85) header link ("new arrivals") element consistency">
-                        <td>45 <span class="count-badge" style="font-size:10px;">&times;16</span></td>
+                        <td>44 <span class="count-badge" style="font-size:10px;">&times;16</span></td>
                         <td><span class="atd-cat ">Element Consistency</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
                         <td class="atd-element">
                             Link ("New Arrivals")
                             <span class="atd-section-label">Header</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Inconsistent color on Link: 16 element(s) use rgb(14,14,14) while 30/48 others use rgb(85,85,85)</td>
+                        <td class="atd-desc">
+                            [Compared Page] Inconsistent color on Link: 16 element(s) use rgb(14,14,14) while 30/48 others use rgb(85,85,85)
+                            
+                            <div class="atd-verify">How to verify: 1) Right-click on the flagged element → Inspect. 2) In DevTools Computed tab, check the flagged property (font-size, font-weight, or color). 3) Now right-click on another element of the same type (e.g., another button) → Inspect → compare the same property. 4) All elements of the same type should have identical values.</div>
+                            
+                            
+                            <div class="atd-fix">Standardize styling for all elements of the same type — use consistent font, size, weight, and color.</div>
+                            
+                        </td>
                         <td><code>color: rgb(14,14,14) (16 elements)</code></td>
                         <td><code>color: rgb(85,85,85) (used by 30/48 Links)</code></td>
                         <td>
@@ -1404,14 +1733,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-search="[compared page] inconsistent color on link: 16 element(s) use rgb(14,14,14) while 30/48 others use rgb(85,85,85) header link ("new arrivals") color consistency">
-                        <td>46 <span class="count-badge" style="font-size:10px;">&times;16</span></td>
+                        <td>45 <span class="count-badge" style="font-size:10px;">&times;16</span></td>
                         <td><span class="atd-cat ">Color Consistency</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
                         <td class="atd-element">
                             Link ("New Arrivals")
                             <span class="atd-section-label">Header</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Inconsistent color on Link: 16 element(s) use rgb(14,14,14) while 30/48 others use rgb(85,85,85)</td>
+                        <td class="atd-desc">
+                            [Compared Page] Inconsistent color on Link: 16 element(s) use rgb(14,14,14) while 30/48 others use rgb(85,85,85)
+                            
+                            <div class="atd-verify">How to verify: 1) Look at all elements of the same type (e.g., all buttons). 2) They should all be the same color. 3) Right-click each → Inspect → Computed tab → check color. 4) If one button is a different shade, that's the bug.</div>
+                            
+                            
+                            <div class="atd-fix">Use a single, consistent color value for all elements with the same semantic role.</div>
+                            
+                        </td>
                         <td><code>color: rgb(14,14,14) (16 elements)</code></td>
                         <td><code>color: rgb(85,85,85) (used by 30/48 Links)</code></td>
                         <td>
@@ -1425,14 +1762,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-search="[compared page] inconsistent font-size on link: 12 element(s) use 14 while 27/48 others use 12 header link ("new arrivals") element consistency">
-                        <td>47 <span class="count-badge" style="font-size:10px;">&times;12</span></td>
+                        <td>46 <span class="count-badge" style="font-size:10px;">&times;12</span></td>
                         <td><span class="atd-cat ">Element Consistency</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
                         <td class="atd-element">
                             Link ("New Arrivals")
                             <span class="atd-section-label">Header</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Inconsistent font-size on Link: 12 element(s) use 14 while 27/48 others use 12</td>
+                        <td class="atd-desc">
+                            [Compared Page] Inconsistent font-size on Link: 12 element(s) use 14 while 27/48 others use 12
+                            
+                            <div class="atd-verify">How to verify: 1) Right-click on the flagged element → Inspect. 2) In DevTools Computed tab, check the flagged property (font-size, font-weight, or color). 3) Now right-click on another element of the same type (e.g., another button) → Inspect → compare the same property. 4) All elements of the same type should have identical values.</div>
+                            
+                            
+                            <div class="atd-fix">Standardize styling for all elements of the same type — use consistent font, size, weight, and color.</div>
+                            
+                        </td>
                         <td><code>font-size: 14 (12 elements)</code></td>
                         <td><code>font-size: 12 (used by 27/48 Links)</code></td>
                         <td>
@@ -1445,17 +1790,23 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                         </td>
                     </tr>
                     
-                    <tr class="atd-row sev-minor" data-sev="minor" data-search="[reference page] resource failed to load (net::err_aborted): https://www.google.com/ccm/collect?rcb=16&frm=0&ae=g&auid=662336319.178228900... network https://www.google.com/ccm/collect?rcb=16&frm=0... broken resources">
-                        <td>48 <span class="count-badge" style="font-size:10px;">&times;11</span></td>
+                    <tr class="atd-row sev-minor" data-sev="minor" data-search="[reference page] resource failed to load (net::err_aborted): https://www.google.com/ccm/collect?rcb=1&frm=0&ae=g&auid=375842429.1782292308... network https://www.google.com/ccm/collect?rcb=1&frm=0&... broken resources">
+                        <td>47 <span class="count-badge" style="font-size:10px;">&times;11</span></td>
                         <td><span class="atd-cat cat-network">Broken Resources</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
                         <td class="atd-element">
-                            https://www.google.com/ccm/collect?rcb=16&frm=0...
+                            https://www.google.com/ccm/collect?rcb=1&frm=0&...
                             <span class="atd-section-label">Network</span>
                         </td>
-                        <td class="atd-desc">[Reference Page] Resource failed to load (net::ERR_ABORTED): https://www.google.com/ccm/collect?rcb=16&frm=0&ae=g&auid=662336319.178228900...</td>
+                        <td class="atd-desc">
+                            [Reference Page] Resource failed to load (net::ERR_ABORTED): https://www.google.com/ccm/collect?rcb=1&frm=0&ae=g&auid=375842429.1782292308...
+                            
+                            
+                            <div class="atd-fix">Fix this broken resource: verify the URL is correct and the file exists on the server.</div>
+                            
+                        </td>
                         <td><code>net::ERR_ABORTED</code></td>
-                        <td><code>https://www.google.com/ccm/collect?rcb=16&frm=0&ae=g&auid=662336319.178228900...</code></td>
+                        <td><code>https://www.google.com/ccm/collect?rcb=1&frm=0&ae=g&auid=375842429.1782292308...</code></td>
                         <td>
                             
                             <div class="atd-no-visual">No visual</div>
@@ -1464,14 +1815,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-search="[compared page] inconsistent font-size on link: 9 element(s) use 16 while 27/48 others use 12 header link ("new arrivals") element consistency">
-                        <td>49 <span class="count-badge" style="font-size:10px;">&times;9</span></td>
+                        <td>48 <span class="count-badge" style="font-size:10px;">&times;9</span></td>
                         <td><span class="atd-cat ">Element Consistency</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
                         <td class="atd-element">
                             Link ("New Arrivals")
                             <span class="atd-section-label">Header</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Inconsistent font-size on Link: 9 element(s) use 16 while 27/48 others use 12</td>
+                        <td class="atd-desc">
+                            [Compared Page] Inconsistent font-size on Link: 9 element(s) use 16 while 27/48 others use 12
+                            
+                            <div class="atd-verify">How to verify: 1) Right-click on the flagged element → Inspect. 2) In DevTools Computed tab, check the flagged property (font-size, font-weight, or color). 3) Now right-click on another element of the same type (e.g., another button) → Inspect → compare the same property. 4) All elements of the same type should have identical values.</div>
+                            
+                            
+                            <div class="atd-fix">Standardize styling for all elements of the same type — use consistent font, size, weight, and color.</div>
+                            
+                        </td>
                         <td><code>font-size: 16 (9 elements)</code></td>
                         <td><code>font-size: 12 (used by 27/48 Links)</code></td>
                         <td>
@@ -1485,14 +1844,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-search="[compared page] inconsistent font-weight on link: 8 element(s) use 600 while 36/48 others use 400 header link ("new arrivals") element consistency">
-                        <td>50 <span class="count-badge" style="font-size:10px;">&times;8</span></td>
+                        <td>49 <span class="count-badge" style="font-size:10px;">&times;8</span></td>
                         <td><span class="atd-cat ">Element Consistency</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
                         <td class="atd-element">
                             Link ("New Arrivals")
                             <span class="atd-section-label">Header</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Inconsistent font-weight on Link: 8 element(s) use 600 while 36/48 others use 400</td>
+                        <td class="atd-desc">
+                            [Compared Page] Inconsistent font-weight on Link: 8 element(s) use 600 while 36/48 others use 400
+                            
+                            <div class="atd-verify">How to verify: 1) Right-click on the flagged element → Inspect. 2) In DevTools Computed tab, check the flagged property (font-size, font-weight, or color). 3) Now right-click on another element of the same type (e.g., another button) → Inspect → compare the same property. 4) All elements of the same type should have identical values.</div>
+                            
+                            
+                            <div class="atd-fix">Standardize styling for all elements of the same type — use consistent font, size, weight, and color.</div>
+                            
+                        </td>
                         <td><code>font-weight: 600 (8 elements)</code></td>
                         <td><code>font-weight: 400 (used by 36/48 Links)</code></td>
                         <td>
@@ -1506,14 +1873,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-search="[compared page] inconsistent font-weight on link: 4 element(s) use 500 while 36/48 others use 400 footer link ("quick links") element consistency">
-                        <td>51 <span class="count-badge" style="font-size:10px;">&times;4</span></td>
+                        <td>50 <span class="count-badge" style="font-size:10px;">&times;4</span></td>
                         <td><span class="atd-cat ">Element Consistency</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
                         <td class="atd-element">
                             Link ("Quick Links")
                             <span class="atd-section-label">Footer</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Inconsistent font-weight on Link: 4 element(s) use 500 while 36/48 others use 400</td>
+                        <td class="atd-desc">
+                            [Compared Page] Inconsistent font-weight on Link: 4 element(s) use 500 while 36/48 others use 400
+                            
+                            <div class="atd-verify">How to verify: 1) Right-click on the flagged element → Inspect. 2) In DevTools Computed tab, check the flagged property (font-size, font-weight, or color). 3) Now right-click on another element of the same type (e.g., another button) → Inspect → compare the same property. 4) All elements of the same type should have identical values.</div>
+                            
+                            
+                            <div class="atd-fix">Standardize styling for all elements of the same type — use consistent font, size, weight, and color.</div>
+                            
+                        </td>
                         <td><code>font-weight: 500 (4 elements)</code></td>
                         <td><code>font-weight: 400 (used by 36/48 Links)</code></td>
                         <td>
@@ -1527,14 +1902,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-search="[compared page] inconsistent font-weight on link: 4 element(s) use 500 while 8/12 use 400 at ~14px footer link ("quick links") font weight consistency">
-                        <td>52 <span class="count-badge" style="font-size:10px;">&times;4</span></td>
+                        <td>51 <span class="count-badge" style="font-size:10px;">&times;4</span></td>
                         <td><span class="atd-cat ">Font Weight Consistency</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
                         <td class="atd-element">
                             Link ("Quick Links")
                             <span class="atd-section-label">Footer</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Inconsistent font-weight on Link: 4 element(s) use 500 while 8/12 use 400 at ~14px</td>
+                        <td class="atd-desc">
+                            [Compared Page] Inconsistent font-weight on Link: 4 element(s) use 500 while 8/12 use 400 at ~14px
+                            
+                            <div class="atd-verify">How to verify: 1) Right-click each element of the same type → Inspect → Computed tab → check font-weight. 2) All should show the same weight value (e.g., all 400 or all 700). 3) If one element has a different weight, that's the inconsistency.</div>
+                            
+                            
+                            <div class="atd-fix">Use consistent font-weight values for elements of the same type and size.</div>
+                            
+                        </td>
                         <td><code>font-weight: 500 (4 elements at ~14px)</code></td>
                         <td><code>font-weight: 400 (used by 8/12 similar Links)</code></td>
                         <td>
@@ -1547,6 +1930,32 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                         </td>
                     </tr>
                     
+                    <tr class="atd-row sev-minor" data-sev="minor" data-search="[reference page] resource took 1.3s to load. this slows down the page: https://hdn-1.fynd.com/misc/pictures/free-icon/resize-w:360,h:275/ziebabtur-w... network https://hdn-1.fynd.com/misc/pictures/free-icon/res performance (slow resources)">
+                        <td>52 <span class="count-badge" style="font-size:10px;">&times;4</span></td>
+                        <td><span class="atd-cat cat-performance">Performance (Slow Resources)</span></td>
+                        <td><span class="sev-badge minor">minor</span></td>
+                        <td class="atd-element">
+                            https://hdn-1.fynd.com/misc/pictures/free-icon/res
+                            <span class="atd-section-label">Network</span>
+                        </td>
+                        <td class="atd-desc">
+                            [Reference Page] Resource took 1.3s to load. This slows down the page: https://hdn-1.fynd.com/misc/pictures/free-icon/resize-w:360,h:275/ZiEbabtUR-W...
+                            
+                            <div class="atd-verify">How to verify: 1) Open DevTools → Network tab → sort by Time column (descending). 2) Find the flagged resource — it takes over 1 second to load. 3) Check if the file can be compressed, cached, or loaded from a CDN.</div>
+                            
+                            
+                            <div class="atd-fix">Optimize this slow-loading resource: consider compression, CDN, or lazy loading.</div>
+                            
+                        </td>
+                        <td><code>1.3s load time</code></td>
+                        <td><code>https://hdn-1.fynd.com/misc/pictures/free-icon/resize-w:360,h:275/ZiEbabtUR-W...</code></td>
+                        <td>
+                            
+                            <div class="atd-no-visual">No visual</div>
+                            
+                        </td>
+                    </tr>
+                    
                     <tr class="atd-row sev-minor" data-sev="minor" data-search="[reference page] javascript warning in browser console: could not set dynamic cdn path browser console console warning console errors">
                         <td>53 <span class="count-badge" style="font-size:10px;">&times;3</span></td>
                         <td><span class="atd-cat cat-network">Console Errors</span></td>
@@ -1555,7 +1964,15 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                             Console Warning
                             <span class="atd-section-label">Browser Console</span>
                         </td>
-                        <td class="atd-desc">[Reference Page] JavaScript warning in browser console: Could not set dynamic CDN path</td>
+                        <td class="atd-desc">
+                            [Reference Page] JavaScript warning in browser console: Could not set dynamic CDN path
+                            
+                            <div class="atd-verify">How to verify: 1) Open DevTools → Console tab. 2) Look for red error messages. 3) These JavaScript errors can cause buttons not to work, content not to load, or other functional bugs.</div>
+                            
+                            
+                            <div class="atd-fix">Investigate the JavaScript console error and fix the underlying code issue.</div>
+                            
+                        </td>
                         <td><code>Could not set dynamic CDN path</code></td>
                         <td><code></code></td>
                         <td>
@@ -1565,33 +1982,23 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                         </td>
                     </tr>
                     
-                    <tr class="atd-row sev-minor" data-sev="minor" data-search="[reference page] resource took 1.0s to load. this slows down the page: https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyprod/wrkr/products/pictures/ite... network https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyprod performance (slow resources)">
-                        <td>54 <span class="count-badge" style="font-size:10px;">&times;3</span></td>
-                        <td><span class="atd-cat cat-performance">Performance (Slow Resources)</span></td>
-                        <td><span class="sev-badge minor">minor</span></td>
-                        <td class="atd-element">
-                            https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyprod
-                            <span class="atd-section-label">Network</span>
-                        </td>
-                        <td class="atd-desc">[Reference Page] Resource took 1.0s to load. This slows down the page: https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyprod/wrkr/products/pictures/ite...</td>
-                        <td><code>1.0s load time</code></td>
-                        <td><code>https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyprod/wrkr/products/pictures/ite...</code></td>
-                        <td>
-                            
-                            <div class="atd-no-visual">No visual</div>
-                            
-                        </td>
-                    </tr>
-                    
                     <tr class="atd-row sev-minor" data-sev="minor" data-search="[compared page] inconsistent font-weight on button: 2 element(s) use 500 while 2/4 use 400 at ~14px page content button ("check") font weight consistency">
-                        <td>55 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
+                        <td>54 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
                         <td><span class="atd-cat ">Font Weight Consistency</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
                         <td class="atd-element">
                             Button ("CHECK")
                             <span class="atd-section-label">Page Content</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Inconsistent font-weight on Button: 2 element(s) use 500 while 2/4 use 400 at ~14px</td>
+                        <td class="atd-desc">
+                            [Compared Page] Inconsistent font-weight on Button: 2 element(s) use 500 while 2/4 use 400 at ~14px
+                            
+                            <div class="atd-verify">How to verify: 1) Right-click each element of the same type → Inspect → Computed tab → check font-weight. 2) All should show the same weight value (e.g., all 400 or all 700). 3) If one element has a different weight, that's the inconsistency.</div>
+                            
+                            
+                            <div class="atd-fix">Use consistent font-weight values for elements of the same type and size.</div>
+                            
+                        </td>
                         <td><code>font-weight: 500 (2 elements at ~14px)</code></td>
                         <td><code>font-weight: 400 (used by 2/4 similar Buttons)</code></td>
                         <td>
@@ -1604,33 +2011,23 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                         </td>
                     </tr>
                     
-                    <tr class="atd-row sev-minor" data-sev="minor" data-search="[reference page] resource took 1.1s to load. this slows down the page: https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyprod/wrkr/organization/6513dff2... network https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyprod performance (slow resources)">
-                        <td>56 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
-                        <td><span class="atd-cat cat-performance">Performance (Slow Resources)</span></td>
-                        <td><span class="sev-badge minor">minor</span></td>
-                        <td class="atd-element">
-                            https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyprod
-                            <span class="atd-section-label">Network</span>
-                        </td>
-                        <td class="atd-desc">[Reference Page] Resource took 1.1s to load. This slows down the page: https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyprod/wrkr/organization/6513dff2...</td>
-                        <td><code>1.1s load time</code></td>
-                        <td><code>https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyprod/wrkr/organization/6513dff2...</code></td>
-                        <td>
-                            
-                            <div class="atd-no-visual">No visual</div>
-                            
-                        </td>
-                    </tr>
-                    
                     <tr class="atd-row sev-minor" data-sev="minor" data-search="[reference page] inconsistent font-size on link: 1 element(s) use 16 while 8/9 others use 14 hero banner / top area link ("burberry") element consistency">
-                        <td>57</td>
+                        <td>55</td>
                         <td><span class="atd-cat ">Element Consistency</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
                         <td class="atd-element">
                             Link ("BURBERRY")
                             <span class="atd-section-label">Hero Banner / Top Area</span>
                         </td>
-                        <td class="atd-desc">[Reference Page] Inconsistent font-size on Link: 1 element(s) use 16 while 8/9 others use 14</td>
+                        <td class="atd-desc">
+                            [Reference Page] Inconsistent font-size on Link: 1 element(s) use 16 while 8/9 others use 14
+                            
+                            <div class="atd-verify">How to verify: 1) Right-click on the flagged element → Inspect. 2) In DevTools Computed tab, check the flagged property (font-size, font-weight, or color). 3) Now right-click on another element of the same type (e.g., another button) → Inspect → compare the same property. 4) All elements of the same type should have identical values.</div>
+                            
+                            
+                            <div class="atd-fix">Standardize styling for all elements of the same type — use consistent font, size, weight, and color.</div>
+                            
+                        </td>
                         <td><code>font-size: 16 (1 elements)</code></td>
                         <td><code>font-size: 14 (used by 8/9 Links)</code></td>
                         <td>
@@ -1644,14 +2041,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-search="[compared page] no visual differentiation: <h4> has same size (14.0px) and weight (400) as nearby body text page content small heading ("select delivery location") typography hierarchy">
-                        <td>58</td>
+                        <td>56</td>
                         <td><span class="atd-cat ">Typography Hierarchy</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
                         <td class="atd-element">
                             Small Heading ("Select Delivery Location")
                             <span class="atd-section-label">Page Content</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] No visual differentiation: <h4> has same size (14.0px) and weight (400) as nearby body text</td>
+                        <td class="atd-desc">
+                            [Compared Page] No visual differentiation: <h4> has same size (14.0px) and weight (400) as nearby body text
+                            
+                            <div class="atd-verify">How to verify: 1) Visually scan the page — headings should look bigger and bolder than the text below them. 2) If body text looks the same size or bolder than a heading, that's the bug. 3) Right-click both → Inspect → compare font-size and font-weight in Computed tab.</div>
+                            
+                            
+                            <div class="atd-fix">Fix typography hierarchy: headings should be larger/bolder than body text, and h1 > h2 > h3 in size.</div>
+                            
+                        </td>
                         <td><code><h4> 14.0px/400</code></td>
                         <td><code>Heading should be visually distinct from body text</code></td>
                         <td>
@@ -1665,14 +2070,22 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     </tr>
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-search="[compared page] no visual differentiation: <h5> has same size (14.0px) and weight (400) as nearby body text header minor heading ("new arrivals") typography hierarchy">
-                        <td>59</td>
+                        <td>57</td>
                         <td><span class="atd-cat ">Typography Hierarchy</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
                         <td class="atd-element">
                             Minor Heading ("New Arrivals")
                             <span class="atd-section-label">Header</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] No visual differentiation: <h5> has same size (14.0px) and weight (400) as nearby body text</td>
+                        <td class="atd-desc">
+                            [Compared Page] No visual differentiation: <h5> has same size (14.0px) and weight (400) as nearby body text
+                            
+                            <div class="atd-verify">How to verify: 1) Visually scan the page — headings should look bigger and bolder than the text below them. 2) If body text looks the same size or bolder than a heading, that's the bug. 3) Right-click both → Inspect → compare font-size and font-weight in Computed tab.</div>
+                            
+                            
+                            <div class="atd-fix">Fix typography hierarchy: headings should be larger/bolder than body text, and h1 > h2 > h3 in size.</div>
+                            
+                        </td>
                         <td><code><h5> 14.0px/400</code></td>
                         <td><code>Heading should be visually distinct from body text</code></td>
                         <td>
@@ -1687,7 +2100,7 @@ oakley meta", "oakley meta", "order status", "our story", "perfect pair promise"
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-search="[compared page] 1 form label(s) use <div> instead of <label> tag page content content block ("select delivery location
 check") semantic html">
-                        <td>60</td>
+                        <td>58</td>
                         <td><span class="atd-cat ">Semantic HTML</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
                         <td class="atd-element">
@@ -1695,7 +2108,15 @@ check") semantic html">
 CHECK")
                             <span class="atd-section-label">Page Content</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] 1 form label(s) use <div> instead of <label> tag</td>
+                        <td class="atd-desc">
+                            [Compared Page] 1 form label(s) use <div> instead of <label> tag
+                            
+                            <div class="atd-verify">How to verify: 1) Right-click the element → Inspect. 2) Check the HTML tag in the Elements panel. 3) The page title should be <h1>, form labels should be <label>, etc. 4) If a <div> or <span> is styled like a heading, it should be changed to the correct heading tag.</div>
+                            
+                            
+                            <div class="atd-fix">Use the correct semantic HTML tag (e.g., <h1> for page titles, <label> for form labels).</div>
+                            
+                        </td>
                         <td><code>1 form label(s) use non-semantic tags</code></td>
                         <td><code><label> tag for accessibility</code></td>
                         <td>
@@ -1709,14 +2130,22 @@ CHECK")
                     </tr>
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-search="[compared page] inconsistent font-family on link: 1 element(s) use montserrat while 31/48 others use roboto page content link ("shop all sunglass hut") element consistency">
-                        <td>61</td>
+                        <td>59</td>
                         <td><span class="atd-cat ">Element Consistency</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
                         <td class="atd-element">
                             Link ("Shop All Sunglass hut")
                             <span class="atd-section-label">Page Content</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] Inconsistent font-family on Link: 1 element(s) use montserrat while 31/48 others use roboto</td>
+                        <td class="atd-desc">
+                            [Compared Page] Inconsistent font-family on Link: 1 element(s) use montserrat while 31/48 others use roboto
+                            
+                            <div class="atd-verify">How to verify: 1) Right-click on the flagged element → Inspect. 2) In DevTools Computed tab, check the flagged property (font-size, font-weight, or color). 3) Now right-click on another element of the same type (e.g., another button) → Inspect → compare the same property. 4) All elements of the same type should have identical values.</div>
+                            
+                            
+                            <div class="atd-fix">Standardize styling for all elements of the same type — use consistent font, size, weight, and color.</div>
+                            
+                        </td>
                         <td><code>font-family: montserrat (1 elements)</code></td>
                         <td><code>font-family: roboto (used by 31/48 Links)</code></td>
                         <td>
@@ -1730,14 +2159,20 @@ CHECK")
                     </tr>
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-search="[reference page] resource failed to load (http 401): https://sunglasshut.in/api/service/application/user/authentication/v1.0/session network https://sunglasshut.in/api/service/application/... broken resources">
-                        <td>62</td>
+                        <td>60</td>
                         <td><span class="atd-cat cat-network">Broken Resources</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
                         <td class="atd-element">
                             https://sunglasshut.in/api/service/application/...
                             <span class="atd-section-label">Network</span>
                         </td>
-                        <td class="atd-desc">[Reference Page] Resource failed to load (HTTP 401): https://sunglasshut.in/api/service/application/user/authentication/v1.0/session</td>
+                        <td class="atd-desc">
+                            [Reference Page] Resource failed to load (HTTP 401): https://sunglasshut.in/api/service/application/user/authentication/v1.0/session
+                            
+                            
+                            <div class="atd-fix">Fix this broken resource: verify the URL is correct and the file exists on the server.</div>
+                            
+                        </td>
                         <td><code>HTTP 401</code></td>
                         <td><code>https://sunglasshut.in/api/service/application/user/authentication/v1.0/session</code></td>
                         <td>
@@ -1748,14 +2183,20 @@ CHECK")
                     </tr>
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-search="[reference page] resource failed to load (http 404): https://sunglasshut.in/ext/recalpha/api/application/v1.0/recommend/brand?item... network https://sunglasshut.in/ext/recalpha/api/applica... broken resources">
-                        <td>63</td>
+                        <td>61</td>
                         <td><span class="atd-cat cat-network">Broken Resources</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
                         <td class="atd-element">
                             https://sunglasshut.in/ext/recalpha/api/applica...
                             <span class="atd-section-label">Network</span>
                         </td>
-                        <td class="atd-desc">[Reference Page] Resource failed to load (HTTP 404): https://sunglasshut.in/ext/recalpha/api/application/v1.0/recommend/brand?item...</td>
+                        <td class="atd-desc">
+                            [Reference Page] Resource failed to load (HTTP 404): https://sunglasshut.in/ext/recalpha/api/application/v1.0/recommend/brand?item...
+                            
+                            
+                            <div class="atd-fix">Fix this broken resource: verify the URL is correct and the file exists on the server.</div>
+                            
+                        </td>
                         <td><code>HTTP 404</code></td>
                         <td><code>https://sunglasshut.in/ext/recalpha/api/application/v1.0/recommend/brand?item...</code></td>
                         <td>
@@ -1766,14 +2207,20 @@ CHECK")
                     </tr>
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-search="[reference page] resource failed to load (http 400): https://api.fynd.com/service/application/logistics/v1.0/ network https://api.fynd.com/service/application/logist... broken resources">
-                        <td>64</td>
+                        <td>62</td>
                         <td><span class="atd-cat cat-network">Broken Resources</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
                         <td class="atd-element">
                             https://api.fynd.com/service/application/logist...
                             <span class="atd-section-label">Network</span>
                         </td>
-                        <td class="atd-desc">[Reference Page] Resource failed to load (HTTP 400): https://api.fynd.com/service/application/logistics/v1.0/</td>
+                        <td class="atd-desc">
+                            [Reference Page] Resource failed to load (HTTP 400): https://api.fynd.com/service/application/logistics/v1.0/
+                            
+                            
+                            <div class="atd-fix">Fix this broken resource: verify the URL is correct and the file exists on the server.</div>
+                            
+                        </td>
                         <td><code>HTTP 400</code></td>
                         <td><code>https://api.fynd.com/service/application/logistics/v1.0/</code></td>
                         <td>
@@ -1784,14 +2231,22 @@ CHECK")
                     </tr>
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-search="[reference page] javascript warning in browser console: failed to execute 'postmessage' on 'domwindow': the target origin provided ('https://platform.fynd.com') does not match the recipient window's origin  browser console console warning console errors">
-                        <td>65</td>
+                        <td>63</td>
                         <td><span class="atd-cat cat-network">Console Errors</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
                         <td class="atd-element">
                             Console Warning
                             <span class="atd-section-label">Browser Console</span>
                         </td>
-                        <td class="atd-desc">[Reference Page] JavaScript warning in browser console: Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://platform.fynd.com') does not match the recipient window's origin </td>
+                        <td class="atd-desc">
+                            [Reference Page] JavaScript warning in browser console: Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://platform.fynd.com') does not match the recipient window's origin 
+                            
+                            <div class="atd-verify">How to verify: 1) Open DevTools → Console tab. 2) Look for red error messages. 3) These JavaScript errors can cause buttons not to work, content not to load, or other functional bugs.</div>
+                            
+                            
+                            <div class="atd-fix">Investigate the JavaScript console error and fix the underlying code issue.</div>
+                            
+                        </td>
                         <td><code>Failed to execute 'postMessage' on 'DOMWindow': The target origin provided ('https://platform.fynd.com') does not match the recipient window's origin ('https://sunglasshut.in').</code></td>
                         <td><code></code></td>
                         <td>
@@ -1801,33 +2256,23 @@ CHECK")
                         </td>
                     </tr>
                     
-                    <tr class="atd-row sev-minor" data-sev="minor" data-search="[reference page] javascript warning in browser console: hotjar not launching due to suspicious useragent: mozilla/5.0 (macintosh; intel mac os x 10_15_7) applewebkit/537.36 (khtml, like gecko) headlesschrom browser console console warning console errors">
-                        <td>66</td>
-                        <td><span class="atd-cat cat-network">Console Errors</span></td>
-                        <td><span class="sev-badge minor">minor</span></td>
-                        <td class="atd-element">
-                            Console Warning
-                            <span class="atd-section-label">Browser Console</span>
-                        </td>
-                        <td class="atd-desc">[Reference Page] JavaScript warning in browser console: Hotjar not launching due to suspicious userAgent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrom</td>
-                        <td><code>Hotjar not launching due to suspicious userAgent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/145.0.7632.6 Safari/537.36</code></td>
-                        <td><code></code></td>
-                        <td>
-                            
-                            <div class="atd-no-visual">No visual</div>
-                            
-                        </td>
-                    </tr>
-                    
                     <tr class="atd-row sev-minor" data-sev="minor" data-search="[compared page] javascript warning in browser console: the resource https://sunglasshutlife.fynd.io/cdn/public/proddist/styles.1e194bdbe719e98a99bd.css was preloaded using link preload but not used within  browser console console warning console errors">
-                        <td>67</td>
+                        <td>64</td>
                         <td><span class="atd-cat cat-network">Console Errors</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
                         <td class="atd-element">
                             Console Warning
                             <span class="atd-section-label">Browser Console</span>
                         </td>
-                        <td class="atd-desc">[Compared Page] JavaScript warning in browser console: The resource https://sunglasshutlife.fynd.io/cdn/public/proddist/styles.1e194bdbe719e98a99bd.css was preloaded using link preload but not used within </td>
+                        <td class="atd-desc">
+                            [Compared Page] JavaScript warning in browser console: The resource https://sunglasshutlife.fynd.io/cdn/public/proddist/styles.1e194bdbe719e98a99bd.css was preloaded using link preload but not used within 
+                            
+                            <div class="atd-verify">How to verify: 1) Open DevTools → Console tab. 2) Look for red error messages. 3) These JavaScript errors can cause buttons not to work, content not to load, or other functional bugs.</div>
+                            
+                            
+                            <div class="atd-fix">Investigate the JavaScript console error and fix the underlying code issue.</div>
+                            
+                        </td>
                         <td><code>The resource https://sunglasshutlife.fynd.io/cdn/public/proddist/styles.1e194bdbe719e98a99bd.css was preloaded using link preload but not used within a few seconds from the window's load event. Please</code></td>
                         <td><code></code></td>
                         <td>
@@ -1838,16 +2283,48 @@ CHECK")
                     </tr>
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-search="[reference page] text contrast could be improved: 5.2:1 (wcag aaa needs 7.0:1) hero banner / top area p "price inclusive of all taxes" accessibility (contrast)">
-                        <td>68</td>
+                        <td>65</td>
                         <td><span class="atd-cat cat-accessibility">Accessibility (Contrast)</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
                         <td class="atd-element">
                             p "Price inclusive of all taxes"
                             <span class="atd-section-label">Hero Banner / Top Area</span>
                         </td>
-                        <td class="atd-desc">[Reference Page] Text contrast could be improved: 5.2:1 (WCAG AAA needs 7.0:1)</td>
+                        <td class="atd-desc">
+                            [Reference Page] Text contrast could be improved: 5.2:1 (WCAG AAA needs 7.0:1)
+                            
+                            
+                            <div class="atd-fix">Increase the color contrast ratio to meet WCAG AAA (7:1 for text, 4.5:1 for large text).</div>
+                            
+                        </td>
                         <td><code>Ratio 5.2:1</code></td>
                         <td><code>Required 7.0:1 (WCAG AAA)</code></td>
+                        <td>
+                            
+                            <div class="atd-no-visual">No visual</div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr class="atd-row sev-minor" data-sev="minor" data-search="[reference page] resource took 1.0s to load. this slows down the page: https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyprod/wrkr/organization/6513dff2... network https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyprod performance (slow resources)">
+                        <td>66</td>
+                        <td><span class="atd-cat cat-performance">Performance (Slow Resources)</span></td>
+                        <td><span class="sev-badge minor">minor</span></td>
+                        <td class="atd-element">
+                            https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyprod
+                            <span class="atd-section-label">Network</span>
+                        </td>
+                        <td class="atd-desc">
+                            [Reference Page] Resource took 1.0s to load. This slows down the page: https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyprod/wrkr/organization/6513dff2...
+                            
+                            <div class="atd-verify">How to verify: 1) Open DevTools → Network tab → sort by Time column (descending). 2) Find the flagged resource — it takes over 1 second to load. 3) Check if the file can be compressed, cached, or loaded from a CDN.</div>
+                            
+                            
+                            <div class="atd-fix">Optimize this slow-loading resource: consider compression, CDN, or lazy loading.</div>
+                            
+                        </td>
+                        <td><code>1.0s load time</code></td>
+                        <td><code>https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyprod/wrkr/organization/6513dff2...</code></td>
                         <td>
                             
                             <div class="atd-no-visual">No visual</div>

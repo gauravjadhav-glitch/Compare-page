@@ -180,7 +180,8 @@
     .atd-visual-label { font-size: 8px; font-weight: 700; margin-bottom: 2px; letter-spacing: 0.5px; }
     .atd-visual-pair { display: flex; gap: 4px; align-items: flex-start; justify-content: center; }
     .atd-no-visual { color: var(--gray); font-size: 10px; background: var(--light); padding: 6px 8px; border-radius: 4px; text-align: center; white-space: nowrap; }
-    .atd-fix { font-size: 11px; color: #166534; background: #F0FDF4; padding: 4px 8px; border-radius: 4px; margin-top: 6px; display: block; }
+    .atd-verify { font-size: 11px; color: #1E40AF; background: #EFF6FF; border: 1px solid #BFDBFE; padding: 8px 10px; border-radius: 6px; margin-top: 8px; line-height: 1.6; }
+    .atd-fix { font-size: 11px; color: #166534; background: #F0FDF4; border: 1px solid #BBF7D0; padding: 6px 10px; border-radius: 6px; margin-top: 6px; line-height: 1.5; }
 
     @media print {
         .toolbar, .tabs, .lightbox { display: none !important; }
@@ -286,7 +287,15 @@
                             {{ diff.element_name[:50] }}
                             <span class="atd-section-label">{{ diff.section_name }}</span>
                         </td>
-                        <td class="atd-desc">{{ diff.human_description }}</td>
+                        <td class="atd-desc">
+                            {{ diff.human_description }}
+                            {% if diff.verification %}
+                            <div class="atd-verify">{{ diff.verification }}</div>
+                            {% endif %}
+                            {% if diff.suggested_fix %}
+                            <div class="atd-fix">{{ diff.suggested_fix }}</div>
+                            {% endif %}
+                        </td>
                         <td><code>{{ diff.value1 }}</code></td>
                         <td><code>{{ diff.value2 }}</code></td>
                         <td>
