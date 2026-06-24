@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visual Bug Report — ALL SECTIONS Section</title>
+<style>
+    :root {
+        --critical: #DC2626;
+        --critical-bg: #FEF2F2;
+        --critical-border: #FECACA;
+        --major: #EA580C;
+        --major-bg: #FFF7ED;
+        --major-border: #FED7AA;
+        --minor: #2563EB;
+        --minor-bg: #EFF6FF;
+        --minor-border: #BFDBFE;
+        --green: #16A34A;
+        --dark: #111827;
+        --gray: #6B7280;
+        --light: #F3F4F6;
+        --white: #FFFFFF;
+        --border: #E5E7EB;
+        --shadow: 0 2px 8px rgba(0,0,0,0.06);
+        --shadow-lg: 0 8px 24px rgba(0,0,0,0.1);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #F9FAFB; color: var(--dark); line-height: 1.6; }
+
+    /* HEADER */
+    .report-header { background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%); color: white; padding: 36px 40px; }
+    .report-header h1 { font-size: 26px; font-weight: 700; margin-bottom: 4px; }
+    .report-header .subtitle { font-size: 14px; opacity: 0.6; margin-bottom: 18px; }
+    .url-row { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 10px; }
+    .url-badge { background: rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 16px; font-size: 13px; flex: 1; min-width: 250px; }
+    .url-badge .lbl { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.5; margin-bottom: 2px; }
+    .url-badge .val { color: #60A5FA; word-break: break-all; }
+    .report-meta { font-size: 11px; opacity: 0.4; }
+
+    .container { max-width: 1440px; margin: 0 auto; padding: 28px 24px; }
+
+    /* EXECUTIVE SUMMARY */
+    .exec-summary { background: var(--white); border-radius: 14px; padding: 28px; margin-bottom: 28px; box-shadow: var(--shadow); }
+    .exec-summary h2 { font-size: 20px; margin-bottom: 20px; border-left: 4px solid var(--dark); padding-left: 12px; }
+    .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 24px; }
+    .stat { border-radius: 10px; padding: 18px; text-align: center; }
+    .stat.match { background: linear-gradient(135deg, #F0FDF4, #DCFCE7); border: 1px solid #BBF7D0; }
+    .stat.total { background: var(--light); border: 1px solid var(--border); }
+    .stat.crit { background: var(--critical-bg); border: 1px solid var(--critical-border); }
+    .stat.maj { background: var(--major-bg); border: 1px solid var(--major-border); }
+    .stat.min { background: var(--minor-bg); border: 1px solid var(--minor-border); }
+    .stat .num { font-size: 36px; font-weight: 800; line-height: 1.1; }
+    .stat.match .num { color: var(--green); }
+    .stat.crit .num { color: var(--critical); }
+    .stat.maj .num { color: var(--major); }
+    .stat.min .num { color: var(--minor); }
+    .stat .lbl { font-size: 11px; color: var(--gray); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+
+    .cat-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+    .cat-row:last-child { border-bottom: none; }
+    .cat-name { width: 200px; font-weight: 600; }
+    .pill { padding: 2px 9px; border-radius: 10px; font-size: 11px; font-weight: 700; }
+    .pill.c { background: var(--critical-bg); color: var(--critical); }
+    .pill.m { background: var(--major-bg); color: var(--major); }
+    .pill.n { background: var(--minor-bg); color: var(--minor); }
+
+    /* TABS */
+    .tabs { display: flex; gap: 6px; margin-bottom: 24px; flex-wrap: wrap; }
+    .tab { padding: 10px 22px; background: var(--white); border: 2px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.15s; }
+    .tab:hover { border-color: var(--dark); }
+    .tab.active { background: var(--dark); color: white; border-color: var(--dark); }
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* SCREENSHOTS */
+    .vis-section { background: var(--white); border-radius: 14px; padding: 28px; margin-bottom: 24px; box-shadow: var(--shadow); }
+    .vis-section h2 { font-size: 18px; margin-bottom: 16px; }
+    .ss-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+    .ss-box { border: 2px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .ss-label { padding: 8px 14px; background: var(--light); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray); text-align: center; }
+    .ss-box img { width: 100%; display: block; cursor: pointer; }
+    .heatmap { margin-top: 16px; }
+    .heatmap h3 { font-size: 15px; margin-bottom: 8px; }
+    .heatmap img { width: 100%; border: 2px solid var(--border); border-radius: 10px; cursor: pointer; }
+
+    /* BUG TOOLBAR */
+    .bug-section { background: var(--white); border-radius: 14px; padding: 28px; margin-bottom: 24px; box-shadow: var(--shadow); }
+    .bug-section h2 { font-size: 18px; margin-bottom: 16px; }
+    .toolbar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+    .toolbar input { padding: 7px 12px; border: 1px solid var(--border); border-radius: 7px; font-size: 13px; width: 200px; }
+    .toolbar select { padding: 7px 12px; border: 1px solid var(--border); border-radius: 7px; font-size: 13px; background: white; }
+    .toolbar .nav-btns { display: flex; gap: 6px; margin-left: auto; }
+    .toolbar .nav-btns button { padding: 7px 14px; border: 1px solid var(--border); border-radius: 7px; background: white; cursor: pointer; font-size: 12px; font-weight: 600; }
+    .toolbar .nav-btns button:hover { background: var(--dark); color: white; }
+
+    /* GRID CARDS */
+    .bug-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .bug-card {
+        border: 2px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.2s;
+        cursor: pointer;
+        background: var(--white);
+    }
+    .bug-card:hover { border-color: #9CA3AF; box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+    .bug-card.active { border-color: var(--dark); box-shadow: 0 0 0 3px rgba(17,24,39,0.12); }
+    .bug-card.sev-critical { border-top: 4px solid var(--critical); }
+    .bug-card.sev-major { border-top: 4px solid var(--major); }
+    .bug-card.sev-minor { border-top: 4px solid var(--minor); }
+
+    .card-top { padding: 14px 16px 10px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .card-id { font-size: 13px; font-weight: 800; color: var(--gray); }
+    .count-badge { background: #7C3AED; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 800; }
+    .sev-badge { padding: 3px 10px; border-radius: 16px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: white; }
+    .sev-badge.critical { background: var(--critical); }
+    .sev-badge.major { background: var(--major); }
+    .sev-badge.minor { background: var(--minor); }
+
+    .card-images { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 12px 10px; gap: 6px; }
+    .card-img-box { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; background: var(--light); min-height: 80px; display: flex; align-items: center; justify-content: center; }
+    .card-img-box img { width: 100%; display: block; }
+    .card-img-box .img-label { font-size: 9px; font-weight: 700; text-transform: uppercase; text-align: center; padding: 4px; color: var(--gray); }
+    .card-vs { font-size: 12px; font-weight: 800; color: #D1D5DB; }
+    .card-img-box.before { border-color: var(--critical-border); }
+    .card-img-box.after { border-color: var(--minor-border); }
+
+    .card-body { padding: 0 16px 12px; }
+    .card-desc { font-size: 13px; font-weight: 500; color: var(--dark); line-height: 1.4; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .card-section { font-size: 11px; color: var(--gray); display: flex; align-items: center; gap: 4px; }
+    .card-section .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); }
+    .card-cat { font-size: 10px; color: var(--gray); background: var(--light); padding: 2px 7px; border-radius: 4px; margin-left: 6px; }
+
+    /* EXPANDED DETAILS */
+    .card-details { display: none; border-top: 1px solid var(--border); padding: 14px 16px; background: #FAFBFC; }
+    .bug-card.expanded .card-details { display: block; }
+    .det-row { margin-bottom: 12px; }
+    .det-label { font-size: 10px; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .det-text { font-size: 13px; color: var(--dark); }
+    .det-nav { font-size: 13px; color: #4F46E5; background: #EEF2FF; padding: 8px 12px; border-radius: 6px; }
+    .det-fix { background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 6px; padding: 10px 12px; font-size: 13px; color: #166534; }
+    .det-fix strong { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+    .det-full-imgs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+    .det-full-imgs .fi-box { border: 2px solid var(--border); border-radius: 8px; overflow: hidden; }
+    .det-full-imgs .fi-box.before { border-color: var(--critical); }
+    .det-full-imgs .fi-box.after { border-color: var(--minor); }
+    .det-full-imgs .fi-label { padding: 6px 10px; font-size: 10px; font-weight: 700; text-transform: uppercase; text-align: center; }
+    .det-full-imgs .fi-box.before .fi-label { background: var(--critical-bg); color: var(--critical); }
+    .det-full-imgs .fi-box.after .fi-label { background: var(--minor-bg); color: var(--minor); }
+    .det-full-imgs .fi-box img { width: 100%; display: block; cursor: pointer; }
+
+    .no-bugs { text-align: center; padding: 40px; color: var(--green); font-size: 18px; font-weight: 600; }
+
+    /* LIGHTBOX */
+    .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 9999; justify-content: center; align-items: center; cursor: zoom-out; }
+    .lightbox.active { display: flex; }
+    .lightbox img { max-width: 95%; max-height: 95%; object-fit: contain; border-radius: 6px; }
+
+    .report-footer { text-align: center; padding: 36px; color: var(--gray); font-size: 12px; }
+
+    /* ATD TABLE */
+    .atd-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; }
+    .atd-table th { background: var(--dark); color: white; padding: 10px 14px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; position: sticky; top: 0; }
+    .atd-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .atd-table tr:hover { background: var(--light); }
+    .atd-table code { background: #F3F4F6; padding: 2px 6px; border-radius: 4px; font-size: 12px; word-break: break-word; }
+    .atd-cat { background: #EDE9FE; color: #7C3AED; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; white-space: nowrap; display: inline-block; }
+    .atd-row.sev-critical td:first-child { border-left: 3px solid var(--critical); }
+    .atd-row.sev-major td:first-child { border-left: 3px solid var(--major); }
+    .atd-row.sev-minor td:first-child { border-left: 3px solid var(--minor); }
+    .atd-row .atd-desc { max-width: 400px; }
+    .atd-row .atd-element { max-width: 180px; font-size: 12px; color: var(--gray); }
+    .atd-section-label { font-size: 11px; color: var(--gray); display: block; margin-top: 4px; }
+    .atd-crop-thumb { max-width: 120px; max-height: 80px; border: 1px solid var(--border); border-radius: 4px; cursor: pointer; margin-top: 6px; }
+    .atd-fix { font-size: 11px; color: #166534; background: #F0FDF4; padding: 4px 8px; border-radius: 4px; margin-top: 6px; display: block; }
+
+    @media print {
+        .toolbar, .tabs, .lightbox { display: none !important; }
+        .card-details { display: block !important; }
+        .bug-card { break-inside: avoid; }
+        .bug-grid { grid-template-columns: 1fr; }
+        body { background: white; }
+    }
+    @media (max-width: 900px) {
+        .bug-grid, .ss-grid, .det-full-imgs { grid-template-columns: 1fr; }
+        .stats-row { grid-template-columns: 1fr 1fr; }
+        .container { padding: 14px; }
+    }
+</style>
+</head>
+<body>
+
+<div class="report-header">
+    <h1>Visual Bug Report — ALL SECTIONS Section</h1>
+    <div class="subtitle">Automated page comparison with highlighted differences</div>
+    <div class="url-row">
+        <div class="url-badge"><div class="lbl">Reference Page (Page 1)</div><div class="val">https://www.toryburch.com/en-us/our-impact/</div></div>
+        <div class="url-badge"><div class="lbl">Compared Page (Page 2)</div><div class="val">https://toryburchhive.fynd.io/sections/ourimpact-philosophy</div></div>
+    </div>
+    <div class="report-meta">Report generated: 2026-06-23 12:53:08</div>
+</div>
+
+<div class="container">
+
+    <!-- EXECUTIVE SUMMARY -->
+    <div class="exec-summary">
+        <h2>Executive Summary</h2>
+        <div class="stats-row">
+            
+            
+            <div class="stat match">
+                <div class="num">80.21%</div>
+                <div class="lbl">Desktop</div>
+            </div>
+            
+            
+            
+            <div class="stat match">
+                <div class="num">23.83%</div>
+                <div class="lbl">Tablet</div>
+            </div>
+            
+            
+            
+            <div class="stat match">
+                <div class="num">68.91%</div>
+                <div class="lbl">Mobile</div>
+            </div>
+            
+            
+            
+            
+            <div class="stat total"><div class="num">20</div><div class="lbl">Total Bugs</div></div>
+            <div class="stat crit"><div class="num">20</div><div class="lbl">Critical</div></div>
+            <div class="stat maj"><div class="num">0</div><div class="lbl">Major</div></div>
+            <div class="stat min"><div class="num">0</div><div class="lbl">Minor</div></div>
+        </div>
+        
+        <div style="margin-top:8px;">
+            
+            <div class="cat-row">
+                <div class="cat-name">Content</div>
+                <span class="pill c">14 Critical</span>
+                <span class="pill m">28 Major</span>
+                <span class="pill n">10 Minor</span>
+            </div>
+            
+            <div class="cat-row">
+                <div class="cat-name">Layout & Spacing, Typography (Fonts & Text Style)</div>
+                <span class="pill c">30 Critical</span>
+                <span class="pill m">1 Major</span>
+                
+            </div>
+            
+            <div class="cat-row">
+                <div class="cat-name">Content, Layout & Spacing, Typography (Fonts & Text Style)</div>
+                <span class="pill c">6 Critical</span>
+                
+                
+            </div>
+            
+            <div class="cat-row">
+                <div class="cat-name">Images</div>
+                <span class="pill c">3 Critical</span>
+                
+                
+            </div>
+            
+            <div class="cat-row">
+                <div class="cat-name">Typography (Fonts & Text Style)</div>
+                
+                <span class="pill m">7 Major</span>
+                
+            </div>
+            
+            <div class="cat-row">
+                <div class="cat-name">Style Mismatch (Live vs UAT)</div>
+                <span class="pill c">4 Critical</span>
+                <span class="pill m">8 Major</span>
+                
+            </div>
+            
+            <div class="cat-row">
+                <div class="cat-name">Font Mismatch (Live vs UAT)</div>
+                <span class="pill c">8 Critical</span>
+                <span class="pill m">15 Major</span>
+                
+            </div>
+            
+            <div class="cat-row">
+                <div class="cat-name">Missing Elements (Live vs UAT)</div>
+                <span class="pill c">3 Critical</span>
+                
+                
+            </div>
+            
+            <div class="cat-row">
+                <div class="cat-name">Content Visibility (Live vs UAT)</div>
+                <span class="pill c">2 Critical</span>
+                
+                
+            </div>
+            
+            <div class="cat-row">
+                <div class="cat-name">Design System</div>
+                
+                <span class="pill m">10 Major</span>
+                <span class="pill n">2 Minor</span>
+            </div>
+            
+            <div class="cat-row">
+                <div class="cat-name">Extra Elements (Live vs UAT)</div>
+                
+                <span class="pill m">2 Major</span>
+                
+            </div>
+            
+            <div class="cat-row">
+                <div class="cat-name">Text Formatting (Live vs UAT)</div>
+                
+                <span class="pill m">1 Major</span>
+                
+            </div>
+            
+            <div class="cat-row">
+                <div class="cat-name">Text Case</div>
+                
+                <span class="pill m">11 Major</span>
+                
+            </div>
+            
+            <div class="cat-row">
+                <div class="cat-name">Font Weight Consistency</div>
+                
+                <span class="pill m">9 Major</span>
+                <span class="pill n">2 Minor</span>
+            </div>
+            
+            <div class="cat-row">
+                <div class="cat-name">Element Consistency</div>
+                
+                <span class="pill m">29 Major</span>
+                <span class="pill n">18 Minor</span>
+            </div>
+            
+            <div class="cat-row">
+                <div class="cat-name">Color Consistency</div>
+                
+                <span class="pill m">8 Major</span>
+                <span class="pill n">4 Minor</span>
+            </div>
+            
+            <div class="cat-row">
+                <div class="cat-name">Semantic HTML</div>
+                
+                <span class="pill m">1 Major</span>
+                <span class="pill n">1 Minor</span>
+            </div>
+            
+            <div class="cat-row">
+                <div class="cat-name">Typography Hierarchy</div>
+                
+                
+                <span class="pill n">3 Minor</span>
+            </div>
+            
+        </div>
+        
+    </div>
+
+    <!-- TABS -->
+    
+    <div class="tabs">
+        
+        <div class="tab active" onclick="switchTab('0', this)">Desktop</div>
+        
+        <div class="tab " onclick="switchTab('1', this)">Tablet</div>
+        
+        <div class="tab " onclick="switchTab('2', this)">Mobile</div>
+        
+        <div class="tab " onclick="switchTab('3', this)">ATD Consistency</div>
+        
+    </div>
+    
+
+    
+    <div class="panel active" id="panel-0">
+
+        
+        <!-- VISUAL COMPARISON -->
+        
+
+        <!-- BUG GRID -->
+        <div class="bug-section">
+            <h2>Bugs Found — Desktop
+                <span style="font-size:13px;color:var(--gray);font-weight:400;margin-left:6px;">(5)</span>
+            </h2>
+
+            
+            <div class="toolbar">
+                <input type="text" placeholder="Search bugs..." oninput="search('0',this.value)">
+                <select onchange="filter('0');" id="fsev-0">
+                    <option value="all">All Severities</option>
+                    <option value="critical">Critical</option>
+                    <option value="major">Major</option>
+                    <option value="minor">Minor</option>
+                </select>
+                <div class="nav-btns">
+                    <button onclick="nav('0',-1)">Prev</button>
+                    <button onclick="nav('0',1)">Next</button>
+                </div>
+            </div>
+
+            <div class="bug-grid" id="grid-0">
+                
+                <div class="bug-card sev-critical"
+                     data-sev="critical"
+                     data-search="6 button items are missing on page 2 header button (6 items)"
+                     onclick="toggle(this)">
+
+                    <div class="card-top">
+                        <span class="card-id">BUG #001</span>
+                        <span class="count-badge">&times;6</span>
+                        <span style="flex:1"></span>
+                        <span class="sev-badge critical">critical</span>
+                    </div>
+
+                    <div class="card-images">
+                        
+                        <div class="card-img-box before"><div class="img-label">N/A</div></div>
+                        
+                        <span class="card-vs">VS</span>
+                        
+                        <div class="card-img-box after"><div class="img-label">N/A</div></div>
+                        
+                    </div>
+
+                    <div class="card-body">
+                        <div class="card-desc">6 Button items are missing on Page 2</div>
+                        <div class="card-section">
+                            <span class="dot"></span> Header &middot; Button (6 items)
+                            <span class="card-cat">Content</span>
+                        </div>
+                    </div>
+
+                    <div class="card-details" onclick="event.stopPropagation()">
+                        <div class="det-row">
+                            <div class="det-label">What's the Issue?</div>
+                            <div class="det-text">6 Button items are missing on Page 2</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">Where on the Page?</div>
+                            <div class="det-text"><strong>Header</strong> &rarr; Button (6 items)</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">How to Find It</div>
+                            <div class="det-nav">Open https://www.toryburch.com/en-us/our-impact/ → Look at the very top of the page → Find the Button</div>
+                        </div>
+                        
+                        <div class="det-row">
+                            <div class="det-label">What Changed?</div>
+                            <div class="det-text">Page 1: <strong>Present</strong> &rarr; Page 2: <strong>MISSING</strong></div>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+                
+                <div class="bug-card sev-critical"
+                     data-sev="critical"
+                     data-search="6 text elements have display differences top banner / header area text (6 items)"
+                     onclick="toggle(this)">
+
+                    <div class="card-top">
+                        <span class="card-id">BUG #002</span>
+                        <span class="count-badge">&times;6</span>
+                        <span style="flex:1"></span>
+                        <span class="sev-badge critical">critical</span>
+                    </div>
+
+                    <div class="card-images">
+                        
+                        <div class="card-img-box before"><div class="img-label">N/A</div></div>
+                        
+                        <span class="card-vs">VS</span>
+                        
+                        <div class="card-img-box after"><div class="img-label">N/A</div></div>
+                        
+                    </div>
+
+                    <div class="card-body">
+                        <div class="card-desc">6 Text elements have display differences</div>
+                        <div class="card-section">
+                            <span class="dot"></span> Top Banner / Header Area &middot; Text (6 items)
+                            <span class="card-cat">Layout & Spacing, Typography (Fonts & Text Style)</span>
+                        </div>
+                    </div>
+
+                    <div class="card-details" onclick="event.stopPropagation()">
+                        <div class="det-row">
+                            <div class="det-label">What's the Issue?</div>
+                            <div class="det-text">6 Text elements have display differences</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">Where on the Page?</div>
+                            <div class="det-text"><strong>Top Banner / Header Area</strong> &rarr; Text (6 items)</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">How to Find It</div>
+                            <div class="det-nav">Open https://www.toryburch.com/en-us/our-impact/ → Look at the very top of the page → Find the Text ("OUR IMPACT")</div>
+                        </div>
+                        
+                        <div class="det-row">
+                            <div class="det-label">What Changed?</div>
+                            <div class="det-text">Page 1: <strong>inline</strong> &rarr; Page 2: <strong>block</strong></div>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+                
+                <div class="bug-card sev-critical"
+                     data-sev="critical"
+                     data-search="5 content block elements have shifted position header content block (5 items)"
+                     onclick="toggle(this)">
+
+                    <div class="card-top">
+                        <span class="card-id">BUG #003</span>
+                        <span class="count-badge">&times;5</span>
+                        <span style="flex:1"></span>
+                        <span class="sev-badge critical">critical</span>
+                    </div>
+
+                    <div class="card-images">
+                        
+                        <div class="card-img-box before"><div class="img-label">N/A</div></div>
+                        
+                        <span class="card-vs">VS</span>
+                        
+                        <div class="card-img-box after"><div class="img-label">N/A</div></div>
+                        
+                    </div>
+
+                    <div class="card-body">
+                        <div class="card-desc">5 Content Block elements have shifted position</div>
+                        <div class="card-section">
+                            <span class="dot"></span> Header &middot; Content Block (5 items)
+                            <span class="card-cat">Layout & Spacing, Typography (Fonts & Text Style)</span>
+                        </div>
+                    </div>
+
+                    <div class="card-details" onclick="event.stopPropagation()">
+                        <div class="det-row">
+                            <div class="det-label">What's the Issue?</div>
+                            <div class="det-text">5 Content Block elements have shifted position</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">Where on the Page?</div>
+                            <div class="det-text"><strong>Header</strong> &rarr; Content Block (5 items)</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">How to Find It</div>
+                            <div class="det-nav">Open https://www.toryburch.com/en-us/our-impact/ → Look at the very top of the page → Find the Content Block ("Search")</div>
+                        </div>
+                        
+                        <div class="det-row">
+                            <div class="det-label">What Changed?</div>
+                            <div class="det-text">Page 1: <strong>x=1568, y=55</strong> &rarr; Page 2: <strong>x=960, y=2</strong></div>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+                
+                <div class="bug-card sev-critical"
+                     data-sev="critical"
+                     data-search="4 content block elements have display differences header content block (4 items)"
+                     onclick="toggle(this)">
+
+                    <div class="card-top">
+                        <span class="card-id">BUG #004</span>
+                        <span class="count-badge">&times;4</span>
+                        <span style="flex:1"></span>
+                        <span class="sev-badge critical">critical</span>
+                    </div>
+
+                    <div class="card-images">
+                        
+                        <div class="card-img-box before"><div class="img-label">N/A</div></div>
+                        
+                        <span class="card-vs">VS</span>
+                        
+                        <div class="card-img-box after"><div class="img-label">N/A</div></div>
+                        
+                    </div>
+
+                    <div class="card-body">
+                        <div class="card-desc">4 Content Block elements have display differences</div>
+                        <div class="card-section">
+                            <span class="dot"></span> Header &middot; Content Block (4 items)
+                            <span class="card-cat">Layout & Spacing, Typography (Fonts & Text Style)</span>
+                        </div>
+                    </div>
+
+                    <div class="card-details" onclick="event.stopPropagation()">
+                        <div class="det-row">
+                            <div class="det-label">What's the Issue?</div>
+                            <div class="det-text">4 Content Block elements have display differences</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">Where on the Page?</div>
+                            <div class="det-text"><strong>Header</strong> &rarr; Content Block (4 items)</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">How to Find It</div>
+                            <div class="det-nav">Open https://www.toryburch.com/en-us/our-impact/ → Look at the very top of the page → Find the Content Block ("Search")</div>
+                        </div>
+                        
+                        <div class="det-row">
+                            <div class="det-label">What Changed?</div>
+                            <div class="det-text">Page 1: <strong>flex</strong> &rarr; Page 2: <strong>block</strong></div>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+                
+                <div class="bug-card sev-critical"
+                     data-sev="critical"
+                     data-search="4 link elements have display differences top banner / header area link (4 items)"
+                     onclick="toggle(this)">
+
+                    <div class="card-top">
+                        <span class="card-id">BUG #005</span>
+                        <span class="count-badge">&times;4</span>
+                        <span style="flex:1"></span>
+                        <span class="sev-badge critical">critical</span>
+                    </div>
+
+                    <div class="card-images">
+                        
+                        <div class="card-img-box before"><div class="img-label">N/A</div></div>
+                        
+                        <span class="card-vs">VS</span>
+                        
+                        <div class="card-img-box after"><div class="img-label">N/A</div></div>
+                        
+                    </div>
+
+                    <div class="card-body">
+                        <div class="card-desc">4 Link elements have display differences</div>
+                        <div class="card-section">
+                            <span class="dot"></span> Top Banner / Header Area &middot; Link (4 items)
+                            <span class="card-cat">Content, Layout & Spacing, Typography (Fonts & Text Style)</span>
+                        </div>
+                    </div>
+
+                    <div class="card-details" onclick="event.stopPropagation()">
+                        <div class="det-row">
+                            <div class="det-label">What's the Issue?</div>
+                            <div class="det-text">4 Link elements have display differences</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">Where on the Page?</div>
+                            <div class="det-text"><strong>Top Banner / Header Area</strong> &rarr; Link (4 items)</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">How to Find It</div>
+                            <div class="det-nav">Open https://www.toryburch.com/en-us/our-impact/ → Look at the very top of the page → Find the Link ("OUR IMPACT")</div>
+                        </div>
+                        
+                        <div class="det-row">
+                            <div class="det-label">What Changed?</div>
+                            <div class="det-text">Page 1: <strong>block</strong> &rarr; Page 2: <strong>flex</strong></div>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+        
+    </div>
+    
+    <div class="panel " id="panel-1">
+
+        
+        <!-- VISUAL COMPARISON -->
+        
+
+        <!-- BUG GRID -->
+        <div class="bug-section">
+            <h2>Bugs Found — Tablet
+                <span style="font-size:13px;color:var(--gray);font-weight:400;margin-left:6px;">(5)</span>
+            </h2>
+
+            
+            <div class="toolbar">
+                <input type="text" placeholder="Search bugs..." oninput="search('1',this.value)">
+                <select onchange="filter('1');" id="fsev-1">
+                    <option value="all">All Severities</option>
+                    <option value="critical">Critical</option>
+                    <option value="major">Major</option>
+                    <option value="minor">Minor</option>
+                </select>
+                <div class="nav-btns">
+                    <button onclick="nav('1',-1)">Prev</button>
+                    <button onclick="nav('1',1)">Next</button>
+                </div>
+            </div>
+
+            <div class="bug-grid" id="grid-1">
+                
+                <div class="bug-card sev-critical"
+                     data-sev="critical"
+                     data-search="16 list item elements have shifted position footer list item (16 items)"
+                     onclick="toggle(this)">
+
+                    <div class="card-top">
+                        <span class="card-id">BUG #001</span>
+                        <span class="count-badge">&times;16</span>
+                        <span style="flex:1"></span>
+                        <span class="sev-badge critical">critical</span>
+                    </div>
+
+                    <div class="card-images">
+                        
+                        <div class="card-img-box before"><div class="img-label">N/A</div></div>
+                        
+                        <span class="card-vs">VS</span>
+                        
+                        <div class="card-img-box after"><div class="img-label">N/A</div></div>
+                        
+                    </div>
+
+                    <div class="card-body">
+                        <div class="card-desc">16 List Item elements have shifted position</div>
+                        <div class="card-section">
+                            <span class="dot"></span> Footer &middot; List Item (16 items)
+                            <span class="card-cat">Layout & Spacing, Typography (Fonts & Text Style)</span>
+                        </div>
+                    </div>
+
+                    <div class="card-details" onclick="event.stopPropagation()">
+                        <div class="det-row">
+                            <div class="det-label">What's the Issue?</div>
+                            <div class="det-text">16 List Item elements have shifted position</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">Where on the Page?</div>
+                            <div class="det-text"><strong>Footer</strong> &rarr; List Item (16 items)</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">How to Find It</div>
+                            <div class="det-nav">Open https://www.toryburch.com/en-us/our-impact/ → Scroll all the way down to the bottom of the page → Find the List Item ("Contact Us")</div>
+                        </div>
+                        
+                        <div class="det-row">
+                            <div class="det-label">What Changed?</div>
+                            <div class="det-text">Page 1: <strong>x=92, y=122</strong> &rarr; Page 2: <strong>x=29, y=81</strong></div>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+                
+                <div class="bug-card sev-critical"
+                     data-sev="critical"
+                     data-search="6 button items are missing on page 2 header button (6 items)"
+                     onclick="toggle(this)">
+
+                    <div class="card-top">
+                        <span class="card-id">BUG #002</span>
+                        <span class="count-badge">&times;6</span>
+                        <span style="flex:1"></span>
+                        <span class="sev-badge critical">critical</span>
+                    </div>
+
+                    <div class="card-images">
+                        
+                        <div class="card-img-box before"><div class="img-label">N/A</div></div>
+                        
+                        <span class="card-vs">VS</span>
+                        
+                        <div class="card-img-box after"><div class="img-label">N/A</div></div>
+                        
+                    </div>
+
+                    <div class="card-body">
+                        <div class="card-desc">6 Button items are missing on Page 2</div>
+                        <div class="card-section">
+                            <span class="dot"></span> Header &middot; Button (6 items)
+                            <span class="card-cat">Content</span>
+                        </div>
+                    </div>
+
+                    <div class="card-details" onclick="event.stopPropagation()">
+                        <div class="det-row">
+                            <div class="det-label">What's the Issue?</div>
+                            <div class="det-text">6 Button items are missing on Page 2</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">Where on the Page?</div>
+                            <div class="det-text"><strong>Header</strong> &rarr; Button (6 items)</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">How to Find It</div>
+                            <div class="det-nav">Open https://www.toryburch.com/en-us/our-impact/ → Look at the very top of the page → Find the Button</div>
+                        </div>
+                        
+                        <div class="det-row">
+                            <div class="det-label">What Changed?</div>
+                            <div class="det-text">Page 1: <strong>Present</strong> &rarr; Page 2: <strong>MISSING</strong></div>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+                
+                <div class="bug-card sev-critical"
+                     data-sev="critical"
+                     data-search="5 text elements have display differences top banner / header area text (5 items)"
+                     onclick="toggle(this)">
+
+                    <div class="card-top">
+                        <span class="card-id">BUG #003</span>
+                        <span class="count-badge">&times;5</span>
+                        <span style="flex:1"></span>
+                        <span class="sev-badge critical">critical</span>
+                    </div>
+
+                    <div class="card-images">
+                        
+                        <div class="card-img-box before"><div class="img-label">N/A</div></div>
+                        
+                        <span class="card-vs">VS</span>
+                        
+                        <div class="card-img-box after"><div class="img-label">N/A</div></div>
+                        
+                    </div>
+
+                    <div class="card-body">
+                        <div class="card-desc">5 Text elements have display differences</div>
+                        <div class="card-section">
+                            <span class="dot"></span> Top Banner / Header Area &middot; Text (5 items)
+                            <span class="card-cat">Layout & Spacing, Typography (Fonts & Text Style)</span>
+                        </div>
+                    </div>
+
+                    <div class="card-details" onclick="event.stopPropagation()">
+                        <div class="det-row">
+                            <div class="det-label">What's the Issue?</div>
+                            <div class="det-text">5 Text elements have display differences</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">Where on the Page?</div>
+                            <div class="det-text"><strong>Top Banner / Header Area</strong> &rarr; Text (5 items)</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">How to Find It</div>
+                            <div class="det-nav">Open https://www.toryburch.com/en-us/our-impact/ → Look at the very top of the page → Find the Text ("PURPOSE")</div>
+                        </div>
+                        
+                        <div class="det-row">
+                            <div class="det-label">What Changed?</div>
+                            <div class="det-text">Page 1: <strong>inline</strong> &rarr; Page 2: <strong>block</strong></div>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+                
+                <div class="bug-card sev-critical"
+                     data-sev="critical"
+                     data-search="5 content block elements have shifted position top banner / header area content block (5 items)"
+                     onclick="toggle(this)">
+
+                    <div class="card-top">
+                        <span class="card-id">BUG #004</span>
+                        <span class="count-badge">&times;5</span>
+                        <span style="flex:1"></span>
+                        <span class="sev-badge critical">critical</span>
+                    </div>
+
+                    <div class="card-images">
+                        
+                        <div class="card-img-box before"><div class="img-label">N/A</div></div>
+                        
+                        <span class="card-vs">VS</span>
+                        
+                        <div class="card-img-box after"><div class="img-label">N/A</div></div>
+                        
+                    </div>
+
+                    <div class="card-body">
+                        <div class="card-desc">5 Content Block elements have shifted position</div>
+                        <div class="card-section">
+                            <span class="dot"></span> Top Banner / Header Area &middot; Content Block (5 items)
+                            <span class="card-cat">Layout & Spacing, Typography (Fonts & Text Style)</span>
+                        </div>
+                    </div>
+
+                    <div class="card-details" onclick="event.stopPropagation()">
+                        <div class="det-row">
+                            <div class="det-label">What's the Issue?</div>
+                            <div class="det-text">5 Content Block elements have shifted position</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">Where on the Page?</div>
+                            <div class="det-text"><strong>Top Banner / Header Area</strong> &rarr; Content Block (5 items)</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">How to Find It</div>
+                            <div class="det-nav">Open https://www.toryburch.com/en-us/our-impact/ → Look at the very top of the page → Find the Content Block ("OUR IMPACT")</div>
+                        </div>
+                        
+                        <div class="det-row">
+                            <div class="det-label">What Changed?</div>
+                            <div class="det-text">Page 1: <strong>x=-1, y=36</strong> &rarr; Page 2: <strong>x=0, y=0</strong></div>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+                
+                <div class="bug-card sev-critical"
+                     data-sev="critical"
+                     data-search="3 link elements have display differences top banner / header area link (3 items)"
+                     onclick="toggle(this)">
+
+                    <div class="card-top">
+                        <span class="card-id">BUG #005</span>
+                        <span class="count-badge">&times;3</span>
+                        <span style="flex:1"></span>
+                        <span class="sev-badge critical">critical</span>
+                    </div>
+
+                    <div class="card-images">
+                        
+                        <div class="card-img-box before"><div class="img-label">N/A</div></div>
+                        
+                        <span class="card-vs">VS</span>
+                        
+                        <div class="card-img-box after"><div class="img-label">N/A</div></div>
+                        
+                    </div>
+
+                    <div class="card-body">
+                        <div class="card-desc">3 Link elements have display differences</div>
+                        <div class="card-section">
+                            <span class="dot"></span> Top Banner / Header Area &middot; Link (3 items)
+                            <span class="card-cat">Content, Layout & Spacing, Typography (Fonts & Text Style)</span>
+                        </div>
+                    </div>
+
+                    <div class="card-details" onclick="event.stopPropagation()">
+                        <div class="det-row">
+                            <div class="det-label">What's the Issue?</div>
+                            <div class="det-text">3 Link elements have display differences</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">Where on the Page?</div>
+                            <div class="det-text"><strong>Top Banner / Header Area</strong> &rarr; Link (3 items)</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">How to Find It</div>
+                            <div class="det-nav">Open https://www.toryburch.com/en-us/our-impact/ → Look at the very top of the page → Find the Link ("OUR PHILOSOPHY")</div>
+                        </div>
+                        
+                        <div class="det-row">
+                            <div class="det-label">What Changed?</div>
+                            <div class="det-text">Page 1: <strong>block</strong> &rarr; Page 2: <strong>flex</strong></div>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+        
+    </div>
+    
+    <div class="panel " id="panel-2">
+
+        
+        <!-- VISUAL COMPARISON -->
+        
+
+        <!-- BUG GRID -->
+        <div class="bug-section">
+            <h2>Bugs Found — Mobile
+                <span style="font-size:13px;color:var(--gray);font-weight:400;margin-left:6px;">(5)</span>
+            </h2>
+
+            
+            <div class="toolbar">
+                <input type="text" placeholder="Search bugs..." oninput="search('2',this.value)">
+                <select onchange="filter('2');" id="fsev-2">
+                    <option value="all">All Severities</option>
+                    <option value="critical">Critical</option>
+                    <option value="major">Major</option>
+                    <option value="minor">Minor</option>
+                </select>
+                <div class="nav-btns">
+                    <button onclick="nav('2',-1)">Prev</button>
+                    <button onclick="nav('2',1)">Next</button>
+                </div>
+            </div>
+
+            <div class="bug-grid" id="grid-2">
+                
+                <div class="bug-card sev-critical"
+                     data-sev="critical"
+                     data-search="9 list item elements have shifted position footer list item (9 items)"
+                     onclick="toggle(this)">
+
+                    <div class="card-top">
+                        <span class="card-id">BUG #001</span>
+                        <span class="count-badge">&times;9</span>
+                        <span style="flex:1"></span>
+                        <span class="sev-badge critical">critical</span>
+                    </div>
+
+                    <div class="card-images">
+                        
+                        <div class="card-img-box before"><div class="img-label">N/A</div></div>
+                        
+                        <span class="card-vs">VS</span>
+                        
+                        <div class="card-img-box after"><div class="img-label">N/A</div></div>
+                        
+                    </div>
+
+                    <div class="card-body">
+                        <div class="card-desc">9 List Item elements have shifted position</div>
+                        <div class="card-section">
+                            <span class="dot"></span> Footer &middot; List Item (9 items)
+                            <span class="card-cat">Layout & Spacing, Typography (Fonts & Text Style)</span>
+                        </div>
+                    </div>
+
+                    <div class="card-details" onclick="event.stopPropagation()">
+                        <div class="det-row">
+                            <div class="det-label">What's the Issue?</div>
+                            <div class="det-text">9 List Item elements have shifted position</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">Where on the Page?</div>
+                            <div class="det-text"><strong>Footer</strong> &rarr; List Item (9 items)</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">How to Find It</div>
+                            <div class="det-nav">Open https://www.toryburch.com/en-us/our-impact/ → Scroll all the way down to the bottom of the page → Find the List Item ("About Us")</div>
+                        </div>
+                        
+                        <div class="det-row">
+                            <div class="det-label">What Changed?</div>
+                            <div class="det-text">Page 1: <strong>x=20, y=132</strong> &rarr; Page 2: <strong>x=20, y=193</strong></div>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+                
+                <div class="bug-card sev-critical"
+                     data-sev="critical"
+                     data-search="6 button items are missing on page 2 header button (6 items)"
+                     onclick="toggle(this)">
+
+                    <div class="card-top">
+                        <span class="card-id">BUG #002</span>
+                        <span class="count-badge">&times;6</span>
+                        <span style="flex:1"></span>
+                        <span class="sev-badge critical">critical</span>
+                    </div>
+
+                    <div class="card-images">
+                        
+                        <div class="card-img-box before"><div class="img-label">N/A</div></div>
+                        
+                        <span class="card-vs">VS</span>
+                        
+                        <div class="card-img-box after"><div class="img-label">N/A</div></div>
+                        
+                    </div>
+
+                    <div class="card-body">
+                        <div class="card-desc">6 Button items are missing on Page 2</div>
+                        <div class="card-section">
+                            <span class="dot"></span> Header &middot; Button (6 items)
+                            <span class="card-cat">Content</span>
+                        </div>
+                    </div>
+
+                    <div class="card-details" onclick="event.stopPropagation()">
+                        <div class="det-row">
+                            <div class="det-label">What's the Issue?</div>
+                            <div class="det-text">6 Button items are missing on Page 2</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">Where on the Page?</div>
+                            <div class="det-text"><strong>Header</strong> &rarr; Button (6 items)</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">How to Find It</div>
+                            <div class="det-nav">Open https://www.toryburch.com/en-us/our-impact/ → Look at the very top of the page → Find the Button</div>
+                        </div>
+                        
+                        <div class="det-row">
+                            <div class="det-label">What Changed?</div>
+                            <div class="det-text">Page 1: <strong>Present</strong> &rarr; Page 2: <strong>MISSING</strong></div>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+                
+                <div class="bug-card sev-critical"
+                     data-sev="critical"
+                     data-search="5 text elements have display differences top banner / header area text (5 items)"
+                     onclick="toggle(this)">
+
+                    <div class="card-top">
+                        <span class="card-id">BUG #003</span>
+                        <span class="count-badge">&times;5</span>
+                        <span style="flex:1"></span>
+                        <span class="sev-badge critical">critical</span>
+                    </div>
+
+                    <div class="card-images">
+                        
+                        <div class="card-img-box before"><div class="img-label">N/A</div></div>
+                        
+                        <span class="card-vs">VS</span>
+                        
+                        <div class="card-img-box after"><div class="img-label">N/A</div></div>
+                        
+                    </div>
+
+                    <div class="card-body">
+                        <div class="card-desc">5 Text elements have display differences</div>
+                        <div class="card-section">
+                            <span class="dot"></span> Top Banner / Header Area &middot; Text (5 items)
+                            <span class="card-cat">Layout & Spacing, Typography (Fonts & Text Style)</span>
+                        </div>
+                    </div>
+
+                    <div class="card-details" onclick="event.stopPropagation()">
+                        <div class="det-row">
+                            <div class="det-label">What's the Issue?</div>
+                            <div class="det-text">5 Text elements have display differences</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">Where on the Page?</div>
+                            <div class="det-text"><strong>Top Banner / Header Area</strong> &rarr; Text (5 items)</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">How to Find It</div>
+                            <div class="det-nav">Open https://www.toryburch.com/en-us/our-impact/ → Look at the very top of the page → Find the Text ("PURPOSE")</div>
+                        </div>
+                        
+                        <div class="det-row">
+                            <div class="det-label">What Changed?</div>
+                            <div class="det-text">Page 1: <strong>inline</strong> &rarr; Page 2: <strong>block</strong></div>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+                
+                <div class="bug-card sev-critical"
+                     data-sev="critical"
+                     data-search="5 content block elements have shifted position top banner / header area content block (5 items)"
+                     onclick="toggle(this)">
+
+                    <div class="card-top">
+                        <span class="card-id">BUG #004</span>
+                        <span class="count-badge">&times;5</span>
+                        <span style="flex:1"></span>
+                        <span class="sev-badge critical">critical</span>
+                    </div>
+
+                    <div class="card-images">
+                        
+                        <div class="card-img-box before"><div class="img-label">N/A</div></div>
+                        
+                        <span class="card-vs">VS</span>
+                        
+                        <div class="card-img-box after"><div class="img-label">N/A</div></div>
+                        
+                    </div>
+
+                    <div class="card-body">
+                        <div class="card-desc">5 Content Block elements have shifted position</div>
+                        <div class="card-section">
+                            <span class="dot"></span> Top Banner / Header Area &middot; Content Block (5 items)
+                            <span class="card-cat">Layout & Spacing, Typography (Fonts & Text Style)</span>
+                        </div>
+                    </div>
+
+                    <div class="card-details" onclick="event.stopPropagation()">
+                        <div class="det-row">
+                            <div class="det-label">What's the Issue?</div>
+                            <div class="det-text">5 Content Block elements have shifted position</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">Where on the Page?</div>
+                            <div class="det-text"><strong>Top Banner / Header Area</strong> &rarr; Content Block (5 items)</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">How to Find It</div>
+                            <div class="det-nav">Open https://www.toryburch.com/en-us/our-impact/ → Look at the very top of the page → Find the Content Block ("OUR IMPACT")</div>
+                        </div>
+                        
+                        <div class="det-row">
+                            <div class="det-label">What Changed?</div>
+                            <div class="det-text">Page 1: <strong>x=-1, y=36</strong> &rarr; Page 2: <strong>x=0, y=0</strong></div>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+                
+                <div class="bug-card sev-critical"
+                     data-sev="critical"
+                     data-search="3 link elements have display differences top banner / header area link (3 items)"
+                     onclick="toggle(this)">
+
+                    <div class="card-top">
+                        <span class="card-id">BUG #005</span>
+                        <span class="count-badge">&times;3</span>
+                        <span style="flex:1"></span>
+                        <span class="sev-badge critical">critical</span>
+                    </div>
+
+                    <div class="card-images">
+                        
+                        <div class="card-img-box before"><div class="img-label">N/A</div></div>
+                        
+                        <span class="card-vs">VS</span>
+                        
+                        <div class="card-img-box after"><div class="img-label">N/A</div></div>
+                        
+                    </div>
+
+                    <div class="card-body">
+                        <div class="card-desc">3 Link elements have display differences</div>
+                        <div class="card-section">
+                            <span class="dot"></span> Top Banner / Header Area &middot; Link (3 items)
+                            <span class="card-cat">Content, Layout & Spacing, Typography (Fonts & Text Style)</span>
+                        </div>
+                    </div>
+
+                    <div class="card-details" onclick="event.stopPropagation()">
+                        <div class="det-row">
+                            <div class="det-label">What's the Issue?</div>
+                            <div class="det-text">3 Link elements have display differences</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">Where on the Page?</div>
+                            <div class="det-text"><strong>Top Banner / Header Area</strong> &rarr; Link (3 items)</div>
+                        </div>
+                        <div class="det-row">
+                            <div class="det-label">How to Find It</div>
+                            <div class="det-nav">Open https://www.toryburch.com/en-us/our-impact/ → Look at the very top of the page → Find the Link ("OUR PHILOSOPHY")</div>
+                        </div>
+                        
+                        <div class="det-row">
+                            <div class="det-label">What Changed?</div>
+                            <div class="det-text">Page 1: <strong>block</strong> &rarr; Page 2: <strong>flex</strong></div>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+        
+    </div>
+    
+    <div class="panel " id="panel-3">
+
+        
+        <!-- ATD CONSISTENCY TABLE -->
+        <div class="bug-section">
+            <h2>ATD Consistency Report — ATD Consistency
+                <span style="font-size:13px;color:var(--gray);font-weight:400;margin-left:6px;">(5 issues)</span>
+            </h2>
+
+            
+            <div class="toolbar">
+                <input type="text" placeholder="Search ATD bugs..." oninput="searchATD('3',this.value)">
+                <select onchange="filterATD('3');" id="atd-fsev-3">
+                    <option value="all">All Severities</option>
+                    <option value="critical">Critical</option>
+                    <option value="major">Major</option>
+                    <option value="minor">Minor</option>
+                </select>
+            </div>
+
+            <div style="overflow-x:auto;">
+            <table class="atd-table" id="atd-table-3">
+                <thead>
+                    <tr>
+                        <th style="width:40px">#</th>
+                        <th style="width:160px">Bug Type</th>
+                        <th style="width:80px">Severity</th>
+                        <th style="width:160px">Section / Element</th>
+                        <th>Issue Description</th>
+                        <th style="width:200px">Current Value (UAT)</th>
+                        <th style="width:200px">Expected Value (Live)</th>
+                        <th style="width:100px">Visual</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr class="atd-row sev-critical" data-sev="critical" data-search="style mismatch on <a>: font-weight is 500 on uat but 700 on live. 7 element(s) affected (e.g. "our philosophy", "partners", "purpose") top of page link ("our philosophy") style mismatch (live vs uat)">
+                        <td>1 <span class="count-badge" style="font-size:10px;">&times;40</span></td>
+                        <td><span class="atd-cat">Style Mismatch (Live vs UAT)</span></td>
+                        <td><span class="sev-badge critical">critical</span></td>
+                        <td class="atd-element">
+                            Link ("OUR PHILOSOPHY")
+                            <span class="atd-section-label">Top of Page</span>
+                        </td>
+                        <td class="atd-desc">Style mismatch on <a>: font-weight is 500 on UAT but 700 on Live. 7 element(s) affected (e.g. "our philosophy", "partners", "purpose")</td>
+                        <td><code>UAT font-weight: 500</code></td>
+                        <td><code>Live font-weight: 700</code></td>
+                        <td>
+                            
+                            <span style="color:var(--gray);font-size:11px;">—</span>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr class="atd-row sev-critical" data-sev="critical" data-search="font mismatch on button: uat uses 'sweetsanspro' but live uses 'arial' (19 elements affected) header button ("new") font mismatch (live vs uat)">
+                        <td>2 <span class="count-badge" style="font-size:10px;">&times;38</span></td>
+                        <td><span class="atd-cat">Font Mismatch (Live vs UAT)</span></td>
+                        <td><span class="sev-badge critical">critical</span></td>
+                        <td class="atd-element">
+                            Button ("NEW")
+                            <span class="atd-section-label">Header</span>
+                        </td>
+                        <td class="atd-desc">Font mismatch on Button: UAT uses 'sweetsanspro' but Live uses 'arial' (19 elements affected)</td>
+                        <td><code>UAT: sweetsanspro (19 Button elements)</code></td>
+                        <td><code>Live: arial</code></td>
+                        <td>
+                            
+                            <span style="color:var(--gray);font-size:11px;">—</span>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr class="atd-row sev-critical" data-sev="critical" data-search="style mismatch on <a>: font-weight is 400 on uat but 600 on live. 2 element(s) affected (e.g. "read our impact repo", "learn more") content section - "philosophy
+
+as a global luxury lifestyle..." link ("read our impact report") style mismatch (live vs uat)">
+                        <td>3 <span class="count-badge" style="font-size:10px;">&times;27</span></td>
+                        <td><span class="atd-cat">Style Mismatch (Live vs UAT)</span></td>
+                        <td><span class="sev-badge critical">critical</span></td>
+                        <td class="atd-element">
+                            Link ("READ OUR IMPACT REPORT")
+                            <span class="atd-section-label">Content Section - "PHILOSOPHY
+
+As a global luxury lifestyle..."</span>
+                        </td>
+                        <td class="atd-desc">Style mismatch on <a>: font-weight is 400 on UAT but 600 on Live. 2 element(s) affected (e.g. "read our impact repo", "learn more")</td>
+                        <td><code>UAT font-weight: 400</code></td>
+                        <td><code>Live font-weight: 600</code></td>
+                        <td>
+                            
+                            <span style="color:var(--gray);font-size:11px;">—</span>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr class="atd-row sev-critical" data-sev="critical" data-search="font mismatch: 10 element(s) use 'sweetsanspro' on uat but 'sweet-sans-pro' on live (e.g. "philosophy", "read our impact repo", "explore the mileston") content section - "philosophy
+
+as a global luxury lifestyle..." section heading ("philosophy") font mismatch (live vs uat)">
+                        <td>4 <span class="count-badge" style="font-size:10px;">&times;20</span></td>
+                        <td><span class="atd-cat">Font Mismatch (Live vs UAT)</span></td>
+                        <td><span class="sev-badge critical">critical</span></td>
+                        <td class="atd-element">
+                            Section Heading ("PHILOSOPHY")
+                            <span class="atd-section-label">Content Section - "PHILOSOPHY
+
+As a global luxury lifestyle..."</span>
+                        </td>
+                        <td class="atd-desc">Font mismatch: 10 element(s) use 'sweetsanspro' on UAT but 'sweet-sans-pro' on Live (e.g. "PHILOSOPHY", "READ OUR IMPACT REPO", "Explore the mileston")</td>
+                        <td><code>UAT: sweetsanspro (10 elements: "PHILOSOPHY", "READ OUR IMPACT REPO", "Explore the mileston")</code></td>
+                        <td><code>Live: sweet-sans-pro</code></td>
+                        <td>
+                            
+                            <span style="color:var(--gray);font-size:11px;">—</span>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr class="atd-row sev-critical" data-sev="critical" data-search="font mismatch on h2: uat uses 'sweetsanspro' but live uses 'sweet-sans-pro' (6 elements affected) content section - "philosophy
+
+as a global luxury lifestyle..." section heading ("philosophy") font mismatch (live vs uat)">
+                        <td>5 <span class="count-badge" style="font-size:10px;">&times;18</span></td>
+                        <td><span class="atd-cat">Font Mismatch (Live vs UAT)</span></td>
+                        <td><span class="sev-badge critical">critical</span></td>
+                        <td class="atd-element">
+                            Section Heading ("PHILOSOPHY")
+                            <span class="atd-section-label">Content Section - "PHILOSOPHY
+
+As a global luxury lifestyle..."</span>
+                        </td>
+                        <td class="atd-desc">Font mismatch on H2: UAT uses 'sweetsanspro' but Live uses 'sweet-sans-pro' (6 elements affected)</td>
+                        <td><code>UAT: sweetsanspro (6 H2 elements)</code></td>
+                        <td><code>Live: sweet-sans-pro</code></td>
+                        <td>
+                            
+                            <span style="color:var(--gray);font-size:11px;">—</span>
+                            
+                        </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+            </div>
+            
+        </div>
+
+        
+    </div>
+    
+
+</div>
+
+<div class="report-footer">Generated by Compare-page Visual Bug Report Tool</div>
+
+<div class="lightbox" id="lb" onclick="this.classList.remove('active')">
+    <img id="lb-img" src="">
+</div>
+
+<script>
+let ci={};
+function switchTab(i,el){
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('panel-'+i).classList.add('active');
+}
+function toggle(card){
+    const was=card.classList.contains('expanded');
+    card.classList.toggle('expanded');
+    if(!was) setTimeout(()=>card.scrollIntoView({behavior:'smooth',block:'nearest'}),100);
+}
+function nav(pi,dir){
+    const grid=document.getElementById('grid-'+pi);
+    if(!grid) return;
+    const cards=[...grid.querySelectorAll('.bug-card')].filter(c=>c.style.display!=='none');
+    if(!cards.length) return;
+    if(!(pi in ci)) ci[pi]=-1;
+    ci[pi]+=dir;
+    if(ci[pi]<0) ci[pi]=cards.length-1;
+    if(ci[pi]>=cards.length) ci[pi]=0;
+    cards.forEach(c=>{c.classList.remove('active','expanded');});
+    cards[ci[pi]].classList.add('active','expanded');
+    cards[ci[pi]].scrollIntoView({behavior:'smooth',block:'start'});
+}
+function filter(pi){
+    const sev=document.getElementById('fsev-'+pi).value;
+    const grid=document.getElementById('grid-'+pi);
+    if(!grid) return;
+    grid.querySelectorAll('.bug-card').forEach(c=>{
+        const ok=sev==='all'||c.dataset.sev===sev;
+        c.style.display=ok?'':'none';
+    });
+    ci[pi]=-1;
+}
+function search(pi,term){
+    const grid=document.getElementById('grid-'+pi);
+    if(!grid) return;
+    term=term.toLowerCase();
+    grid.querySelectorAll('.bug-card').forEach(c=>{
+        c.style.display=(!term||c.dataset.search.includes(term))?'':'none';
+    });
+}
+function filterATD(pi){
+    const sev=document.getElementById('atd-fsev-'+pi).value;
+    const table=document.getElementById('atd-table-'+pi);
+    if(!table) return;
+    table.querySelectorAll('.atd-row').forEach(r=>{
+        r.style.display=(sev==='all'||r.dataset.sev===sev)?'':'none';
+    });
+}
+function searchATD(pi,term){
+    const table=document.getElementById('atd-table-'+pi);
+    if(!table) return;
+    term=term.toLowerCase();
+    table.querySelectorAll('.atd-row').forEach(r=>{
+        r.style.display=(!term||r.dataset.search.includes(term))?'':'none';
+    });
+}
+function zoom(src){document.getElementById('lb-img').src=src;document.getElementById('lb').classList.add('active');}
+document.addEventListener('keydown',e=>{
+    if(e.key==='Escape') document.getElementById('lb').classList.remove('active');
+    const ap=document.querySelector('.panel.active');
+    if(!ap) return;
+    const pi=ap.id.replace('panel-','');
+    if(e.key==='ArrowRight'||e.key==='ArrowDown') nav(pi,1);
+    if(e.key==='ArrowLeft'||e.key==='ArrowUp') nav(pi,-1);
+});
+</script>
+</body>
+</html>

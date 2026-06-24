@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATD Comparison Tool</title>
+<style>
+  :root {
+    --primary: #1E293B;
+    --accent: #3B82F6;
+    --accent-hover: #2563EB;
+    --success: #16A34A;
+    --danger: #DC2626;
+    --warning: #EA580C;
+    --bg: #F8FAFC;
+    --card: #FFFFFF;
+    --border: #E2E8F0;
+    --text: #1E293B;
+    --muted: #64748B;
+    --radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  .header {
+    background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+    color: white; padding: 32px 40px;
+  }
+  .header h1 { font-size: 24px; font-weight: 700; }
+  .header p { font-size: 14px; opacity: 0.6; margin-top: 4px; }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 32px 24px; }
+
+  .card {
+    background: var(--card); border-radius: var(--radius);
+    border: 1px solid var(--border); padding: 28px;
+    margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .card h2 {
+    font-size: 18px; font-weight: 600; margin-bottom: 20px;
+    padding-bottom: 12px; border-bottom: 2px solid var(--border);
+  }
+
+  .form-group { margin-bottom: 16px; }
+  .form-group label {
+    display: block; font-size: 13px; font-weight: 600;
+    color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .form-group input[type="text"],
+  .form-group input[type="url"] {
+    width: 100%; padding: 10px 14px; border: 1px solid var(--border);
+    border-radius: 8px; font-size: 14px; transition: border 0.2s;
+    outline: none;
+  }
+  .form-group input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+
+  .viewport-group { display: flex; gap: 12px; flex-wrap: wrap; }
+  .viewport-group label {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 14px; font-weight: 500; color: var(--text);
+    text-transform: none; letter-spacing: 0; cursor: pointer;
+    padding: 8px 16px; border: 1px solid var(--border); border-radius: 8px;
+    transition: all 0.2s;
+  }
+  .viewport-group label:hover { border-color: var(--accent); }
+  .viewport-group input:checked + span { color: var(--accent); font-weight: 600; }
+  .viewport-group label:has(input:checked) { border-color: var(--accent); background: #EFF6FF; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 24px; border: none; border-radius: 8px;
+    font-size: 14px; font-weight: 600; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-primary { background: var(--accent); color: white; }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-secondary { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
+  .btn-secondary:hover { background: #E2E8F0; }
+  .btn-success { background: var(--success); color: white; }
+  .btn-sm { padding: 6px 14px; font-size: 13px; }
+
+  .btn-row { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+
+  .progress-area { display: none; }
+  .progress-area.active { display: block; }
+  .log-output {
+    background: #0F172A; color: #E2E8F0; padding: 16px;
+    border-radius: 8px; font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 12px; line-height: 1.8; max-height: 400px;
+    overflow-y: auto; white-space: pre-wrap; word-break: break-word;
+  }
+  .status-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;
+  }
+  .status-badge.running { background: #FEF3C7; color: #92400E; }
+  .status-badge.completed { background: #DCFCE7; color: #166534; }
+  .status-badge.failed { background: #FEE2E2; color: #991B1B; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .status-badge.running::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #F59E0B; animation: pulse 1.5s infinite; }
+
+  .report-table { width: 100%; border-collapse: collapse; }
+  .report-table th {
+    text-align: left; padding: 10px 12px; font-size: 12px;
+    text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted);
+    border-bottom: 2px solid var(--border);
+  }
+  .report-table td { padding: 12px; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .report-table tr:last-child td { border-bottom: none; }
+  .report-table a { color: var(--accent); text-decoration: none; font-weight: 500; }
+  .report-table a:hover { text-decoration: underline; }
+
+  .empty-state { text-align: center; padding: 40px; color: var(--muted); }
+  .empty-state p { font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>ATD Comparison Tool</h1>
+  <p>Compare Live vs UAT pages across desktop, tablet, and mobile viewports</p>
+</div>
+
+<div class="container">
+
+  <!-- URL Input Card -->
+  <div class="card">
+    <h2>New Comparison</h2>
+
+    <form id="compareForm" onsubmit="return startComparison(event)">
+      <div class="form-group">
+        <label>Live URL (Reference)</label>
+        <input type="url" id="liveUrl" placeholder="https://toryburch.com/en-us/..." required>
+      </div>
+      <div class="form-group">
+        <label>UAT URL (Compared)</label>
+        <input type="url" id="uatUrl" placeholder="https://toryburchhive.fynd.io/..." required>
+      </div>
+      <div class="form-group">
+        <label>Viewports</label>
+        <div class="viewport-group">
+          <label><input type="checkbox" name="viewport" value="desktop" checked><span>Desktop (1920x1080)</span></label>
+          <label><input type="checkbox" name="viewport" value="tablet" checked><span>Tablet (768x1024)</span></label>
+          <label><input type="checkbox" name="viewport" value="mobile" checked><span>Mobile (375x812)</span></label>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button type="submit" class="btn btn-primary" id="submitBtn">Run Comparison</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Progress Card -->
+  <div class="card progress-area" id="progressCard">
+    <h2>Progress <span id="statusBadge" class="status-badge running">Running</span></h2>
+    <div class="log-output" id="logOutput">Starting comparison...</div>
+    <div class="btn-row" id="resultLinks" style="display:none;">
+      <a id="viewReportLink" class="btn btn-primary btn-sm" target="_blank">View HTML Report</a>
+      <a id="downloadPdfLink" class="btn btn-success btn-sm">Download PDF</a>
+    </div>
+  </div>
+
+  <!-- Existing Reports Card -->
+  <div class="card">
+    <h2>Generated Reports</h2>
+    {% if existing %}
+    <table class="report-table">
+      <thead>
+        <tr><th>Page</th><th>HTML Report</th><th>PDF Report</th></tr>
+      </thead>
+      <tbody>
+        {% for r in existing %}
+        <tr>
+          <td>{{ r.name }}</td>
+          <td><a href="/report/{{ r.slug }}" target="_blank">View Report</a></td>
+          <td>
+            {% if r.has_pdf %}
+            <a href="/download/{{ r.pdf_name }}">Download PDF</a>
+            {% else %}
+            <span style="color:var(--muted)">Not generated</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+      <p>No reports generated yet. Run a comparison above to get started.</p>
+    </div>
+    {% endif %}
+  </div>
+
+</div>
+
+<script>
+function startComparison(e) {
+  e.preventDefault();
+  const viewports = [...document.querySelectorAll('input[name="viewport"]:checked')].map(cb => cb.value);
+  if (!viewports.length) { alert('Select at least one viewport'); return false; }
+
+  const uatUrl = document.getElementById('uatUrl').value;
+  const pageName = uatUrl.split('/').filter(s => s).pop().replace(/[-_]/g, ' ');
+
+  const payload = {
+    page_name: pageName,
+    live_url: document.getElementById('liveUrl').value,
+    uat_url: uatUrl,
+    viewports: viewports,
+  };
+
+  document.getElementById('submitBtn').disabled = true;
+  document.getElementById('submitBtn').textContent = 'Running...';
+  document.getElementById('progressCard').classList.add('active');
+  document.getElementById('logOutput').textContent = 'Starting comparison...\n';
+  document.getElementById('statusBadge').className = 'status-badge running';
+  document.getElementById('statusBadge').textContent = 'Running';
+  document.getElementById('resultLinks').style.display = 'none';
+
+  fetch('/compare', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.error) { alert(data.error); resetBtn(); return; }
+    pollStatus(data.job_id);
+  })
+  .catch(err => { alert('Error: ' + err); resetBtn(); });
+
+  return false;
+}
+
+function pollStatus(jobId) {
+  const interval = setInterval(() => {
+    fetch('/status/' + jobId)
+    .then(r => r.json())
+    .then(data => {
+      document.getElementById('logOutput').textContent = data.log || 'Waiting...';
+      const logEl = document.getElementById('logOutput');
+      logEl.scrollTop = logEl.scrollHeight;
+
+      if (data.status === 'completed') {
+        clearInterval(interval);
+        document.getElementById('statusBadge').className = 'status-badge completed';
+        document.getElementById('statusBadge').textContent = 'Completed';
+        document.getElementById('resultLinks').style.display = 'flex';
+        if (data.report_path) {
+          document.getElementById('viewReportLink').href = '/report/' + data.report_path;
+        }
+        if (data.pdf) {
+          document.getElementById('downloadPdfLink').href = '/download/' + data.pdf;
+        }
+        resetBtn();
+        setTimeout(() => location.reload(), 2000);
+      } else if (data.status === 'failed') {
+        clearInterval(interval);
+        document.getElementById('statusBadge').className = 'status-badge failed';
+        document.getElementById('statusBadge').textContent = 'Failed';
+        resetBtn();
+      }
+    });
+  }, 2000);
+}
+
+function resetBtn() {
+  document.getElementById('submitBtn').disabled = false;
+  document.getElementById('submitBtn').textContent = 'Run Comparison';
+}
+</script>
+
+</body>
+</html>
