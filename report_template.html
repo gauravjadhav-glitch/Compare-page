@@ -175,10 +175,15 @@
     .atd-row .atd-desc { max-width: 350px; line-height: 1.5; font-size: 12px; }
     .atd-row .atd-element { max-width: 140px; font-size: 11px; color: var(--gray); word-wrap: break-word; overflow-wrap: break-word; }
     .atd-section-label { font-size: 10px; color: var(--gray); display: block; margin-top: 3px; }
-    .atd-crop-thumb { max-width: 60px; max-height: 50px; border: 1px solid var(--border); border-radius: 4px; cursor: pointer; display: block; object-fit: cover; background: var(--light); }
-    .atd-visual-box { text-align: center; }
-    .atd-visual-label { font-size: 8px; font-weight: 700; margin-bottom: 2px; letter-spacing: 0.5px; }
-    .atd-visual-pair { display: flex; gap: 4px; align-items: flex-start; justify-content: center; }
+    .atd-crop-thumb { max-width: 120px; max-height: 90px; border: 2px solid var(--border); border-radius: 6px; cursor: pointer; display: block; object-fit: contain; background: var(--light); }
+    .atd-visual-box { text-align: center; min-width: 60px; flex: 1; }
+    .atd-visual-label { font-size: 9px; font-weight: 700; margin-bottom: 3px; letter-spacing: 0.5px; text-transform: uppercase; padding: 2px 6px; border-radius: 3px; display: inline-block; }
+    .atd-visual-label-live { background: #DCFCE7; color: #166534; }
+    .atd-visual-label-uat { background: #FEF2F2; color: #991B1B; }
+    .atd-visual-pair { display: flex; gap: 8px; align-items: flex-start; justify-content: center; }
+    .atd-visual-pair .atd-crop-thumb { border-width: 2px; }
+    .atd-visual-pair .atd-visual-box:first-child .atd-crop-thumb { border-color: #86EFAC; }
+    .atd-visual-pair .atd-visual-box:last-child .atd-crop-thumb { border-color: #FCA5A5; }
     .atd-no-visual { color: var(--gray); font-size: 10px; background: var(--light); padding: 6px 8px; border-radius: 4px; text-align: center; white-space: nowrap; }
     .atd-verify { font-size: 11px; color: #1E40AF; background: #EFF6FF; border: 1px solid #BFDBFE; padding: 8px 10px; border-radius: 6px; margin-top: 8px; line-height: 1.6; }
     .atd-fix { font-size: 11px; color: #166534; background: #F0FDF4; border: 1px solid #BBF7D0; padding: 6px 10px; border-radius: 6px; margin-top: 6px; line-height: 1.5; }
@@ -315,23 +320,27 @@
                             {% if diff.crop1_uri and diff.crop2_uri %}
                             <div class="atd-visual-pair">
                                 <div class="atd-visual-box">
-                                    <div class="atd-visual-label" style="color:var(--green);">LIVE</div>
-                                    <img class="atd-crop-thumb" src="{{ diff.crop1_uri }}" alt="Live" onclick="zoom(this.src)" style="border-color:#BBF7D0;">
+                                    <div class="atd-visual-label atd-visual-label-live">LIVE</div>
+                                    <img class="atd-crop-thumb" src="{{ diff.crop1_uri }}" alt="Live" onclick="zoom(this.src)">
                                 </div>
                                 <div class="atd-visual-box">
-                                    <div class="atd-visual-label" style="color:var(--major);">UAT</div>
-                                    <img class="atd-crop-thumb" src="{{ diff.crop2_uri }}" alt="UAT" onclick="zoom(this.src)" style="border-color:var(--major-border);">
+                                    <div class="atd-visual-label atd-visual-label-uat">UAT</div>
+                                    <img class="atd-crop-thumb" src="{{ diff.crop2_uri }}" alt="UAT" onclick="zoom(this.src)">
                                 </div>
                             </div>
                             {% elif diff.crop1_uri %}
-                            <div class="atd-visual-box">
-                                <div class="atd-visual-label" style="color:var(--green);">ELEMENT</div>
-                                <img class="atd-crop-thumb" src="{{ diff.crop1_uri }}" alt="Element" onclick="zoom(this.src)">
+                            <div class="atd-visual-pair">
+                                <div class="atd-visual-box">
+                                    <div class="atd-visual-label atd-visual-label-live">LIVE</div>
+                                    <img class="atd-crop-thumb" src="{{ diff.crop1_uri }}" alt="Live" onclick="zoom(this.src)">
+                                </div>
                             </div>
                             {% elif diff.crop2_uri %}
-                            <div class="atd-visual-box">
-                                <div class="atd-visual-label" style="color:var(--major);">ELEMENT</div>
-                                <img class="atd-crop-thumb" src="{{ diff.crop2_uri }}" alt="Element" onclick="zoom(this.src)">
+                            <div class="atd-visual-pair">
+                                <div class="atd-visual-box">
+                                    <div class="atd-visual-label atd-visual-label-uat">UAT</div>
+                                    <img class="atd-crop-thumb" src="{{ diff.crop2_uri }}" alt="UAT" onclick="zoom(this.src)">
+                                </div>
                             </div>
                             {% else %}
                             <div class="atd-no-visual">No visual</div>

@@ -6,7 +6,7 @@ import sys
 
 from playwright.sync_api import sync_playwright
 
-from analyzer import analyze, build_summary, VisualDiffResult, ComparisonResult, compare_visual, deduplicate_diffs
+from analyzer import analyze, build_summary, VisualDiffResult, ComparisonResult, compare_visual, deduplicate_diffs, annotate_crop
 from atd_analyzer import run_atd_checks, run_cross_page_checks, _deduplicate_atd
 from network_analyzer import run_network_checks
 from accessibility_analyzer import run_accessibility_checks
@@ -80,6 +80,88 @@ def apply_section_filter(page_data: PageData, section: str) -> PageData:
         images=filtered_images,
         sections=adjusted_sections,
     )
+
+
+def enrich_atd_visuals(diffs, live_screenshot, uat_screenshot, live_elements, uat_elements):
+    """Add the counterpart page's screenshot crop to single-page ATD diffs."""
+    live_by_text = {}
+    for el in live_elements:
+        text = (el.text or "").strip()
+        if text and len(text) >= 2:
+            key = (el.tag, text[:50].lower())
+            if key not in live_by_text:
+                live_by_text[key] = el
+
+    uat_by_text = {}
+    for el in uat_elements:
+        text = (el.text or "").strip()
+        if text and len(text) >= 2:
+            key = (el.tag, text[:50].lower())
+            if key not in uat_by_text:
+                uat_by_text[key] = el
+
+    for diff in diffs:
+        has_live = diff.crop1_bytes and len(diff.crop1_bytes) > 0
+        has_uat = diff.crop2_bytes and len(diff.crop2_bytes) > 0
+
+        if has_live and has_uat:
+            continue
+
+        desc = diff.human_description
+        is_reference = "Reference Page" in desc or "reference page" in desc.lower()
+        is_compared = "Compared Page" in desc or "compared page" in desc.lower()
+
+        if has_live and not has_uat and is_reference:
+            for el in uat_elements:
+                text = (el.text or "").strip()
+                if not text:
+                    continue
+                key = (el.tag, text[:50].lower())
+                if key in live_by_text:
+                    try:
+                        diff.crop2_bytes = annotate_crop(uat_screenshot, el.bounding_box, color="orange", label="UAT")
+                    except Exception:
+                        pass
+                    break
+
+        elif has_uat and not has_live and is_compared:
+            for el in live_elements:
+                text = (el.text or "").strip()
+                if not text:
+                    continue
+                key = (el.tag, text[:50].lower())
+                if key in uat_by_text:
+                    try:
+                        diff.crop1_bytes = annotate_crop(live_screenshot, el.bounding_box, color="green", label="LIVE")
+                    except Exception:
+                        pass
+                    break
+
+        elif has_live and not has_uat:
+            bb = None
+            for el in live_elements:
+                if el.selector == diff.element:
+                    bb = el.bounding_box
+                    break
+            if bb:
+                try:
+                    diff.crop2_bytes = annotate_crop(uat_screenshot, bb, color="orange", label="UAT (same area)")
+                except Exception:
+                    pass
+
+        elif has_uat and not has_live:
+            bb = None
+            for el in uat_elements:
+                if el.selector == diff.element:
+                    bb = el.bounding_box
+                    break
+            if bb:
+                try:
+                    diff.crop1_bytes = annotate_crop(live_screenshot, bb, color="green", label="LIVE (same area)")
+                except Exception:
+                    pass
+
+    return diffs
 
 
 def main():
@@ -277,6 +359,14 @@ Available sections: all, header, navigation, hero, content, footer
                 )
 
                 atd_combined = atd_diffs_page1 + atd_diffs_page2 + cross_page_diffs + extra_diffs
+
+                print(f"[{vp_label}] Enriching visuals with Live/UAT side-by-side crops...")
+                atd_combined = enrich_atd_visuals(
+                    atd_combined,
+                    data1_full.screenshot, data2_full.screenshot,
+                    data1_full.elements, data2_full.elements,
+                )
+
                 for d in atd_combined:
                     d.viewport = display_vp
                 all_atd_diffs.extend(atd_combined)
