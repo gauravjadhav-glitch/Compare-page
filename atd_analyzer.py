@@ -233,9 +233,9 @@ def check_typography_hierarchy(elements, screenshot, sections, url):
             el = l_data["elements"][0]
             diffs.append(_make_diff(
                 "Typography Hierarchy", "major", "heading-level-inversion", el,
-                f"<{lower}> is {l_data['median_size']}px",
-                f"Should be <= <{higher}> at {h_data['median_size']}px",
-                f"Heading inversion: <{lower}> ({l_data['median_size']}px) is LARGER than <{higher}> ({h_data['median_size']}px)",
+                f"<{lower}>: {l_data['median_size']}px",
+                f"<{higher}>: {h_data['median_size']}px",
+                f"Heading size is inverted — <{lower}> ({l_data['median_size']}px) appears LARGER than <{higher}> ({h_data['median_size']}px). Higher-level headings should be bigger.",
                 screenshot, sections, url,
             ))
 
@@ -267,9 +267,9 @@ def check_typography_hierarchy(elements, screenshot, sections, url):
         representative = els[0]
         diffs.append(_make_diff(
             "Typography Hierarchy", "critical", "hierarchy-violation", representative,
-            f"Body weight: {body_w}, heading <{h_tag}> weight: {head_w}",
-            f"Body text should be lighter than <{h_tag}> heading",
-            f"Broken hierarchy: {len(els)} body elements (weight {body_w}) are BOLDER than <{h_tag}> heading (weight {head_w})",
+            f"Body text font-weight: {body_w}",
+            f"<{h_tag}> heading font-weight: {head_w}",
+            f"Body text is bolder than headings — {len(els)} body elements have font-weight {body_w}, but <{h_tag}> headings only have font-weight {head_w}. Headings should be bolder than body text.",
             screenshot, sections, url, count=len(els),
         ))
 
@@ -289,9 +289,9 @@ def check_typography_hierarchy(elements, screenshot, sections, url):
                         no_diff_found.add(h_tag)
                         diffs.append(_make_diff(
                             "Typography Hierarchy", "minor", "hierarchy-violation", h_el,
-                            f"<{h_tag}> {h_size}px/{h_weight}",
-                            "Heading should be visually distinct from body text",
-                            f"No visual differentiation: <{h_tag}> has same size ({h_size}px) and weight ({h_weight}) as nearby body text",
+                            f"<{h_tag}> heading: {h_size}px / weight {h_weight}",
+                            f"Body text: {body_size}px / weight {body_weight}",
+                            f"Heading looks the same as body text — <{h_tag}> has the same size ({h_size}px) and weight ({h_weight}) as nearby body text, so users cannot tell them apart.",
                             screenshot, sections, url,
                         ))
                     break
@@ -336,9 +336,9 @@ def check_type_scale(elements, screenshot, sections, url, allowed_sizes=None):
 
         diffs.append(_make_diff(
             "Design System", severity, "off-scale-font", representative,
-            f"{size_val}px (used by {len(els)} elements: {tag_summary})",
-            f"Nearest standard sizes: {suggestion}",
-            f"Non-standard font size {size_val}px found on {len(els)} elements ({tag_summary}). Standard type scale uses {suggestion}",
+            f"Using {size_val}px ({len(els)} elements: {tag_summary})",
+            f"Standard sizes: {suggestion}",
+            f"Font size {size_val}px is not a standard size — {len(els)} elements ({tag_summary}) use this non-standard size. Consider using {suggestion} instead for consistency.",
             screenshot, sections, url, count=len(els),
         ))
 
@@ -354,9 +354,9 @@ def check_semantic_html(elements, screenshot, sections, url):
     if len(h1_elements) > 1:
         diffs.append(_make_diff(
             "Semantic HTML", "major", "multiple-h1", h1_elements[1],
-            f"{len(h1_elements)} <h1> tags found on page",
-            "Page should have exactly one <h1>",
-            f"Multiple <h1> tags: page has {len(h1_elements)} <h1> elements. Only one <h1> should exist per page",
+            f"{len(h1_elements)} <h1> tags on page",
+            f"Best practice: 1 <h1> per page",
+            f"This page has {len(h1_elements)} main headings (<h1> tags) — a page should only have one <h1> for proper structure and SEO.",
             screenshot, sections, url, count=len(h1_elements) - 1,
         ))
 
@@ -373,9 +373,9 @@ def check_semantic_html(elements, screenshot, sections, url):
     if title_divs:
         diffs.append(_make_diff(
             "Semantic HTML", "major", "wrong-semantic-tag", title_divs[0],
-            f"<{title_divs[0].tag}> with large/bold text used as title",
-            "Should use <h1> or <h2> for page titles",
-            f'{len(title_divs)} element(s) look like page titles but use <div>/<span> instead of heading tags',
+            f"Using <{title_divs[0].tag}> for title text",
+            f"Should be <h1> or <h2>",
+            f'{len(title_divs)} element(s) look like page titles but use <{title_divs[0].tag}> instead of proper heading tags (<h1>/<h2>) — this hurts accessibility and SEO.',
             screenshot, sections, url, count=len(title_divs),
         ))
 
@@ -401,9 +401,9 @@ def check_semantic_html(elements, screenshot, sections, url):
     if representative_label and label_issues > 0:
         diffs.append(_make_diff(
             "Semantic HTML", "minor", "wrong-semantic-tag", representative_label,
-            f"{label_issues} form label(s) use non-semantic tags",
-            "<label> tag for accessibility",
-            f'{label_issues} form label(s) use <{representative_label.tag}> instead of <label> tag',
+            f"Using <{representative_label.tag}> for form labels",
+            f"Should be <label> tag",
+            f'{label_issues} form label(s) use <{representative_label.tag}> instead of <label> — screen readers cannot associate these labels with their form fields.',
             screenshot, sections, url, count=label_issues,
         ))
 
@@ -699,7 +699,7 @@ def compare_fonts_cross_page(
             representative_uat, representative_live,
             f"UAT: {uat_dominant} ({mismatched_count} {role_label} elements)",
             f"Live: {live_dominant}",
-            f"Font mismatch on {role_label}: UAT uses '{uat_dominant}' but Live uses '{live_dominant}' ({mismatched_count} elements affected)",
+            f"The font on UAT is different from Live — {mismatched_count} {role_label} elements use '{uat_dominant}' on UAT but '{live_dominant}' on Live.",
             uat_screenshot, live_screenshot, uat_sections, uat_url, count=mismatched_count,
         ))
 
@@ -743,7 +743,7 @@ def compare_fonts_cross_page(
             representative_uat, representative_live,
             f"UAT: {uat_font} ({count} elements: {examples})",
             f"Live: {live_font}",
-            f"Font mismatch: {count} element(s) use '{uat_font}' on UAT but '{live_font}' on Live (e.g. {examples})",
+            f"The font is different between UAT and Live — {count} element(s) like {examples} use '{uat_font}' on UAT but '{live_font}' on Live.",
             uat_screenshot, live_screenshot, uat_sections, uat_url, count=count,
         ))
 
@@ -870,10 +870,10 @@ def compare_navigation_elements(
                 severity=severity,
                 element=representative.selector,
                 property="missing-nav-element",
-                value1=f"MISSING on UAT ({count} items): {all_items}",
-                value2=f"Present on Live",
+                value1=f"Not found ({count} items missing)",
+                value2=f"Present ({count} items): {all_items}",
                 description=f"ATD: {count} navigation/link element(s) present on Live but missing on UAT",
-                human_description=f"{count} navigation element(s) present on Live but MISSING on UAT: {all_items}",
+                human_description=f"{count} navigation link(s) are visible on the Live site but missing on UAT: {all_items}",
                 section_name=section_name,
                 element_name=element_name,
                 navigation=f"Open {live_url} → {section_name} → Find {element_name}",
@@ -960,7 +960,7 @@ def compare_element_styles(
             uat_el, live_el,
             f"UAT {prop_name}: {uat_val}",
             f"Live {prop_name}: {live_val}",
-            f"Style mismatch on <{tag}>: {prop_name} is {uat_val} on UAT but {live_val} on Live. {count} element(s) affected (e.g. {examples})",
+            f"The {prop_name} of <{tag}> elements is different between UAT and Live — UAT shows {uat_val} but Live shows {live_val}. {count} element(s) affected (e.g. {examples}).",
             uat_screenshot, live_screenshot, uat_sections, uat_url, count=count,
         ))
 
@@ -1030,10 +1030,10 @@ def compare_content_visibility(
                 severity="major",
                 element=representative.selector,
                 property="extra-content-uat",
-                value1=f"Visible on UAT only ({len(heading_extras)} headings): {all_items}",
-                value2="Not visible on Live",
+                value1=f"Showing ({len(heading_extras)} extra headings): {all_items}",
+                value2=f"Not present",
                 description=f"ATD: {len(heading_extras)} heading(s) visible on UAT but not on Live",
-                human_description=f"{len(heading_extras)} heading(s) visible on UAT but NOT on Live: {all_items}",
+                human_description=f"{len(heading_extras)} heading(s) appear on the UAT site but are not present on the Live site: {all_items}",
                 section_name=get_section_name(representative.bounding_box, uat_sections),
                 element_name=humanize_element(representative.tag, representative.text),
                 navigation=f"Open {uat_url} → Find {all_items}",
@@ -1056,10 +1056,10 @@ def compare_content_visibility(
                 severity="critical",
                 element=representative.selector,
                 property="missing-content-uat",
-                value1=f"Missing on UAT ({len(important_missing)} items): {all_items}",
-                value2="Visible on Live",
+                value1=f"Not found ({len(important_missing)} items missing)",
+                value2=f"Showing ({len(important_missing)} items): {all_items}",
                 description=f"ATD: {len(important_missing)} content element(s) visible on Live but missing on UAT",
-                human_description=f"{len(important_missing)} content element(s) visible on Live but MISSING on UAT: {all_items}",
+                human_description=f"{len(important_missing)} content element(s) are visible on the Live site but missing on UAT: {all_items}",
                 section_name=get_section_name(representative.bounding_box, live_sections),
                 element_name=humanize_element(representative.tag, representative.text),
                 navigation=f"Open {live_url} → Find {all_items}",
