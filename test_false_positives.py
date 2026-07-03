@@ -16,6 +16,7 @@ from atd_analyzer import (
     _is_product_content,
     _is_brand_name,
     _classify_case,
+    _colors_similar,
 )
 
 
@@ -435,3 +436,57 @@ class TestIsProductContent:
 
     def test_heading_not_product(self):
         assert _is_product_content("Section Title") is False
+
+
+class TestTypographyHierarchySaleLabel:
+    def test_sale_label_not_flagged_as_hierarchy_violation(self):
+        elements = [
+            _make_element("h2", "Discover Our Campaign", font_size="16px", font_weight="400", y=50),
+            _make_element("span", "SALE", font_size="14px", font_weight="500", y=200),
+            _make_element("span", "SALE", font_size="14px", font_weight="500", y=300),
+            _make_element("span", "SALE", font_size="14px", font_weight="500", y=400),
+        ]
+        diffs = check_typography_hierarchy(elements, SCREENSHOT, SECTIONS, "https://example.com")
+        hierarchy_violations = [d for d in diffs if d.property == "hierarchy-violation"
+                                and "bolder" in d.human_description.lower()]
+        assert len(hierarchy_violations) == 0, (
+            f"'SALE' label should not be flagged, got: {[d.human_description for d in hierarchy_violations]}"
+        )
+
+    def test_account_nav_label_not_flagged_as_hierarchy_violation(self):
+        elements = [
+            _make_element("h2", "Trending Now", font_size="16px", font_weight="400", y=50),
+            _make_element("span", "Account", font_size="14px", font_weight="600", y=100),
+            _make_element("span", "Account", font_size="14px", font_weight="600", y=200),
+            _make_element("span", "Account", font_size="14px", font_weight="600", y=300),
+        ]
+        diffs = check_typography_hierarchy(elements, SCREENSHOT, SECTIONS, "https://example.com")
+        hierarchy_violations = [d for d in diffs if d.property == "hierarchy-violation"
+                                and "bolder" in d.human_description.lower()]
+        assert len(hierarchy_violations) == 0, (
+            f"'Account' nav label should not be flagged, got: {[d.human_description for d in hierarchy_violations]}"
+        )
+
+
+class TestColorsSimilarTolerance:
+    def test_near_identical_colors_are_similar(self):
+        assert _colors_similar((0, 0, 0), (14, 14, 14)) is True
+
+    def test_different_colors_not_similar(self):
+        assert _colors_similar((0, 0, 0), (51, 51, 51)) is False
+
+
+class TestElementConsistencyNearColorFP:
+    def test_near_identical_button_colors_not_flagged(self):
+        elements = [
+            _make_element("button", "Product Info", color="rgb(14, 14, 14)", y=100),
+            _make_element("button", "Product Desc", color="rgb(14, 14, 14)", y=200),
+            _make_element("button", "Reviews", color="rgb(14, 14, 14)", y=300),
+            _make_element("button", "Shipping", color="rgb(0, 0, 0)", y=400),
+        ]
+        diffs = check_element_consistency(elements, SCREENSHOT, SECTIONS, "https://example.com")
+        color_diffs = [d for d in diffs if "color" in d.property.lower()
+                       and "rgb(0,0,0)" in (d.value1 or "")]
+        assert len(color_diffs) == 0, (
+            f"Near-identical colors should not be flagged, got: {[d.human_description for d in color_diffs]}"
+        )

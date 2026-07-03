@@ -35,6 +35,14 @@ def _is_product_content(text: str) -> bool:
     return False
 
 
+def _is_short_ui_label(text: str) -> bool:
+    text = text.strip()
+    if not text or len(text) > 15:
+        return False
+    words = text.split()
+    return len(words) <= 2
+
+
 def _is_brand_name(text: str) -> bool:
     text = text.strip()
     if len(text) < 2 or len(text) > 30:
@@ -109,7 +117,7 @@ def _parse_rgb(color_str: str):
     return None
 
 
-def _colors_similar(c1, c2, tolerance=10):
+def _colors_similar(c1, c2, tolerance=20):
     if c1 is None or c2 is None:
         return c1 == c2
     return all(abs(a - b) <= tolerance for a, b in zip(c1, c2))
@@ -279,7 +287,10 @@ def check_typography_hierarchy(elements, screenshot, sections, url):
     for tag in ("p", "span", "label", "li"):
         if tag in groups:
             body_elements.extend(groups[tag])
-    body_elements = [el for el in body_elements if not _is_product_content((el.text or "").strip())]
+    body_elements = [el for el in body_elements
+                     if not _is_product_content((el.text or "").strip())
+                     and not _is_brand_name((el.text or "").strip())
+                     and not _is_short_ui_label((el.text or "").strip())]
 
     hierarchy_violations = defaultdict(list)
     for h_tag, h_data in heading_levels.items():
