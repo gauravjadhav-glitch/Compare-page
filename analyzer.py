@@ -7,6 +7,19 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
 
+_PRICE_RE = re.compile(r'[₹$€£¥]\s*[\d,]+')
+_PRODUCT_KEYWORDS = {"shop now", "buy now", "add to cart", "add to bag", "new arrival", "sold out", "out of stock", "in stock"}
+
+
+def _is_product_content(text: str) -> bool:
+    lower = text.lower()
+    if _PRICE_RE.search(lower):
+        return True
+    if any(kw in lower for kw in _PRODUCT_KEYWORDS):
+        return True
+    return False
+
+
 @dataclasses.dataclass
 class Difference:
     category: str
@@ -194,13 +207,14 @@ def humanize_description(prop: str, element_name: str, value1: str, value2: str)
     return f"{element_name}: {base_desc}"
 
 
-def annotate_crop(screenshot_bytes: bytes, bb: dict, color: str = "red", label: str = "") -> bytes:
+def annotate_crop(screenshot_bytes: bytes, bb: dict, color: str = "red", label: str = "",
+                   min_width: int = 80, min_height: int = 30) -> bytes:
     from scraper import crop_region
 
     padding = 40
     x, y, w, h = bb.get("x", 0), bb.get("y", 0), bb.get("width", 100), bb.get("height", 50)
-    w = max(w, 1)
-    h = max(h, 1)
+    w = max(w, min_width)
+    h = max(h, min_height)
     crop = crop_region(screenshot_bytes, x, y, w, h, padding=padding)
 
     img = Image.open(io.BytesIO(crop))
@@ -311,6 +325,11 @@ def compare_typography(elements1, elements2, screenshot1, screenshot2, sections)
 
     for el1, el2 in matched:
         if el1 is None or el2 is None:
+            continue
+
+        text1 = (el1.text or "").strip()
+        text2 = (el2.text or "").strip()
+        if _is_product_content(text1) or _is_product_content(text2):
             continue
 
         for attr, prop_name in typo_props:

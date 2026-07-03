@@ -21,7 +21,7 @@ STANDARD_TYPE_SCALE = {10, 11, 12, 14, 16, 18, 20, 24, 28, 32, 36, 40, 48, 56, 6
 HEADING_TAGS = ("h1", "h2", "h3", "h4", "h5", "h6")
 HEADING_RANK = {"h1": 1, "h2": 2, "h3": 3, "h4": 4, "h5": 5, "h6": 6}
 
-SKIP_TAGS_ATD = {"div", "section", "article", "main", "ul", "ol", "table", "form", "td", "th"}
+SKIP_TAGS_ATD = {"div", "section", "article", "main", "ul", "ol", "li", "table", "form", "td", "th"}
 
 _PRICE_RE = re.compile(r'[₹$€£¥]\s*[\d,]+')
 _PRODUCT_KEYWORDS = {"shop now", "buy now", "add to cart", "add to bag", "new arrival", "sold out", "out of stock", "in stock"}
@@ -31,6 +31,21 @@ def _is_product_content(text: str) -> bool:
     if _PRICE_RE.search(lower):
         return True
     if any(kw in lower for kw in _PRODUCT_KEYWORDS):
+        return True
+    return False
+
+
+def _is_brand_name(text: str) -> bool:
+    text = text.strip()
+    if len(text) < 2 or len(text) > 30:
+        return False
+    alpha = [c for c in text if c.isalpha()]
+    if not alpha or len(alpha) < 2:
+        return False
+    words = text.split()
+    if len(words) > 4:
+        return False
+    if all(c.isupper() for c in alpha):
         return True
     return False
 
@@ -48,6 +63,10 @@ def _parse_weight(w: str) -> int:
         return 400
 
 
+_TITLE_CASE_LOWERCASE_WORDS = {"a", "an", "the", "and", "but", "or", "nor", "for",
+                               "in", "on", "at", "to", "by", "of", "up", "as", "is", "it", "vs"}
+
+
 def _classify_case(text: str) -> str:
     text = text.strip()
     if not text or len(text) < 2:
@@ -59,6 +78,23 @@ def _classify_case(text: str) -> str:
         return "ALL CAPS"
     if text == text.title():
         return "Title Case"
+    words = text.split()
+    if len(words) >= 2 and words[0][0].isupper():
+        is_title = True
+        for i, word in enumerate(words):
+            if not any(c.isalpha() for c in word):
+                continue
+            if i == 0:
+                if not word[0].isupper():
+                    is_title = False
+                    break
+            elif word.lower() in _TITLE_CASE_LOWERCASE_WORDS:
+                continue
+            elif not word[0].isupper():
+                is_title = False
+                break
+        if is_title:
+            return "Title Case"
     if text[0].isupper() and all(c.islower() for c in alpha_chars[1:]):
         return "Sentence case"
     if all(c.islower() for c in alpha_chars):
@@ -243,6 +279,7 @@ def check_typography_hierarchy(elements, screenshot, sections, url):
     for tag in ("p", "span", "label", "li"):
         if tag in groups:
             body_elements.extend(groups[tag])
+    body_elements = [el for el in body_elements if not _is_product_content((el.text or "").strip())]
 
     hierarchy_violations = defaultdict(list)
     for h_tag, h_data in heading_levels.items():
@@ -309,6 +346,8 @@ def check_type_scale(elements, screenshot, sections, url, allowed_sizes=None):
     for el in elements:
         text = (el.text or "").strip()
         if not text or el.tag in SKIP_TAGS_ATD:
+            continue
+        if _is_product_content(text):
             continue
         size = _parse_px(el.font_size)
         rounded = round(size)
@@ -425,7 +464,8 @@ def check_element_consistency(elements, screenshot, sections, url):
     ]
 
     for role in check_roles:
-        els = groups.get(role, [])
+        els = [el for el in groups.get(role, [])
+               if not _is_product_content((el.text or "").strip())]
         if len(els) < 3:
             continue
 
@@ -455,9 +495,22 @@ def check_element_consistency(elements, screenshot, sections, url):
             mode_val = val_counts.most_common(1)[0][0]
             outlier_groups = defaultdict(list)
             for v, el in values:
-                if v != mode_val:
-                    outlier_groups[v].append(el)
+                if v == mode_val:
+                    continue
+                if prop_name == "font-weight":
+                    try:
+                        if abs(int(v) - int(mode_val)) < 200:
+                            continue
+                    except ValueError:
+                        pass
+                outlier_groups[v].append(el)
 
+            if not outlier_groups:
+                continue
+
+            total_count = len(values)
+            outlier_groups = {v: out_els for v, out_els in outlier_groups.items()
+                              if len(out_els) / total_count <= 0.25}
             if not outlier_groups:
                 continue
 
@@ -493,6 +546,12 @@ def check_text_case(elements, screenshot, sections, url):
         for el in els:
             text = (el.text or "").strip()
             if len(text) < 2:
+                continue
+            if _is_brand_name(text) or _is_product_content(text):
+                continue
+            if "@" in text:
+                continue
+            if re.search(r'\([^)]+\)', text):
                 continue
 
             transform = (getattr(el, "text_transform", "") or "").lower()
@@ -545,7 +604,8 @@ def check_color_consistency(elements, screenshot, sections, url):
     check_roles = ["button", "h1", "h2", "h3", "link", "label"]
 
     for role in check_roles:
-        els = groups.get(role, [])
+        els = [el for el in groups.get(role, [])
+               if not _is_product_content((el.text or "").strip())]
         if len(els) < 2:
             continue
 
@@ -582,7 +642,11 @@ def check_color_consistency(elements, screenshot, sections, url):
         role_label = role.replace("_", " ").title()
         severity = "major" if is_important else "minor"
 
+        total_color_els = len(color_els)
+
         for cluster in clusters[1:]:
+            if len(cluster) / total_color_els > 0.25:
+                continue
             rgb_val = cluster[0][0]
             actual_color = f"rgb({rgb_val[0]},{rgb_val[1]},{rgb_val[2]})"
             count = len(cluster)
@@ -608,7 +672,8 @@ def check_font_weight_consistency(elements, screenshot, sections, url):
     check_roles = ["button", "h1", "h2", "h3", "h4", "link", "label", "paragraph", "list_item"]
 
     for role in check_roles:
-        els = groups.get(role, [])
+        els = [el for el in groups.get(role, [])
+               if not _is_product_content((el.text or "").strip())]
         if len(els) < 3:
             continue
 
@@ -629,6 +694,8 @@ def check_font_weight_consistency(elements, screenshot, sections, url):
             outlier_groups = defaultdict(list)
             for w, el in weight_els:
                 if w != mode_weight:
+                    if abs(w - mode_weight) < 200:
+                        continue
                     outlier_groups[w].append(el)
 
             role_label = role.replace("_", " ").title()
@@ -707,11 +774,11 @@ def compare_fonts_cross_page(
     uat_font_map = defaultdict(list)
     for el in live_elements:
         text = (el.text or "").strip()
-        if text and len(text) >= 3 and el.tag not in SKIP_TAGS_ATD:
+        if text and len(text) >= 3 and el.tag not in SKIP_TAGS_ATD and not _is_product_content(text):
             live_font_map[text[:50]].append(el)
     for el in uat_elements:
         text = (el.text or "").strip()
-        if text and len(text) >= 3 and el.tag not in SKIP_TAGS_ATD:
+        if text and len(text) >= 3 and el.tag not in SKIP_TAGS_ATD and not _is_product_content(text):
             uat_font_map[text[:50]].append(el)
 
     matched_texts = set(live_font_map.keys()) & set(uat_font_map.keys())
