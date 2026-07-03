@@ -211,7 +211,7 @@
         <div class="url-badge"><div class="lbl">Reference Page (Page 1)</div><div class="val">https://sunglasshut.in/product/burberry-j4kmwn_x4i0</div></div>
         <div class="url-badge"><div class="lbl">Compared Page (Page 2)</div><div class="val">https://sunglasshutlife.fynd.io/product/ar8146587486-13906099?size=50</div></div>
     </div>
-    <div class="report-meta">Report generated: 2026-07-03 12:40:26</div>
+    <div class="report-meta">Report generated: 2026-07-03 12:53:11</div>
 </div>
 
 <div class="container">
@@ -223,10 +223,10 @@
             
             
             
-            <div class="stat total"><div class="num">37</div><div class="lbl">Total Bugs</div></div>
-            <div class="stat crit"><div class="num">4</div><div class="lbl">Critical</div></div>
+            <div class="stat total"><div class="num">34</div><div class="lbl">Total Bugs</div></div>
+            <div class="stat crit"><div class="num">3</div><div class="lbl">Critical</div></div>
             <div class="stat maj"><div class="num">18</div><div class="lbl">Major</div></div>
-            <div class="stat min"><div class="num">15</div><div class="lbl">Minor</div></div>
+            <div class="stat min"><div class="num">13</div><div class="lbl">Minor</div></div>
         </div>
         
         <div style="margin-top:8px;">
@@ -240,16 +240,9 @@
             
             <div class="cat-row">
                 <div class="cat-name">Broken Resources</div>
-                <span class="pill c">4 Critical</span>
-                <span class="pill m">2 Major</span>
+                <span class="pill c">9 Critical</span>
+                <span class="pill m">3 Major</span>
                 <span class="pill n">12 Minor</span>
-            </div>
-            
-            <div class="cat-row">
-                <div class="cat-name">Typography Hierarchy</div>
-                <span class="pill c">1 Critical</span>
-                
-                <span class="pill n">2 Minor</span>
             </div>
             
             <div class="cat-row">
@@ -283,7 +276,7 @@
             <div class="cat-row">
                 <div class="cat-name">Color Consistency</div>
                 
-                <span class="pill m">2 Major</span>
+                <span class="pill m">1 Major</span>
                 
             </div>
             
@@ -333,7 +326,7 @@
         <!-- ATD CONSISTENCY TABLE -->
         <div class="bug-section">
             <h2>ATD Consistency Report — ATD Consistency
-                <span style="font-size:13px;color:var(--gray);font-weight:400;margin-left:6px;">(37 issues)</span>
+                <span style="font-size:13px;color:var(--gray);font-weight:400;margin-left:6px;">(34 issues)</span>
             </h2>
 
             
@@ -352,12 +345,6 @@
                     
                     
                     <option value="Desktop">Desktop</option>
-                    
-                    
-                    
-                    
-                    
-                    
                     
                     
                     
@@ -482,17 +469,17 @@
                         </td>
                     </tr>
                     
-                    <tr class="atd-row sev-critical" data-sev="critical" data-dev="Desktop" data-search="the font is different between uat and live — 6 element(s) like "brands", "men", "ray-ban" use 'inter' on uat but 'roboto' on live. header minor heading ("brands") font mismatch (live vs uat) desktop">
+                    <tr class="atd-row sev-critical" data-sev="critical" data-dev="Desktop" data-search="the font is different between uat and live — 6 element(s) like "men", "kids", "women" use 'inter' on uat but 'roboto' on live. header minor heading ("men") font mismatch (live vs uat) desktop">
                         <td>2 <span class="count-badge" style="font-size:10px;">&times;6</span></td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat ">Font Mismatch (Live vs UAT)</span></td>
                         <td><span class="sev-badge critical">critical</span></td>
                         <td class="atd-element">
-                            Minor Heading ("Brands")
+                            Minor Heading ("Men")
                             <span class="atd-section-label">Header</span>
                         </td>
                         <td class="atd-desc">
-                            The font is different between UAT and Live — 6 element(s) like "Brands", "Men", "Ray-Ban" use 'inter' on UAT but 'roboto' on Live.
+                            The font is different between UAT and Live — 6 element(s) like "Men", "Kids", "Women" use 'inter' on UAT but 'roboto' on Live.
                             
                             <div class="atd-verify">How to verify: 1) Open both Live and UAT pages side by side. 2) Right-click the flagged element on UAT → Inspect → Computed tab → check font-family. 3) Do the same on Live. 4) The font names should match. If UAT shows a different font, the CSS or font file needs updating.</div>
                             
@@ -500,26 +487,26 @@
                             <div class="atd-fix">Update the UAT font-family to match the Live site. Ensure font files are loaded and CSS references the correct family name.</div>
                             
                         </td>
-                        <td><code>UAT: inter (6 elements: "Brands", "Men", "Ray-Ban")</code></td>
+                        <td><code>UAT: inter (6 elements: "Men", "Kids", "Women")</code></td>
                         <td><code>Live: roboto</code></td>
                         <td>
                             
                             <div class="atd-visual-pair">
                                 <div class="atd-visual-box">
                                     <div class="atd-visual-label atd-visual-label-live">LIVE</div>
-                                    <img class="atd-crop-thumb" src="data:image/jpeg;base64,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" alt="Live" onclick="zoom(this.src)">
+                                    <img class="atd-crop-thumb" src="data:image/jpeg;base64,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" alt="Live" onclick="zoom(this.src)">
                                 </div>
                                 <div class="atd-visual-box">
                                     <div class="atd-visual-label atd-visual-label-uat">UAT</div>
-                                    <img class="atd-crop-thumb" src="data:image/jpeg;base64,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" alt="UAT" onclick="zoom(this.src)">
+                                    <img class="atd-crop-thumb" src="data:image/jpeg;base64,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" alt="UAT" onclick="zoom(this.src)">
                                 </div>
                             </div>
                             
                         </td>
                     </tr>
                     
-                    <tr class="atd-row sev-critical" data-sev="critical" data-dev="Desktop" data-search="[compared page] an image is not loading on the page — the file could not be fetched from the server. url: https://cdn.pixelbin.io/v2/falling-surf-7c8bb8/fyprod/wrkr/misc/pictures/free... network broken image broken resources desktop">
-                        <td>3 <span class="count-badge" style="font-size:10px;">&times;6</span></td>
+                    <tr class="atd-row sev-critical" data-sev="critical" data-dev="Desktop" data-search="[compared page] an image is not loading on the page — the file could not be fetched from the server. url: https://hdn-1.fynd.com/misc/pictures/free-icon/resize-w:400/ziebabtur-women-d... network broken image broken resources desktop">
+                        <td>3</td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat cat-network">Broken Resources</span></td>
                         <td><span class="sev-badge critical">critical</span></td>
@@ -528,7 +515,7 @@
                             <span class="atd-section-label">Network</span>
                         </td>
                         <td class="atd-desc">
-                            [Compared Page] An image is not loading on the page — the file could not be fetched from the server. URL: https://cdn.pixelbin.io/v2/falling-surf-7c8bb8/fyprod/wrkr/misc/pictures/free...
+                            [Compared Page] An image is not loading on the page — the file could not be fetched from the server. URL: https://hdn-1.fynd.com/misc/pictures/free-icon/resize-w:400/ZiEbabtUR-Women-d...
                             
                             <div class="atd-verify">How to verify: 1) Open the page in Chrome. 2) Look for broken image icons (small square with a torn corner). 3) Or open DevTools → Network tab → filter by 'Img' → look for red 404 entries. 4) The image URL needs to be fixed or the image file needs to be uploaded.</div>
                             
@@ -536,7 +523,7 @@
                             <div class="atd-fix">Fix the broken image: check the URL path and ensure the file exists on the server.</div>
                             
                         </td>
-                        <td><code>Request was cancelled or blocked: https://cdn.pixelbin.io/v2/falling-surf-7c8bb8/fyprod/wrkr/misc/pictures/free...</code></td>
+                        <td><code>Request was cancelled or blocked: https://hdn-1.fynd.com/misc/pictures/free-icon/resize-w:400/ZiEbabtUR-Women-d...</code></td>
                         <td><code>Should load successfully</code></td>
                         <td>
                             
@@ -545,49 +532,17 @@
                         </td>
                     </tr>
                     
-                    <tr class="atd-row sev-critical" data-sev="critical" data-dev="Desktop" data-search="[compared page] body text is bolder than headings — 2 body elements have font-weight 600, but <h5> headings only have font-weight 500. headings should be bolder than body text. page content text ("account") typography hierarchy desktop">
-                        <td>4 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
-                        <td><span class="atd-device">Desktop</span></td>
-                        <td><span class="atd-cat ">Typography Hierarchy</span></td>
-                        <td><span class="sev-badge critical">critical</span></td>
-                        <td class="atd-element">
-                            Text ("Account")
-                            <span class="atd-section-label">Page Content</span>
-                        </td>
-                        <td class="atd-desc">
-                            [Compared Page] Body text is bolder than headings — 2 body elements have font-weight 600, but <h5> headings only have font-weight 500. Headings should be bolder than body text.
-                            
-                            <div class="atd-verify">How to verify: 1) Visually scan the page — headings should look bigger and bolder than the text below them. 2) If body text looks the same size or bolder than a heading, that's the bug. 3) Right-click both → Inspect → compare font-size and font-weight in Computed tab.</div>
-                            
-                            
-                            <div class="atd-fix">Fix typography hierarchy: headings should be larger/bolder than body text, and h1 > h2 > h3 in size.</div>
-                            
-                        </td>
-                        <td><code>Body text font-weight: 600</code></td>
-                        <td><code><h5> heading font-weight: 500</code></td>
-                        <td>
-                            
-                            <div class="atd-visual-pair">
-                                <div class="atd-visual-box">
-                                    <div class="atd-visual-label atd-visual-label-live">LIVE</div>
-                                    <img class="atd-crop-thumb" src="data:image/jpeg;base64,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" alt="Live" onclick="zoom(this.src)">
-                                </div>
-                            </div>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr class="atd-row sev-major" data-sev="major" data-dev="Desktop" data-search="10 heading(s) appear on the uat site but are not present on the live site: "select delivery location", "follow us", "oakley meta", "brands", "about us", "ar8146587486", "quick links", "need help?", "help & info", "ray-ban" page content small heading ("select delivery location") content visibility (live vs uat) desktop">
-                        <td>5 <span class="count-badge" style="font-size:10px;">&times;10</span></td>
+                    <tr class="atd-row sev-major" data-sev="major" data-dev="Desktop" data-search="10 heading(s) appear on the uat site but are not present on the live site: "brands", "quick links", "about us", "help & info", "oakley meta", "follow us", "need help?", "select delivery location", "ray-ban", "ar8146587486" header minor heading ("brands") content visibility (live vs uat) desktop">
+                        <td>4 <span class="count-badge" style="font-size:10px;">&times;10</span></td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat ">Content Visibility (Live vs UAT)</span></td>
                         <td><span class="sev-badge major">major</span></td>
                         <td class="atd-element">
-                            Small Heading ("Select Delivery Location")
-                            <span class="atd-section-label">Page Content</span>
+                            Minor Heading ("Brands")
+                            <span class="atd-section-label">Header</span>
                         </td>
                         <td class="atd-desc">
-                            10 heading(s) appear on the UAT site but are not present on the Live site: "select delivery location", "follow us", "oakley meta", "brands", "about us", "ar8146587486", "quick links", "need help?", "help & info", "ray-ban"
+                            10 heading(s) appear on the UAT site but are not present on the Live site: "brands", "quick links", "about us", "help & info", "oakley meta", "follow us", "need help?", "select delivery location", "ray-ban", "ar8146587486"
                             
                             <div class="atd-verify">How to verify: 1) Open the UAT page and find the flagged content. 2) Open the Live page and check if the same content exists. 3) If it only shows on UAT, confirm with the design/product team whether it should be visible.</div>
                             
@@ -595,14 +550,18 @@
                             <div class="atd-fix">Verify if this content should be visible — it appears on UAT but not on the Live site.</div>
                             
                         </td>
-                        <td><code>Showing (10 extra headings): "select delivery location", "follow us", "oakley meta", "brands", "about us", "ar8146587486", "quick links", "need help?", "help & info", "ray-ban"</code></td>
+                        <td><code>Showing (10 extra headings): "brands", "quick links", "about us", "help & info", "oakley meta", "follow us", "need help?", "select delivery location", "ray-ban", "ar8146587486"</code></td>
                         <td><code>Not present</code></td>
                         <td>
                             
                             <div class="atd-visual-pair">
                                 <div class="atd-visual-box">
+                                    <div class="atd-visual-label atd-visual-label-live">LIVE</div>
+                                    <img class="atd-crop-thumb" src="data:image/jpeg;base64,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" alt="Live" onclick="zoom(this.src)">
+                                </div>
+                                <div class="atd-visual-box">
                                     <div class="atd-visual-label atd-visual-label-uat">UAT</div>
-                                    <img class="atd-crop-thumb" src="data:image/jpeg;base64,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" alt="UAT" onclick="zoom(this.src)">
+                                    <img class="atd-crop-thumb" src="data:image/jpeg;base64,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" alt="UAT" onclick="zoom(this.src)">
                                 </div>
                             </div>
                             
@@ -610,7 +569,7 @@
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-dev="Desktop" data-search="the font on uat is different from live — 7 span elements use 'montserrat' on uat but 'roboto' on live. page content text ("account") font mismatch (live vs uat) desktop">
-                        <td>6 <span class="count-badge" style="font-size:10px;">&times;7</span></td>
+                        <td>5 <span class="count-badge" style="font-size:10px;">&times;7</span></td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat ">Font Mismatch (Live vs UAT)</span></td>
                         <td><span class="sev-badge major">major</span></td>
@@ -646,7 +605,7 @@
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-dev="Desktop" data-search="text truncation differs: 3 element(s) have different text lengths. e.g. uat has 16 chars vs live has 7 chars footer link ("ray-ban meta faq") text formatting (live vs uat) desktop">
-                        <td>7 <span class="count-badge" style="font-size:10px;">&times;3</span></td>
+                        <td>6 <span class="count-badge" style="font-size:10px;">&times;3</span></td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat ">Text Formatting (Live vs UAT)</span></td>
                         <td><span class="sev-badge major">major</span></td>
@@ -683,7 +642,7 @@
                     
                     <tr class="atd-row sev-major" data-sev="major" data-dev="Desktop" data-search="[compared page] inconsistent color on button: 1 element(s) use rgb(51,51,51) while 4/6 others use rgb(14,14,14) top of page button ("product information
 ›") element consistency desktop">
-                        <td>8 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
+                        <td>7 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat ">Element Consistency</span></td>
                         <td><span class="sev-badge major">major</span></td>
@@ -716,7 +675,7 @@
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-dev="Desktop" data-search="[compared page] inconsistent color on button: 1 element(s) use rgb(0,0,0) while 4/6 others use rgb(14,14,14) page content button ("product description") element consistency desktop">
-                        <td>9 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
+                        <td>8 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat ">Element Consistency</span></td>
                         <td><span class="sev-badge major">major</span></td>
@@ -748,7 +707,7 @@
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-dev="Desktop" data-search="[compared page] button text casing inconsistent: 1 element(s) are mixed (e.g. "shop all sunglass hu") but 4/5 use title case page content button ("shop all sunglass hut") text case desktop">
-                        <td>10 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
+                        <td>9 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat ">Text Case</span></td>
                         <td><span class="sev-badge major">major</span></td>
@@ -779,9 +738,9 @@
                         </td>
                     </tr>
                     
-                    <tr class="atd-row sev-major" data-sev="major" data-dev="Desktop" data-search="[compared page] inconsistent color on button: 1 element(s) use rgb(51,51,51) while 4/6 others use rgb(14,14,14) top of page button ("product information
+                    <tr class="atd-row sev-major" data-sev="major" data-dev="Desktop" data-search="[compared page] inconsistent color on button: 1 element(s) use rgb(51,51,51) while 5/6 others use rgb(14,14,14) top of page button ("product information
 ›") color consistency desktop">
-                        <td>11 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
+                        <td>10 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat ">Color Consistency</span></td>
                         <td><span class="sev-badge major">major</span></td>
@@ -791,7 +750,7 @@
                             <span class="atd-section-label">Top of Page</span>
                         </td>
                         <td class="atd-desc">
-                            [Compared Page] Inconsistent color on Button: 1 element(s) use rgb(51,51,51) while 4/6 others use rgb(14,14,14)
+                            [Compared Page] Inconsistent color on Button: 1 element(s) use rgb(51,51,51) while 5/6 others use rgb(14,14,14)
                             
                             <div class="atd-verify">How to verify: 1) Look at all elements of the same type (e.g., all buttons). 2) They should all be the same color. 3) Right-click each → Inspect → Computed tab → check color. 4) If one button is a different shade, that's the bug.</div>
                             
@@ -800,7 +759,7 @@
                             
                         </td>
                         <td><code>color: rgb(51,51,51) (1 elements)</code></td>
-                        <td><code>color: rgb(14,14,14) (used by 4/6 Buttons)</code></td>
+                        <td><code>color: rgb(14,14,14) (used by 5/6 Buttons)</code></td>
                         <td>
                             
                             <div class="atd-visual-pair">
@@ -813,40 +772,8 @@
                         </td>
                     </tr>
                     
-                    <tr class="atd-row sev-major" data-sev="major" data-dev="Desktop" data-search="[compared page] inconsistent color on button: 1 element(s) use rgb(0,0,0) while 4/6 others use rgb(14,14,14) page content button ("product description") color consistency desktop">
-                        <td>12 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
-                        <td><span class="atd-device">Desktop</span></td>
-                        <td><span class="atd-cat ">Color Consistency</span></td>
-                        <td><span class="sev-badge major">major</span></td>
-                        <td class="atd-element">
-                            Button ("Product Description")
-                            <span class="atd-section-label">Page Content</span>
-                        </td>
-                        <td class="atd-desc">
-                            [Compared Page] Inconsistent color on Button: 1 element(s) use rgb(0,0,0) while 4/6 others use rgb(14,14,14)
-                            
-                            <div class="atd-verify">How to verify: 1) Look at all elements of the same type (e.g., all buttons). 2) They should all be the same color. 3) Right-click each → Inspect → Computed tab → check color. 4) If one button is a different shade, that's the bug.</div>
-                            
-                            
-                            <div class="atd-fix">Use a single, consistent color value for all elements with the same semantic role.</div>
-                            
-                        </td>
-                        <td><code>color: rgb(0,0,0) (1 elements)</code></td>
-                        <td><code>color: rgb(14,14,14) (used by 4/6 Buttons)</code></td>
-                        <td>
-                            
-                            <div class="atd-visual-pair">
-                                <div class="atd-visual-box">
-                                    <div class="atd-visual-label atd-visual-label-live">LIVE</div>
-                                    <img class="atd-crop-thumb" src="data:image/jpeg;base64,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" alt="Live" onclick="zoom(this.src)">
-                                </div>
-                            </div>
-                            
-                        </td>
-                    </tr>
-                    
                     <tr class="atd-row sev-major" data-sev="major" data-dev="Desktop" data-search="2 navigation link(s) are visible on the live site but missing on uat: "ai glasses", "burberry" hero banner / top area link ("burberry") missing elements (live vs uat) desktop">
-                        <td>13 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
+                        <td>11 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat ">Missing Elements (Live vs UAT)</span></td>
                         <td><span class="sev-badge major">major</span></td>
@@ -881,8 +808,33 @@
                         </td>
                     </tr>
                     
+                    <tr class="atd-row sev-major" data-sev="major" data-dev="Desktop" data-search="[compared page] a javascript file failed to load — some page features may not work. url: https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyprod/wrkr/organization/6593ad46... network broken script broken resources desktop">
+                        <td>12 <span class="count-badge" style="font-size:10px;">&times;2</span></td>
+                        <td><span class="atd-device">Desktop</span></td>
+                        <td><span class="atd-cat cat-network">Broken Resources</span></td>
+                        <td><span class="sev-badge major">major</span></td>
+                        <td class="atd-element">
+                            Broken Script
+                            <span class="atd-section-label">Network</span>
+                        </td>
+                        <td class="atd-desc">
+                            [Compared Page] A JavaScript file failed to load — some page features may not work. URL: https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyprod/wrkr/organization/6593ad46...
+                            
+                            
+                            <div class="atd-fix">Fix the broken script: ensure the JavaScript file URL is correct and deployed.</div>
+                            
+                        </td>
+                        <td><code>Request was cancelled or blocked: https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyprod/wrkr/organization/6593ad46...</code></td>
+                        <td><code>Should load successfully</code></td>
+                        <td>
+                            
+                            <div class="atd-no-visual">No visual</div>
+                            
+                        </td>
+                    </tr>
+                    
                     <tr class="atd-row sev-major" data-sev="major" data-dev="Desktop" data-search="[reference page] font size 22px is not a standard size — 1 elements (1x <h1>) use this non-standard size. consider using 20px or 24px instead for consistency. hero banner / top area main heading ("burberry - burberry women cateye sunglasses") design system desktop">
-                        <td>14</td>
+                        <td>13</td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat ">Design System</span></td>
                         <td><span class="sev-badge major">major</span></td>
@@ -914,7 +866,7 @@
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-dev="Desktop" data-search="[compared page] font size 13px is not a standard size — 1 elements (1x <button>) use this non-standard size. consider using 12px or 14px instead for consistency. page content button ("product description") design system desktop">
-                        <td>15</td>
+                        <td>14</td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat ">Design System</span></td>
                         <td><span class="sev-badge major">major</span></td>
@@ -947,7 +899,7 @@
                     
                     <tr class="atd-row sev-major" data-sev="major" data-dev="Desktop" data-search="[compared page] inconsistent font-size on button: 1 element(s) use 12 while 2/6 others use 16 top of page button ("product information
 ›") element consistency desktop">
-                        <td>16</td>
+                        <td>15</td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat ">Element Consistency</span></td>
                         <td><span class="sev-badge major">major</span></td>
@@ -980,7 +932,7 @@
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-dev="Desktop" data-search="[compared page] inconsistent font-size on button: 1 element(s) use 13 while 2/6 others use 16 page content button ("product description") element consistency desktop">
-                        <td>17</td>
+                        <td>16</td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat ">Element Consistency</span></td>
                         <td><span class="sev-badge major">major</span></td>
@@ -1012,7 +964,7 @@
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-dev="Desktop" data-search="[compared page] inconsistent font-weight on link: 1 element(s) use 400 while 7/8 use 600 at ~16px page content link ("shop all sunglass hut") font weight consistency desktop">
-                        <td>18</td>
+                        <td>17</td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat ">Font Weight Consistency</span></td>
                         <td><span class="sev-badge major">major</span></td>
@@ -1044,7 +996,7 @@
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-dev="Desktop" data-search="[reference page] a javascript file failed to load — some page features may not work. url: https://cdn.mouseflow.com/projects/disabled.js network broken script broken resources desktop">
-                        <td>19</td>
+                        <td>18</td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat cat-network">Broken Resources</span></td>
                         <td><span class="sev-badge major">major</span></td>
@@ -1069,7 +1021,7 @@
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-dev="Desktop" data-search="[reference page] a javascript file failed to load — some page features may not work. url: https://wcdn.ril.com/cdn/menuconfig.js network broken script broken resources desktop">
-                        <td>20</td>
+                        <td>19</td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat cat-network">Broken Resources</span></td>
                         <td><span class="sev-badge major">major</span></td>
@@ -1094,7 +1046,7 @@
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-dev="Desktop" data-search="[reference page] the browser reported an error while loading the page: failed to load resource: the server responded with a status of 401 () browser console console error console errors desktop">
-                        <td>21</td>
+                        <td>20</td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat cat-network">Console Errors</span></td>
                         <td><span class="sev-badge major">major</span></td>
@@ -1121,7 +1073,7 @@
                     </tr>
                     
                     <tr class="atd-row sev-major" data-sev="major" data-dev="Desktop" data-search="[reference page] the browser reported an error while loading the page: failed to load resource: net::err_connection_reset browser console console error console errors desktop">
-                        <td>22</td>
+                        <td>21</td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat cat-network">Console Errors</span></td>
                         <td><span class="sev-badge major">major</span></td>
@@ -1148,7 +1100,7 @@
                     </tr>
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-dev="Desktop" data-search="[compared page] inconsistent font-size on link: 11 element(s) use 14 while 26/45 others use 12 header link ("ray-ban") element consistency desktop">
-                        <td>23 <span class="count-badge" style="font-size:10px;">&times;11</span></td>
+                        <td>22 <span class="count-badge" style="font-size:10px;">&times;11</span></td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat ">Element Consistency</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
@@ -1180,7 +1132,7 @@
                     </tr>
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-dev="Desktop" data-search="[compared page] inconsistent font-size on link: 8 element(s) use 16 while 26/45 others use 12 top of page link ("ray-ban") element consistency desktop">
-                        <td>24 <span class="count-badge" style="font-size:10px;">&times;8</span></td>
+                        <td>23 <span class="count-badge" style="font-size:10px;">&times;8</span></td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat ">Element Consistency</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
@@ -1212,7 +1164,7 @@
                     </tr>
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-dev="Desktop" data-search="[compared page] inconsistent font-weight on link: 7 element(s) use 600 while 34/45 others use 400 top of page link ("ray-ban") element consistency desktop">
-                        <td>25 <span class="count-badge" style="font-size:10px;">&times;7</span></td>
+                        <td>24 <span class="count-badge" style="font-size:10px;">&times;7</span></td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat ">Element Consistency</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
@@ -1244,7 +1196,7 @@
                     </tr>
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-dev="Desktop" data-search="[reference page] the browser reported an error while loading the page: could not set dynamic cdn path browser console console warning console errors desktop">
-                        <td>26 <span class="count-badge" style="font-size:10px;">&times;3</span></td>
+                        <td>25 <span class="count-badge" style="font-size:10px;">&times;3</span></td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat cat-network">Console Errors</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
@@ -1271,7 +1223,7 @@
                     </tr>
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-dev="Desktop" data-search="[compared page] a resource file failed to load from the server. url: https://sunglasshutlife.fynd.io/api/service/application/graphql/ network broken other broken resources desktop">
-                        <td>27 <span class="count-badge" style="font-size:10px;">&times;3</span></td>
+                        <td>26 <span class="count-badge" style="font-size:10px;">&times;3</span></td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat cat-network">Broken Resources</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
@@ -1296,7 +1248,7 @@
                     </tr>
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-dev="Desktop" data-search="[reference page] inconsistent font-size on link: 1 element(s) use 16 while 7/8 others use 14 hero banner / top area link ("burberry") element consistency desktop">
-                        <td>28</td>
+                        <td>27</td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat ">Element Consistency</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
@@ -1331,73 +1283,9 @@
                         </td>
                     </tr>
                     
-                    <tr class="atd-row sev-minor" data-sev="minor" data-dev="Desktop" data-search="[compared page] heading looks the same as body text — <h4> has the same size (14.0px) and weight (400) as nearby body text, so users cannot tell them apart. page content small heading ("select delivery location") typography hierarchy desktop">
-                        <td>29</td>
-                        <td><span class="atd-device">Desktop</span></td>
-                        <td><span class="atd-cat ">Typography Hierarchy</span></td>
-                        <td><span class="sev-badge minor">minor</span></td>
-                        <td class="atd-element">
-                            Small Heading ("Select Delivery Location")
-                            <span class="atd-section-label">Page Content</span>
-                        </td>
-                        <td class="atd-desc">
-                            [Compared Page] Heading looks the same as body text — <h4> has the same size (14.0px) and weight (400) as nearby body text, so users cannot tell them apart.
-                            
-                            <div class="atd-verify">How to verify: 1) Visually scan the page — headings should look bigger and bolder than the text below them. 2) If body text looks the same size or bolder than a heading, that's the bug. 3) Right-click both → Inspect → compare font-size and font-weight in Computed tab.</div>
-                            
-                            
-                            <div class="atd-fix">Fix typography hierarchy: headings should be larger/bolder than body text, and h1 > h2 > h3 in size.</div>
-                            
-                        </td>
-                        <td><code><h4> heading: 14.0px / weight 400</code></td>
-                        <td><code>Body text: 14.0px / weight 400</code></td>
-                        <td>
-                            
-                            <div class="atd-visual-pair">
-                                <div class="atd-visual-box">
-                                    <div class="atd-visual-label atd-visual-label-live">LIVE</div>
-                                    <img class="atd-crop-thumb" src="data:image/jpeg;base64,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" alt="Live" onclick="zoom(this.src)">
-                                </div>
-                            </div>
-                            
-                        </td>
-                    </tr>
-                    
-                    <tr class="atd-row sev-minor" data-sev="minor" data-dev="Desktop" data-search="[compared page] heading looks the same as body text — <h5> has the same size (14.0px) and weight (400) as nearby body text, so users cannot tell them apart. header minor heading ("new arrivals") typography hierarchy desktop">
-                        <td>30</td>
-                        <td><span class="atd-device">Desktop</span></td>
-                        <td><span class="atd-cat ">Typography Hierarchy</span></td>
-                        <td><span class="sev-badge minor">minor</span></td>
-                        <td class="atd-element">
-                            Minor Heading ("New Arrivals")
-                            <span class="atd-section-label">Header</span>
-                        </td>
-                        <td class="atd-desc">
-                            [Compared Page] Heading looks the same as body text — <h5> has the same size (14.0px) and weight (400) as nearby body text, so users cannot tell them apart.
-                            
-                            <div class="atd-verify">How to verify: 1) Visually scan the page — headings should look bigger and bolder than the text below them. 2) If body text looks the same size or bolder than a heading, that's the bug. 3) Right-click both → Inspect → compare font-size and font-weight in Computed tab.</div>
-                            
-                            
-                            <div class="atd-fix">Fix typography hierarchy: headings should be larger/bolder than body text, and h1 > h2 > h3 in size.</div>
-                            
-                        </td>
-                        <td><code><h5> heading: 14.0px / weight 400</code></td>
-                        <td><code>Body text: 14.0px / weight 400</code></td>
-                        <td>
-                            
-                            <div class="atd-visual-pair">
-                                <div class="atd-visual-box">
-                                    <div class="atd-visual-label atd-visual-label-live">LIVE</div>
-                                    <img class="atd-crop-thumb" src="data:image/jpeg;base64,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" alt="Live" onclick="zoom(this.src)">
-                                </div>
-                            </div>
-                            
-                        </td>
-                    </tr>
-                    
                     <tr class="atd-row sev-minor" data-sev="minor" data-dev="Desktop" data-search="[compared page] 1 form label(s) use <div> instead of <label> — screen readers cannot associate these labels with their form fields. page content content block ("select delivery location
 check") semantic html desktop">
-                        <td>31</td>
+                        <td>28</td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat ">Semantic HTML</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
@@ -1430,7 +1318,7 @@ CHECK")
                     </tr>
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-dev="Desktop" data-search="[compared page] inconsistent font-family on link: 1 element(s) use montserrat while 30/45 others use roboto page content link ("shop all sunglass hut") element consistency desktop">
-                        <td>32</td>
+                        <td>29</td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat ">Element Consistency</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
@@ -1462,7 +1350,7 @@ CHECK")
                     </tr>
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-dev="Desktop" data-search="[reference page] a resource file failed to load from the server. url: https://sunglasshut.in/api/service/application/user/authentication/v1.0/session network broken other broken resources desktop">
-                        <td>33</td>
+                        <td>30</td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat cat-network">Broken Resources</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
@@ -1487,7 +1375,7 @@ CHECK")
                     </tr>
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-dev="Desktop" data-search="[reference page] a resource file failed to load from the server. url: https://sunglasshut.in/ext/recalpha/api/application/v1.0/recommend/brand?item... network broken other broken resources desktop">
-                        <td>34</td>
+                        <td>31</td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat cat-network">Broken Resources</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
@@ -1512,7 +1400,7 @@ CHECK")
                     </tr>
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-dev="Desktop" data-search="[reference page] a resource file failed to load from the server. url: https://api.fynd.com/service/application/logistics/v1.0/ network broken other broken resources desktop">
-                        <td>35</td>
+                        <td>32</td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat cat-network">Broken Resources</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
@@ -1537,7 +1425,7 @@ CHECK")
                     </tr>
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-dev="Desktop" data-search="[reference page] the browser reported an error while loading the page: failed to execute 'postmessage' on 'domwindow': the target origin provided ('https://platform.fynd.com') does not match the recipient window's origin  browser console console warning console errors desktop">
-                        <td>36</td>
+                        <td>33</td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat cat-network">Console Errors</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
@@ -1564,7 +1452,7 @@ CHECK")
                     </tr>
                     
                     <tr class="atd-row sev-minor" data-sev="minor" data-dev="Desktop" data-search="[compared page] the browser reported an error while loading the page: the resource https://sunglasshutlife.fynd.io/cdn/public/proddist/styles.1e194bdbe719e98a99bd.css was preloaded using link preload but not used within  browser console console warning console errors desktop">
-                        <td>37</td>
+                        <td>34</td>
                         <td><span class="atd-device">Desktop</span></td>
                         <td><span class="atd-cat cat-network">Console Errors</span></td>
                         <td><span class="sev-badge minor">minor</span></td>
