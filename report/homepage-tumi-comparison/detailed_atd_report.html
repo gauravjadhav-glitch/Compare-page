@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TUMI Detailed ATD Report — 3-Column Element-Level Analysis</title>
+<style>
+    :root {
+        --critical: #DC2626;
+        --critical-bg: #FEF2F2;
+        --critical-border: #FECACA;
+        --major: #EA580C;
+        --major-bg: #FFF7ED;
+        --major-border: #FED7AA;
+        --minor: #2563EB;
+        --minor-bg: #EFF6FF;
+        --minor-border: #BFDBFE;
+        --pass: #16A34A;
+        --pass-bg: #F0FDF4;
+        --pass-border: #BBF7D0;
+        --dark: #111827;
+        --gray: #6B7280;
+        --light: #F3F4F6;
+        --white: #FFFFFF;
+        --border: #E5E7EB;
+        --shadow: 0 2px 8px rgba(0,0,0,0.06);
+        --col-fynd: #7C3AED;
+        --col-fynd-bg: #F5F3FF;
+        --col-tumi: #0891B2;
+        --col-tumi-bg: #ECFEFF;
+        --col-spec: #059669;
+        --col-spec-bg: #ECFDF5;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #F9FAFB; color: var(--dark); line-height: 1.6; font-size: 13px; }
+
+    .report-header {
+        background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+        color: white; padding: 36px 40px;
+    }
+    .report-header h1 { font-size: 26px; font-weight: 700; margin-bottom: 4px; }
+    .report-header .subtitle { font-size: 14px; opacity: 0.6; margin-bottom: 18px; }
+    .url-row { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 12px; }
+    .url-badge { background: rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 16px; font-size: 13px; flex: 1; min-width: 200px; }
+    .url-badge .lbl { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.5; margin-bottom: 2px; }
+    .url-badge .val { word-break: break-all; }
+    .url-badge.fynd .val { color: #C4B5FD; }
+    .url-badge.tumi .val { color: #67E8F9; }
+    .url-badge.spec .val { color: #6EE7B7; }
+    .report-meta { font-size: 11px; opacity: 0.4; }
+
+    .container { max-width: 1900px; margin: 0 auto; padding: 28px 24px; }
+
+    .section { background: var(--white); border-radius: 14px; padding: 28px; margin-bottom: 28px; box-shadow: var(--shadow); }
+    .section h2 { font-size: 20px; margin-bottom: 6px; border-left: 4px solid var(--dark); padding-left: 12px; }
+    .section .section-desc { font-size: 12px; color: var(--gray); margin-bottom: 20px; padding-left: 16px; }
+
+    .three-col-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .three-col-table thead th {
+        padding: 10px 12px; text-align: left; font-size: 10px; text-transform: uppercase;
+        letter-spacing: 0.5px; position: sticky; top: 0; z-index: 10; white-space: nowrap;
+    }
+    .three-col-table th.th-check { background: #374151; color: white; width: 18%; }
+    .three-col-table th.th-fynd { background: var(--col-fynd); color: white; width: 28%; }
+    .three-col-table th.th-tumi { background: var(--col-tumi); color: white; width: 28%; }
+    .three-col-table th.th-spec { background: var(--col-spec); color: white; width: 18%; }
+    .three-col-table th.th-status { background: #374151; color: white; width: 8%; text-align: center; }
+
+    .three-col-table td {
+        padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top;
+    }
+    .three-col-table tr:hover { background: #FAFBFC; }
+
+    .three-col-table td.td-check { font-weight: 600; font-size: 12px; }
+    .three-col-table td.td-fynd { background: #FDFCFF; }
+    .three-col-table td.td-tumi { background: #FAFEFF; }
+    .three-col-table td.td-spec { background: #FAFDFB; }
+    .three-col-table td.td-status { text-align: center; }
+
+    .val-cell { font-size: 11px; line-height: 1.7; }
+    .val-cell code { background: #F3F4F6; padding: 1px 5px; border-radius: 3px; font-size: 10px; }
+    .val-cell .mismatch { color: var(--critical); font-weight: 700; }
+    .val-cell .match { color: var(--pass); }
+    .val-cell .warn { color: var(--major); font-weight: 600; }
+
+    .status-badge {
+        display: inline-block; padding: 3px 8px; border-radius: 12px;
+        font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .status-badge.fail { background: var(--critical-bg); color: var(--critical); border: 1px solid var(--critical-border); }
+    .status-badge.warn { background: var(--major-bg); color: var(--major); border: 1px solid var(--major-border); }
+    .status-badge.pass { background: var(--pass-bg); color: var(--pass); border: 1px solid var(--pass-border); }
+    .status-badge.info { background: var(--minor-bg); color: var(--minor); border: 1px solid var(--minor-border); }
+
+    .sev-indicator { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+    .sev-indicator.critical { background: var(--critical); }
+    .sev-indicator.major { background: var(--major); }
+    .sev-indicator.minor { background: var(--minor); }
+
+    .color-swatch {
+        display: inline-block; width: 14px; height: 14px; border-radius: 3px;
+        border: 1px solid #DDD; vertical-align: middle; margin-right: 4px;
+    }
+
+    .el-table { width: 100%; border-collapse: collapse; font-size: 11px; margin: 8px 0; }
+    .el-table th { background: #374151; color: #fff; padding: 6px 8px; text-align: left; font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .el-table td { padding: 5px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .el-table tr:hover { background: var(--light); }
+    .el-table .tag { color: #7C3AED; font-weight: 700; }
+    .el-table .fail { color: var(--critical); font-weight: 700; }
+    .el-table .warn { color: var(--major); font-weight: 600; }
+    .el-table .pass { color: var(--pass); font-weight: 600; }
+    .el-table code { background: #F3F4F6; padding: 1px 4px; border-radius: 3px; font-size: 10px; }
+
+    .note { background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 6px; padding: 10px; font-size: 11px; color: #92400E; margin: 8px 0; }
+
+    .summary-box { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; margin-bottom: 12px; }
+    .sb { border-radius: 8px; padding: 10px; text-align: center; }
+    .sb .n { font-size: 24px; font-weight: 800; line-height: 1.1; }
+    .sb .l { font-size: 9px; color: var(--gray); margin-top: 2px; text-transform: uppercase; font-weight: 600; }
+    .sb.cr { background: var(--critical-bg); border: 1px solid var(--critical-border); } .sb.cr .n { color: var(--critical); }
+    .sb.mj { background: var(--major-bg); border: 1px solid var(--major-border); } .sb.mj .n { color: var(--major); }
+    .sb.mn { background: var(--minor-bg); border: 1px solid var(--minor-border); } .sb.mn .n { color: var(--minor); }
+    .sb.ps { background: var(--pass-bg); border: 1px solid var(--pass-border); } .sb.ps .n { color: var(--pass); }
+    .sb.t { background: var(--light); border: 1px solid var(--border); } .sb.t .n { color: var(--dark); }
+
+    .report-footer { text-align: center; padding: 36px; color: var(--gray); font-size: 11px; }
+
+    .mono { font-family: monospace; font-size: 10px; word-break: break-all; color: var(--gray); }
+
+    @media print { body { background: white; } .section { box-shadow: none; border: 1px solid var(--border); } }
+</style>
+</head>
+<body>
+
+<div class="report-header">
+    <h1>TUMI Detailed ATD Report — Element-Level Analysis</h1>
+    <div class="subtitle">Homepage — Every Flagged Element with Exact CSS Values | 3-Column Comparison</div>
+    <div class="url-row">
+        <div class="url-badge fynd">
+            <div class="lbl">Brand 1 (Fynd / UAT)</div>
+            <div class="val">https://tumidesign.fynd.io/</div>
+        </div>
+        <div class="url-badge tumi">
+            <div class="lbl">Brand 2 (Live / Reference)</div>
+            <div class="val">https://www.tumi.sg/</div>
+        </div>
+        <div class="url-badge spec">
+            <div class="lbl">Design Spec (Document)</div>
+            <div class="val">TUMI Design System Reference — Google Doc</div>
+        </div>
+    </div>
+    <div class="report-meta">Generated: July 13, 2026 | Viewport: Desktop 1920x1080 | 500 elements scraped per page | All CSS values are computed (rendered) values</div>
+</div>
+
+<div class="container">
+
+<!-- ======================== SECTION 1: FONT FAMILY ======================== -->
+<div class="section">
+    <h2>1. Font Family — Variant Analysis</h2>
+    <div class="section-desc">Spec requires "Proxima Nova" throughout. Both sites load it correctly, but declaration variants differ.</div>
+
+    <table class="three-col-table">
+        <thead>
+            <tr>
+                <th class="th-check">Check Point</th>
+                <th class="th-fynd">tumidesign.fynd.io (Fynd)</th>
+                <th class="th-tumi">www.tumi.sg (Tumi)</th>
+                <th class="th-spec">Design Spec</th>
+                <th class="th-status">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="td-check"><span class="sev-indicator minor"></span>Primary Font Declaration</td>
+                <td class="td-fynd val-cell">
+                    <code>ProximaNova</code> — <strong>472 elements</strong><br>
+                    <span class="match">Correct base declaration</span><br>
+                    Used on: divs, links, headings, buttons, sections, nav, articles
+                </td>
+                <td class="td-tumi val-cell">
+                    <code>ProximaNova, sans-serif</code> — <strong>~490 elements</strong><br>
+                    <span class="match">Consistent single declaration</span><br>
+                    Used on: all elements site-wide
+                </td>
+                <td class="td-spec val-cell">
+                    <strong>"Proxima Nova"</strong><br>
+                    Primary and only font family in the design system.
+                </td>
+                <td class="td-status"><span class="status-badge pass">PASS</span></td>
+            </tr>
+            <tr>
+                <td class="td-check"><span class="sev-indicator minor"></span>Alternate Font Variants</td>
+                <td class="td-fynd val-cell">
+                    <strong>Variant 2:</strong> <code>"Proxima Nova", ProximaNova, sans-serif</code> — <strong>27 elements</strong><br>
+                    <span class="warn">Expanded declaration on price elements:</span>
+                    <table class="el-table">
+                        <thead><tr><th>Tag</th><th>Sample Text</th><th>Size</th><th>Wt</th></tr></thead>
+                        <tbody>
+                            <tr><td class="tag">&lt;p&gt;</td><td>&#8377;1,000</td><td><code>14px</code></td><td>400</td></tr>
+                            <tr><td class="tag">&lt;p&gt;</td><td>&#8377;1,200 - &#8377;1,500</td><td><code>14px</code></td><td>400</td></tr>
+                            <tr><td class="tag">&lt;p&gt;</td><td>&#8377;1,895</td><td><code>14px</code></td><td>400</td></tr>
+                            <tr><td class="tag">&lt;p&gt;</td><td>&#8377;4,495</td><td><code>14px</code></td><td>400</td></tr>
+                            <tr><td class="tag">&lt;p&gt;</td><td>&#8377;8,495</td><td><code>14px</code></td><td>400</td></tr>
+                            <tr><td colspan="4" style="color:var(--gray)">... + 22 more price &lt;p&gt; elements (all 14px, wt 400)</td></tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <strong>Variant 3:</strong> <code>Proxima-Nova, sans-serif</code> — <strong>1 element</strong><br>
+                    <table class="el-table">
+                        <thead><tr><th>Tag</th><th>Text</th><th>Size</th><th>Wt</th><th>Color</th></tr></thead>
+                        <tbody>
+                            <tr><td class="tag">&lt;a&gt;</td><td>"Enjoy 10x Membership Rewards..."</td><td><code>13px</code></td><td>400</td><td>rgb(255,255,255)</td></tr>
+                        </tbody>
+                    </table>
+                    <span class="warn">Hyphenated variant — likely from injected third-party stylesheet</span>
+                </td>
+                <td class="td-tumi val-cell">
+                    <strong>No alternate variants detected.</strong><br>
+                    <span class="match">All ~490 elements use single consistent declaration</span><br>
+                    <code>ProximaNova, sans-serif</code> throughout.
+                </td>
+                <td class="td-spec val-cell">
+                    Single font declaration expected.<br>
+                    No variant mixing.
+                </td>
+                <td class="td-status"><span class="status-badge warn">WARN</span></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="note"><strong>Verdict:</strong> Both sites DO load Proxima Nova correctly. Fynd has 3 different CSS declaration variants pointing to the same font — indicates different CSS sources or overrides. Tumi uses one consistent declaration.</div>
+</div>
+
+<!-- ======================== SECTION 2: HEADING HIERARCHY ======================== -->
+<div class="section">
+    <h2>2. Heading Hierarchy — Full Element Breakdown</h2>
+    <div class="section-desc">Spec: H1 > H2 > H3 > H4 > H5 > H6 in descending size order. Only ONE &lt;h1&gt; per page for SEO.</div>
+
+    <table class="three-col-table">
+        <thead>
+            <tr>
+                <th class="th-check">Heading Level</th>
+                <th class="th-fynd">tumidesign.fynd.io (Fynd)</th>
+                <th class="th-tumi">www.tumi.sg (Tumi)</th>
+                <th class="th-spec">Design Spec</th>
+                <th class="th-status">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="td-check"><span class="sev-indicator critical"></span>&lt;h1&gt; Tags</td>
+                <td class="td-fynd val-cell">
+                    <span class="mismatch">3x &lt;h1&gt; tags found (should be 1):</span>
+                    <table class="el-table">
+                        <thead><tr><th>#</th><th>Text</th><th>Size</th><th>Wt</th><th>Y Pos</th><th>Issue</th></tr></thead>
+                        <tbody>
+                            <tr style="background:var(--critical-bg)"><td>1</td><td><strong>"TUMI Redesign React"</strong></td><td><code>36px</code></td><td>700</td><td>124px</td><td class="fail">Debug text — should not be visible. 36px not in spec.</td></tr>
+                            <tr style="background:var(--critical-bg)"><td>2</td><td>"THE MCLAREN COLLECTION"</td><td><code>14px</code></td><td>400</td><td>355px</td><td class="fail">H1 at 14px is SMALLER than H2 (30px) and H5 (16px)</td></tr>
+                            <tr style="background:var(--critical-bg)"><td>3</td><td>"MADE TO MOVE"</td><td><code>14px</code></td><td>400</td><td>2770px</td><td class="fail">Third H1 — page should only have ONE</td></tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td class="td-tumi val-cell">
+                    <strong>No &lt;h1&gt; tags found.</strong><br>
+                    <span class="warn">Missing H1 entirely — bad for SEO</span>
+                </td>
+                <td class="td-spec val-cell">
+                    Only <strong>ONE</strong> &lt;h1&gt; per page.<br>
+                    Must be the largest heading on the page.
+                </td>
+                <td class="td-status"><span class="status-badge fail">FAIL</span></td>
+            </tr>
+            <tr>
+                <td class="td-check"><span class="sev-indicator minor"></span>&lt;h2&gt; Tags</td>
+                <td class="td-fynd val-cell">
+                    <strong>7 &lt;h2&gt; elements — all at 30px, weight 300</strong>
+                    <table class="el-table">
+                        <thead><tr><th>#</th><th>Text</th><th>Size</th><th>Wt</th><th>Y Pos</th></tr></thead>
+                        <tbody>
+                            <tr><td>1</td><td>"Shop your favourites"</td><td><code>30px</code></td><td>300</td><td>935px</td></tr>
+                            <tr><td>2</td><td>"Shop Bestsellers"</td><td><code>30px</code></td><td>300</td><td>3208px</td></tr>
+                            <tr><td>3-6</td><td>"Sustainability" (x4 duplicates)</td><td><code>30px</code></td><td>300</td><td>5287px</td></tr>
+                            <tr><td>7</td><td>"You May Also Like"</td><td><code>30px</code></td><td>300</td><td>5613px</td></tr>
+                        </tbody>
+                    </table>
+                    <span class="match">Valid — matches "Header 30 - Light"</span>
+                </td>
+                <td class="td-tumi val-cell">
+                    <strong>9 &lt;h2&gt; elements — all at 30px, weight 500</strong>
+                    <table class="el-table">
+                        <thead><tr><th>#</th><th>Text</th><th>Size</th><th>Wt</th></tr></thead>
+                        <tbody>
+                            <tr><td>1-9</td><td>"Vail Medium Tote", "International Carry-On", "Halsey Backpack"... (product names)</td><td><code>30px</code></td><td>500</td></tr>
+                        </tbody>
+                    </table>
+                    <span class="warn">Weight 500 — spec says 300 (Light) for Header 30</span>
+                </td>
+                <td class="td-spec val-cell">
+                    <strong>Header 30 - Light</strong><br>
+                    Size: 30px<br>
+                    Weight: 300 (Light)
+                </td>
+                <td class="td-status"><span class="status-badge warn">WARN</span></td>
+            </tr>
+            <tr>
+                <td class="td-check"><span class="sev-indicator minor"></span>&lt;h3&gt; Tags</td>
+                <td class="td-fynd val-cell">
+                    <strong>27 &lt;h3&gt; elements — all at 15px, weight 400</strong>
+                    <table class="el-table">
+                        <thead><tr><th>#</th><th>Text</th><th>Size</th><th>Wt</th><th>Issue</th></tr></thead>
+                        <tbody>
+                            <tr><td>1-20</td><td>"fiona zip tote...", "tabby shoulder bag...", "margot slingback..." (product names)</td><td><code>15px</code></td><td>400</td><td>Product tile names — test catalogue data</td></tr>
+                            <tr style="background:var(--critical-bg)"><td>21</td><td>"ashish.kap"</td><td><code>15px</code></td><td>400</td><td class="fail">Debug/test data — developer name as product</td></tr>
+                            <tr><td>22-27</td><td>More product names from "You May Also Like"</td><td><code>15px</code></td><td>400</td><td>Test catalogue data</td></tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td class="td-tumi val-cell">
+                    <strong>1 &lt;h3&gt; element</strong>
+                    <table class="el-table">
+                        <thead><tr><th>Text</th><th>Size</th><th>Wt</th></tr></thead>
+                        <tbody>
+                            <tr><td>"Shop Bestsellers"</td><td><code>30px</code></td><td>300</td></tr>
+                        </tbody>
+                    </table>
+                    <span class="match">Valid — Header 30 Light</span>
+                </td>
+                <td class="td-spec val-cell">
+                    H3 should be smaller than H2.<br>
+                    Typical usage: subsection headers.
+                </td>
+                <td class="td-status"><span class="status-badge pass">PASS</span></td>
+            </tr>
+            <tr>
+                <td class="td-check"><span class="sev-indicator critical"></span>&lt;h4&gt; and &lt;h5&gt; Tags</td>
+                <td class="td-fynd val-cell">
+                    <strong>No &lt;h4&gt; tags. 10 &lt;h5&gt; elements at 16px, weight 600:</strong>
+                    <table class="el-table">
+                        <thead><tr><th>#</th><th>Text</th><th>Size</th><th>Wt</th><th>Issue</th></tr></thead>
+                        <tbody>
+                            <tr><td>1</td><td>"SALE"</td><td><code>16px</code></td><td>600</td><td class="warn">Nav item as H5</td></tr>
+                            <tr><td>2</td><td>"Men"</td><td><code>16px</code></td><td>600</td><td class="warn">Nav item as H5</td></tr>
+                            <tr><td>3</td><td>"Women"</td><td><code>16px</code></td><td>600</td><td class="warn">Nav item as H5</td></tr>
+                            <tr><td>4</td><td>"Luggage"</td><td><code>16px</code></td><td>600</td><td class="warn">Nav item as H5</td></tr>
+                            <tr><td>5</td><td>"Backpacks"</td><td><code>16px</code></td><td>600</td><td class="warn">Nav item as H5</td></tr>
+                            <tr><td>6</td><td>"Bags"</td><td><code>16px</code></td><td>600</td><td class="warn">Nav item as H5</td></tr>
+                            <tr><td>7</td><td>"Accessories"</td><td><code>16px</code></td><td>600</td><td class="warn">Nav item as H5</td></tr>
+                            <tr><td>8</td><td>"Collections"</td><td><code>16px</code></td><td>600</td><td class="warn">Nav item as H5</td></tr>
+                            <tr><td>9</td><td>"Gifting"</td><td><code>16px</code></td><td>600</td><td class="warn">Nav item as H5</td></tr>
+                            <tr><td>10</td><td>"Services"</td><td><code>16px</code></td><td>600</td><td class="warn">Nav item as H5</td></tr>
+                        </tbody>
+                    </table>
+                    <span class="mismatch">H5 (16px) > H3 (15px) = inverted hierarchy</span>
+                </td>
+                <td class="td-tumi val-cell">
+                    <strong>8 &lt;h4&gt; elements:</strong>
+                    <table class="el-table">
+                        <thead><tr><th>#</th><th>Text</th><th>Size</th><th>Wt</th><th>Issue</th></tr></thead>
+                        <tbody>
+                            <tr><td>1</td><td>"TUMI eGift Card"</td><td><code>72.96px</code></td><td>300</td><td class="fail">Not in spec scale</td></tr>
+                            <tr><td>2-5</td><td>"PRESENTING", "THE NEXT DESTINATION", "HELLO 2026", "PERFECT EVERY LOOK"</td><td><code>19.2px</code></td><td>300</td><td class="warn">~20px spec</td></tr>
+                            <tr><td>6</td><td>"The Q Tote"</td><td><code>76.8px</code></td><td>300</td><td class="fail">Not in spec scale</td></tr>
+                        </tbody>
+                    </table>
+                    <strong>6 &lt;h5&gt; elements:</strong>
+                    <table class="el-table">
+                        <thead><tr><th>#</th><th>Text</th><th>Size</th><th>Wt</th><th>Issue</th></tr></thead>
+                        <tbody>
+                            <tr style="background:var(--critical-bg)"><td>1-2</td><td>"Mediterranean Escape", "Where Style Meets Precision"</td><td><code>67.2px</code></td><td>300</td><td class="fail">H5 (67.2px) LARGER than H4 (19.2px)</td></tr>
+                            <tr><td>3-4</td><td>"TUMI Alpha", "New Year, New Places to see"</td><td><code>53.76px</code></td><td>300</td><td class="pass">~54px matches Header 54</td></tr>
+                            <tr><td>5</td><td>"MADE TO MOVE"</td><td><code>22.08px</code></td><td>300</td><td class="warn">Not in spec (closest: 24px)</td></tr>
+                        </tbody>
+                    </table>
+                    <span class="mismatch">H5 (67.2px) > H4 (19.2px) = inverted</span>
+                </td>
+                <td class="td-spec val-cell">
+                    Heading sizes must descend:<br>
+                    H1 > H2 > H3 > H4 > H5<br><br>
+                    Valid spec sizes:<br>
+                    <code>54, 42, 30, 24, 20, 15, 14, 13, 12</code> px
+                </td>
+                <td class="td-status"><span class="status-badge fail">FAIL</span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- ======================== SECTION 3: BASE FONT SIZE ======================== -->
+<div class="section">
+    <h2>3. Base Font Size: 16px vs Spec 15px</h2>
+    <div class="section-desc">Fynd uses 16px as the dominant base size. Spec says body text should be 15px (Body 15 - Regular).</div>
+
+    <table class="three-col-table">
+        <thead>
+            <tr>
+                <th class="th-check">Check Point</th>
+                <th class="th-fynd">tumidesign.fynd.io (Fynd)</th>
+                <th class="th-tumi">www.tumi.sg (Tumi)</th>
+                <th class="th-spec">Design Spec</th>
+                <th class="th-status">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="td-check"><span class="sev-indicator major"></span>Font Size Distribution</td>
+                <td class="td-fynd val-cell">
+                    <div class="summary-box">
+                        <div class="sb cr"><div class="n">369</div><div class="l">16px</div></div>
+                        <div class="sb ps"><div class="n">49</div><div class="l">15px</div></div>
+                        <div class="sb mj"><div class="n">34</div><div class="l">14px</div></div>
+                        <div class="sb mn"><div class="n">27</div><div class="l">11px</div></div>
+                        <div class="sb t"><div class="n">21</div><div class="l">Other</div></div>
+                    </div>
+                    <span class="mismatch">369/500 elements at 16px — dominant base</span>
+                </td>
+                <td class="td-tumi val-cell">
+                    <div class="summary-box">
+                        <div class="sb ps"><div class="n">328</div><div class="l">15px</div></div>
+                        <div class="sb t"><div class="n">86</div><div class="l">30px</div></div>
+                        <div class="sb t"><div class="n">42</div><div class="l">14px</div></div>
+                        <div class="sb t"><div class="n">44</div><div class="l">Other</div></div>
+                    </div>
+                    <span class="match">328/500 elements at 15px — correct base</span>
+                </td>
+                <td class="td-spec val-cell">
+                    <strong>Body 15 - Regular</strong><br>
+                    Primary body text: <code>15px</code><br>
+                    Not 16px.
+                </td>
+                <td class="td-status"><span class="status-badge fail">FAIL</span></td>
+            </tr>
+            <tr>
+                <td class="td-check"><span class="sev-indicator major"></span>16px Elements by Tag (Fynd)</td>
+                <td class="td-fynd val-cell">
+                    <table class="el-table">
+                        <thead><tr><th>Tag</th><th>Count</th><th>Sample Elements</th><th>Analysis</th></tr></thead>
+                        <tbody>
+                            <tr><td class="tag">&lt;div&gt;</td><td><strong>246</strong></td><td>"Enjoy 10x Membership...", layout containers</td><td class="fail">Inherited base font-size from root</td></tr>
+                            <tr><td class="tag">&lt;a&gt;</td><td><strong>55</strong></td><td>"SALE", "Men", "Women", nav + product links</td><td class="fail">Nav should be 14px, product inherited 16px</td></tr>
+                            <tr><td class="tag">&lt;article&gt;</td><td><strong>37</strong></td><td>"Shop Alpha", "Shop Voyageur", product cards</td><td>Category card containers, inherited</td></tr>
+                            <tr><td class="tag">&lt;h5&gt;</td><td><strong>10</strong></td><td>"SALE", "Men", "Women", "Luggage"...</td><td class="fail">Nav headings — should be 14px Semibold</td></tr>
+                            <tr><td class="tag">&lt;li&gt;</td><td><strong>10</strong></td><td>"SALE", "Men", "Women"... (nav list items)</td><td>Inherited from parent</td></tr>
+                            <tr><td class="tag">&lt;section&gt;</td><td><strong>8</strong></td><td>Hero, service bar, favourites, sustainability</td><td>Section containers, inherited</td></tr>
+                            <tr><td class="tag">&lt;header&gt;</td><td><strong>1</strong></td><td>Main site header</td><td>Container</td></tr>
+                            <tr><td class="tag">&lt;nav&gt;</td><td><strong>1</strong></td><td>Navigation menu</td><td>Container</td></tr>
+                            <tr><td class="tag">&lt;ul&gt;</td><td><strong>1</strong></td><td>Navigation list</td><td>Container</td></tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td class="td-tumi val-cell">
+                    <strong>No 16px base size issue.</strong><br>
+                    Tumi uses <code>15px</code> as the root base size.<br>
+                    All container elements inherit 15px correctly.
+                </td>
+                <td class="td-spec val-cell">
+                    <strong>Root cause (Fynd):</strong><br>
+                    CSS likely sets <code>html { font-size: 16px }</code> or uses browser default (16px).<br><br>
+                    <strong>Fix:</strong> Set base font-size to 15px in root CSS.
+                </td>
+                <td class="td-status"><span class="status-badge fail">FAIL</span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- ======================== SECTION 4: 11px ELEMENTS ======================== -->
+<div class="section">
+    <h2>4. Font Size 11px — Below Spec Minimum (12px)</h2>
+    <div class="section-desc">27 Fynd elements use 11px. Design spec minimum is 12px (Body 12 - Regular).</div>
+
+    <table class="three-col-table">
+        <thead>
+            <tr>
+                <th class="th-check">Check Point</th>
+                <th class="th-fynd">tumidesign.fynd.io (Fynd) — 27 elements</th>
+                <th class="th-tumi">www.tumi.sg (Tumi)</th>
+                <th class="th-spec">Design Spec</th>
+                <th class="th-status">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="td-check"><span class="sev-indicator major"></span>Product Tile Eyebrow Labels</td>
+                <td class="td-fynd val-cell">
+                    <table class="el-table">
+                        <thead><tr><th>#</th><th>Tag</th><th>Text</th><th>Size</th><th>Wt</th><th>Color</th></tr></thead>
+                        <tbody>
+                            <tr><td>1-20</td><td class="tag">&lt;p&gt;</td><td>"TEST COLLECTION" (x20)</td><td><code>11px</code></td><td>600</td><td>rgb(89,89,89)</td></tr>
+                            <tr><td>21-27</td><td class="tag">&lt;p&gt;</td><td>"NEW ARRIVALS" (x7)</td><td><code>11px</code></td><td>600</td><td>rgb(89,89,89)</td></tr>
+                        </tbody>
+                    </table>
+                    <span class="mismatch">Issues: (1) Size 11px not 12px. (2) Weight 600 not 400.</span><br>
+                    <span class="match">Color rgb(89,89,89) = #595959 is correct.</span>
+                </td>
+                <td class="td-tumi val-cell">
+                    <strong>No 11px elements found.</strong><br>
+                    Tumi product tiles do not use eyebrow labels in the same pattern.<br>
+                    Minimum observed font size is <code>12px</code>.<br>
+                    <span class="match">Meets spec minimum</span>
+                </td>
+                <td class="td-spec val-cell">
+                    Product tile eyebrow:<br>
+                    <code>12px</code>, letter-spacing 0.4px<br>
+                    Weight: <strong>Regular (400)</strong><br>
+                    Transform: <strong>Uppercase</strong><br>
+                    Color: <strong>#595959</strong><br><br>
+                    Minimum spec size: <code>12px</code>
+                </td>
+                <td class="td-status"><span class="status-badge fail">FAIL</span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- ======================== SECTION 5: LINK WEIGHT ======================== -->
+<div class="section">
+    <h2>5. Link Font-Weight Inconsistency (400 vs 600)</h2>
+    <div class="section-desc">At 16px, Fynd links use two different weights. 20 nav links use 600 (Semibold), 33 product/CTA links use 400 (Regular).</div>
+
+    <table class="three-col-table">
+        <thead>
+            <tr>
+                <th class="th-check">Check Point</th>
+                <th class="th-fynd">tumidesign.fynd.io (Fynd)</th>
+                <th class="th-tumi">www.tumi.sg (Tumi)</th>
+                <th class="th-spec">Design Spec</th>
+                <th class="th-status">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="td-check"><span class="sev-indicator minor"></span>Weight 600 — Nav Links (20 elements)</td>
+                <td class="td-fynd val-cell">
+                    <table class="el-table">
+                        <thead><tr><th>#</th><th>Text</th><th>Color</th><th>Location</th></tr></thead>
+                        <tbody>
+                            <tr><td>1</td><td>"SALE"</td><td><span style="color:rgb(239,75,94)">rgb(239,75,94)</span> <span class="fail">not in spec</span></td><td>Top nav (dark bg)</td></tr>
+                            <tr><td>2</td><td>"Men"</td><td>rgb(255,255,255)</td><td>Top nav (dark bg)</td></tr>
+                            <tr><td>3</td><td>"Women"</td><td>rgb(255,255,255)</td><td>Top nav (dark bg)</td></tr>
+                            <tr><td>4</td><td>"Luggage"</td><td>rgb(255,255,255)</td><td>Top nav (dark bg)</td></tr>
+                            <tr><td>5</td><td>"Backpacks"</td><td>rgb(255,255,255)</td><td>Top nav (dark bg)</td></tr>
+                            <tr><td>6</td><td>"Bags"</td><td>rgb(255,255,255)</td><td>Top nav (dark bg)</td></tr>
+                            <tr><td>7</td><td>"Accessories"</td><td>rgb(255,255,255)</td><td>Top nav (dark bg)</td></tr>
+                            <tr><td>8</td><td>"Collections"</td><td>rgb(255,255,255)</td><td>Top nav (dark bg)</td></tr>
+                            <tr><td>9</td><td>"Gifting"</td><td>rgb(255,255,255)</td><td>Top nav (dark bg)</td></tr>
+                            <tr><td>10</td><td>"Services"</td><td>rgb(255,255,255)</td><td>Top nav (dark bg)</td></tr>
+                            <tr><td>11-20</td><td>Same 10 links (duplicated)</td><td>rgb(27,28,30)</td><td>Sticky/secondary nav (light bg)</td></tr>
+                        </tbody>
+                    </table>
+                    <span class="pass">Weight 600 is CORRECT for nav (Semibold)</span>
+                </td>
+                <td class="td-tumi val-cell">
+                    Nav links use <code>weight: 500</code> (Medium)<br>
+                    <span class="warn">Should be 600 (Semibold)</span><br>
+                    Nav is at correct <code>14px</code> size.
+                </td>
+                <td class="td-spec val-cell">
+                    Desktop Global Nav:<br>
+                    <strong>Header 14 - Semibold (600)</strong><br>
+                    Nav category names must be Semibold.
+                </td>
+                <td class="td-status"><span class="status-badge warn">WARN</span></td>
+            </tr>
+            <tr>
+                <td class="td-check"><span class="sev-indicator minor"></span>Weight 400 — Product/CTA Links (33 elements)</td>
+                <td class="td-fynd val-cell">
+                    <table class="el-table">
+                        <thead><tr><th>#</th><th>Text</th><th>Color</th><th>Location</th></tr></thead>
+                        <tbody>
+                            <tr><td>1</td><td>"TUMI Perimeter Mall — Open now..."</td><td>rgb(27,28,30)</td><td>Header store locator</td></tr>
+                            <tr><td>2</td><td>"We are here to help!"</td><td>rgb(27,28,30)</td><td>Header help link</td></tr>
+                            <tr><td>3</td><td>"Explore Race-car Resilience"</td><td>rgb(255,255,255)</td><td>Hero CTA link</td></tr>
+                            <tr><td>4</td><td>"Shop Alpha"</td><td><span class="fail">rgb(0,0,0)</span></td><td>Category card — <span class="fail">only pure black element</span></td></tr>
+                            <tr><td>5</td><td>"Shop Now"</td><td>rgb(255,255,255)</td><td>Hero CTA link</td></tr>
+                            <tr><td>6-25</td><td>"fiona zip tote...", "tabby shoulder bag..."</td><td>rgb(27,28,30)</td><td>Shop Bestsellers grid</td></tr>
+                            <tr><td>26-33</td><td>"Small Crystal Cherry Bag Charm", "Coach Soho Sneaker"...</td><td>rgb(27,28,30)</td><td>You May Also Like grid</td></tr>
+                        </tbody>
+                    </table>
+                    <span class="pass">Weight 400 is CORRECT for body/product links (Regular)</span>
+                </td>
+                <td class="td-tumi val-cell">
+                    Body/product links use <code>weight: 400</code> (Regular)<br>
+                    <span class="match">Matches spec</span>
+                </td>
+                <td class="td-spec val-cell">
+                    Body text links:<br>
+                    <strong>Regular (400)</strong><br>
+                    Body 15 - Regular for paragraphs and CTA copy.
+                </td>
+                <td class="td-status"><span class="status-badge pass">PASS</span></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="note"><strong>Verdict:</strong> The weight split by context is actually correct for both brands — nav = Semibold, body = Regular. The real Fynd issue is SIZE: all are 16px when nav should be 14px and body should be 15px. Tumi uses correct sizes but wrong nav weight (500 vs 600).</div>
+</div>
+
+<!-- ======================== SECTION 6: BUTTONS ======================== -->
+<div class="section">
+    <h2>6. All Buttons — Full CSS Details</h2>
+    <div class="section-desc">Spec: 44px height, 128px min-width, 15px Regular, Title Case, fill #1B1C1E.</div>
+
+    <table class="three-col-table">
+        <thead>
+            <tr>
+                <th class="th-check">Button</th>
+                <th class="th-fynd">tumidesign.fynd.io (Fynd) — 6 buttons</th>
+                <th class="th-tumi">www.tumi.sg (Tumi)</th>
+                <th class="th-spec">Design Spec</th>
+                <th class="th-status">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="td-check"><span class="sev-indicator minor"></span>Button #1: "Explore Race-car Resilience"</td>
+                <td class="td-fynd val-cell">
+                    <table class="el-table">
+                        <thead><tr><th>Property</th><th>Value</th></tr></thead>
+                        <tbody>
+                            <tr><td>Font size</td><td><code>15px</code> <span class="pass">correct</span></td></tr>
+                            <tr><td>Weight</td><td><code>400</code> <span class="pass">correct</span></td></tr>
+                            <tr><td>Color</td><td>rgb(255,255,255)</td></tr>
+                            <tr><td>Background</td><td>rgba(0,0,0,0) <span class="warn">transparent</span></td></tr>
+                            <tr><td>Border</td><td>1px solid rgb(255,255,255)</td></tr>
+                            <tr><td>Padding</td><td>12px 32px</td></tr>
+                            <tr><td>Height</td><td><code>44px</code> <span class="pass">correct</span></td></tr>
+                            <tr><td>Casing</td><td>Title Case <span class="pass">correct</span></td></tr>
+                            <tr><td>Y Position</td><td>521px (Hero section)</td></tr>
+                        </tbody>
+                    </table>
+                    <span class="warn">Secondary outline style — no fill (valid on dark bg)</span>
+                </td>
+                <td class="td-tumi val-cell" rowspan="3">
+                    <strong>No &lt;button&gt; elements detected.</strong><br><br>
+                    Tumi uses styled <code>&lt;a&gt;</code> links as CTAs instead of &lt;button&gt; tags.<br><br>
+                    <strong>CTA links found (8 elements):</strong>
+                    <table class="el-table">
+                        <thead><tr><th>#</th><th>Text</th><th>Size</th><th>Wt</th><th>Color</th></tr></thead>
+                        <tbody>
+                            <tr><td>1</td><td>"Shop Now"</td><td><code>19.2px</code></td><td>300</td><td>rgb(255,255,255)</td></tr>
+                            <tr><td>2</td><td>"Shop the New Collection"</td><td><code>19.2px</code></td><td>300</td><td>rgb(255,255,255)</td></tr>
+                            <tr><td>3</td><td>"Shop the New TUMI Alpha collection"</td><td><code>19.2px</code></td><td>300</td><td>rgb(255,255,255)</td></tr>
+                            <tr><td>4</td><td>"Shop Voyageur"</td><td><code>19.2px</code></td><td>300</td><td>rgb(27,28,30)</td></tr>
+                            <tr><td>5</td><td>"Shop TUMI Belts"</td><td><code>19.2px</code></td><td>300</td><td>rgb(255,255,255)</td></tr>
+                            <tr><td>6-8</td><td>"Shop Now" (x3 duplicates)</td><td><code>19.2px</code></td><td>300</td><td>rgb(255,255,255)</td></tr>
+                        </tbody>
+                    </table>
+                    <span class="mismatch">All at 19.2px — spec CTA is 15px</span><br>
+                    <span class="mismatch">Weight 300 — spec says 400 (Regular)</span>
+                </td>
+                <td class="td-spec val-cell" rowspan="3">
+                    <strong>Primary Button:</strong><br>
+                    Height: <code>44px</code><br>
+                    Min-width: <code>128px</code><br>
+                    Font: <code>15px Regular</code><br>
+                    Casing: <strong>Title Case</strong><br>
+                    Fill: <code>#1B1C1E</code><br>
+                    Text: <code>#FFFFFF</code><br><br>
+                    <strong>Secondary Button - No Fill:</strong><br>
+                    Same dimensions<br>
+                    Border: <code>1px solid</code><br>
+                    Background: transparent<br>
+                    (Valid on dark backgrounds)
+                </td>
+                <td class="td-status"><span class="status-badge pass">PASS</span></td>
+            </tr>
+            <tr>
+                <td class="td-check"><span class="sev-indicator minor"></span>Button #2: "Shop Now"</td>
+                <td class="td-fynd val-cell">
+                    <table class="el-table">
+                        <thead><tr><th>Property</th><th>Value</th></tr></thead>
+                        <tbody>
+                            <tr><td>Font size</td><td><code>15px</code> <span class="pass">correct</span></td></tr>
+                            <tr><td>Weight</td><td><code>400</code> <span class="pass">correct</span></td></tr>
+                            <tr><td>Color</td><td>rgb(255,255,255)</td></tr>
+                            <tr><td>Background</td><td>rgba(0,0,0,0) <span class="warn">transparent</span></td></tr>
+                            <tr><td>Border</td><td>1px solid rgb(255,255,255)</td></tr>
+                            <tr><td>Padding</td><td>12px 32px</td></tr>
+                            <tr><td>Height</td><td><code>44px</code> <span class="pass">correct</span></td></tr>
+                            <tr><td>Casing</td><td>Title Case <span class="pass">correct</span></td></tr>
+                            <tr><td>Y Position</td><td>2878px (Content section)</td></tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td class="td-status"><span class="status-badge pass">PASS</span></td>
+            </tr>
+            <tr>
+                <td class="td-check"><span class="sev-indicator critical"></span>Buttons #3-6: "Protect the Planet you Travel" (x4 duplicates)</td>
+                <td class="td-fynd val-cell">
+                    <table class="el-table">
+                        <thead><tr><th>Property</th><th>Value</th></tr></thead>
+                        <tbody>
+                            <tr><td>Font size</td><td><code>15px</code> <span class="pass">correct</span></td></tr>
+                            <tr><td>Weight</td><td><code>400</code> <span class="pass">correct</span></td></tr>
+                            <tr><td>Color</td><td>rgb(255,255,255)</td></tr>
+                            <tr><td>Background</td><td>rgba(0,0,0,0) transparent</td></tr>
+                            <tr><td>Border</td><td>1px solid rgb(255,255,255)</td></tr>
+                            <tr><td>Padding</td><td>15px 35px</td></tr>
+                            <tr><td>Height</td><td><code>50px</code> <span class="fail">should be 44px</span></td></tr>
+                            <tr><td>Casing</td><td><span class="fail">Sentence case — spec says Title Case</span></td></tr>
+                            <tr><td>Y Position</td><td>5403px (Sustainability section)</td></tr>
+                        </tbody>
+                    </table>
+                    <span class="mismatch">Issues: (1) Height 50px vs 44px. (2) Sentence case vs Title Case. (3) 4 duplicate buttons at same position.</span>
+                </td>
+                <td class="td-status"><span class="status-badge fail">FAIL</span></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="note"><strong>Summary:</strong> Fynd buttons #1-2 are mostly correct (44px, 15px, Title Case). Buttons #3-6 have height (50px) and casing issues. No primary filled buttons (#1B1C1E fill) exist on the homepage — all are secondary/outline. Tumi uses no &lt;button&gt; tags — CTAs are &lt;a&gt; links at wrong size (19.2px) and weight (300).</div>
+</div>
+
+<!-- ======================== SECTION 7: WHITE TEXT ======================== -->
+<div class="section">
+    <h2>7. White Text Elements (rgb(255,255,255))</h2>
+    <div class="section-desc">Elements with white text color. These should appear on dark backgrounds only.</div>
+
+    <table class="three-col-table">
+        <thead>
+            <tr>
+                <th class="th-check">Check Point</th>
+                <th class="th-fynd">tumidesign.fynd.io (Fynd) — 18 elements</th>
+                <th class="th-tumi">www.tumi.sg (Tumi)</th>
+                <th class="th-spec">Design Spec</th>
+                <th class="th-status">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="td-check"><span class="sev-indicator minor"></span>All White Text Elements</td>
+                <td class="td-fynd val-cell">
+                    <table class="el-table">
+                        <thead><tr><th>#</th><th>Tag</th><th>Text</th><th>Size</th><th>Background</th><th>Location</th></tr></thead>
+                        <tbody>
+                            <tr><td>1</td><td class="tag">&lt;a&gt;</td><td>"Enjoy 10x Membership Rewards..."</td><td>13px</td><td>transparent (dark header)</td><td>Top promo banner</td></tr>
+                            <tr><td>2-10</td><td class="tag">&lt;a&gt;</td><td>"Men", "Women", "Luggage", "Backpacks", "Bags", "Accessories", "Collections", "Gifting", "Services"</td><td>16px</td><td>transparent (dark header)</td><td>Primary navigation</td></tr>
+                            <tr><td>11</td><td class="tag">&lt;a&gt;</td><td>"Explore Race-car Resilience"</td><td>16px</td><td>transparent (hero image)</td><td>Hero section CTA</td></tr>
+                            <tr><td>12</td><td class="tag">&lt;button&gt;</td><td>"Explore Race-car Resilience"</td><td>15px</td><td>transparent (hero image)</td><td>Hero section button</td></tr>
+                            <tr><td>13</td><td class="tag">&lt;a&gt;</td><td>"Shop Now"</td><td>16px</td><td>transparent (dark section)</td><td>Content section CTA</td></tr>
+                            <tr><td>14</td><td class="tag">&lt;button&gt;</td><td>"Shop Now"</td><td>15px</td><td>transparent (dark section)</td><td>Content section button</td></tr>
+                            <tr><td>15-18</td><td class="tag">&lt;button&gt;</td><td>"Protect the Planet you Travel" (x4)</td><td>15px</td><td>transparent (sustainability image)</td><td>Sustainability section</td></tr>
+                        </tbody>
+                    </table>
+                    <span class="match">All 18 elements correctly on dark backgrounds.</span>
+                </td>
+                <td class="td-tumi val-cell">
+                    White text used on:<br>
+                    - Hero banner text<br>
+                    - CTA links on dark image backgrounds<br>
+                    - Navigation on dark header<br><br>
+                    <span class="match">All correctly placed on dark backgrounds.</span>
+                </td>
+                <td class="td-spec val-cell">
+                    <span class="color-swatch" style="background:#FFFFFF"></span><strong>#FFFFFF</strong><br>
+                    "Dark Background Variants" allow white text/buttons on dark backgrounds.<br><br>
+                    White text should only appear on sufficiently dark backgrounds for contrast.
+                </td>
+                <td class="td-status"><span class="status-badge pass">PASS</span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- ======================== SECTION 8: SERVICE BAR ======================== -->
+<div class="section">
+    <h2>8. Service Bar — Element Comparison</h2>
+    <div class="section-desc">4 service items: Free Shipping, Warranty, Personalisation, TUMI Tracer. Spec: Body 15 Regular or Light.</div>
+
+    <table class="three-col-table">
+        <thead>
+            <tr>
+                <th class="th-check">Service Item</th>
+                <th class="th-fynd">tumidesign.fynd.io (Fynd)</th>
+                <th class="th-tumi">www.tumi.sg (Tumi)</th>
+                <th class="th-spec">Design Spec</th>
+                <th class="th-status">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="td-check"><span class="sev-indicator major"></span>"Free Shipping and Free Returns"</td>
+                <td class="td-fynd val-cell">
+                    Size: <code>14px</code> <span class="mismatch">wrong (should be 15px)</span><br>
+                    Weight: <code>300</code> (Light)<br>
+                    Color: rgb(27,28,30) <span class="match">#1B1C1E</span><br>
+                    Font: ProximaNova
+                </td>
+                <td class="td-tumi val-cell">
+                    Size: <code>15px</code> <span class="match">correct</span><br>
+                    Weight: <code>400</code> (Regular)<br>
+                    Color: rgb(27,28,30) <span class="match">#1B1C1E</span><br>
+                    Font: ProximaNova, sans-serif
+                </td>
+                <td class="td-spec val-cell" rowspan="4">
+                    <strong>Body 15 - Regular (400)</strong><br>
+                    or <strong>Body 15 - Light (300)</strong><br><br>
+                    Size: <code>15px</code><br>
+                    Color: <code>#1B1C1E</code><br>
+                    Icons: 32x32px
+                </td>
+                <td class="td-status"><span class="status-badge fail">FAIL</span></td>
+            </tr>
+            <tr>
+                <td class="td-check"><span class="sev-indicator major"></span>"Protected by Worry-Free Warranty"</td>
+                <td class="td-fynd val-cell">
+                    Size: <code>14px</code> <span class="mismatch">wrong</span><br>
+                    Weight: <code>300</code> | Color: rgb(27,28,30)
+                </td>
+                <td class="td-tumi val-cell">
+                    Size: <code>15px</code> <span class="match">correct</span><br>
+                    Weight: <code>400</code> | Color: rgb(27,28,30)
+                </td>
+                <td class="td-status"><span class="status-badge fail">FAIL</span></td>
+            </tr>
+            <tr>
+                <td class="td-check"><span class="sev-indicator major"></span>"Make It Yours with Personalisation"</td>
+                <td class="td-fynd val-cell">
+                    Size: <code>14px</code> <span class="mismatch">wrong</span><br>
+                    Weight: <code>300</code> | Color: rgb(27,28,30)
+                </td>
+                <td class="td-tumi val-cell">
+                    Size: <code>15px</code> <span class="match">correct</span><br>
+                    Weight: <code>400</code> | Color: rgb(27,28,30)
+                </td>
+                <td class="td-status"><span class="status-badge fail">FAIL</span></td>
+            </tr>
+            <tr>
+                <td class="td-check"><span class="sev-indicator major"></span>"TUMI Tracer&reg; Product Registration"</td>
+                <td class="td-fynd val-cell">
+                    Size: <code>14px</code> <span class="mismatch">wrong</span><br>
+                    Weight: <code>300</code> | Color: rgb(27,28,30)
+                </td>
+                <td class="td-tumi val-cell">
+                    Size: <code>15px</code> <span class="match">correct</span><br>
+                    Weight: <code>400</code> | Color: rgb(27,28,30)
+                </td>
+                <td class="td-status"><span class="status-badge fail">FAIL</span></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="note"><strong>Fynd:</strong> All 4 service items are 14px weight 300 — size should be 15px. Weight 300 (Light) is valid per "Body 15 - Light".<br><strong>Tumi:</strong> All 4 match "Body 15 - Regular" spec perfectly.</div>
+</div>
+
+<!-- ======================== SECTION 9: TEXT COLOR ======================== -->
+<div class="section">
+    <h2>9. Text Color Distribution — All Elements</h2>
+    <div class="section-desc">Spec palette: #1B1C1E (near-black), #595959 (dark gray), #FFFFFF (white). No pure black #000000.</div>
+
+    <table class="three-col-table">
+        <thead>
+            <tr>
+                <th class="th-check">Color</th>
+                <th class="th-fynd">tumidesign.fynd.io (Fynd)</th>
+                <th class="th-tumi">www.tumi.sg (Tumi)</th>
+                <th class="th-spec">Design Spec</th>
+                <th class="th-status">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="td-check"><span class="color-swatch" style="background:#1B1C1E"></span> #1B1C1E (Near-black)</td>
+                <td class="td-fynd val-cell">
+                    <strong>40 elements</strong><br>
+                    Product links, header links, nav (light bg), service bar text<br>
+                    <span class="match">Correct spec color</span>
+                </td>
+                <td class="td-tumi val-cell">
+                    <strong>32 elements</strong><br>
+                    Product links, nav links, body text<br>
+                    <span class="match">Correct spec color</span>
+                </td>
+                <td class="td-spec val-cell">
+                    Titles, headings, subtitles, selected tab, button outline/fill, nav arrows
+                </td>
+                <td class="td-status"><span class="status-badge pass">PASS</span></td>
+            </tr>
+            <tr>
+                <td class="td-check"><span class="color-swatch" style="background:#FFFFFF"></span> #FFFFFF (White)</td>
+                <td class="td-fynd val-cell">
+                    <strong>18 elements</strong><br>
+                    Nav links (dark bg), hero CTAs, sustainability buttons<br>
+                    <span class="match">Correct for dark backgrounds</span>
+                </td>
+                <td class="td-tumi val-cell">
+                    Hero text, CTA links on dark images<br>
+                    <span class="match">Correct for dark backgrounds</span>
+                </td>
+                <td class="td-spec val-cell">
+                    Dark background variant text and buttons
+                </td>
+                <td class="td-status"><span class="status-badge pass">PASS</span></td>
+            </tr>
+            <tr>
+                <td class="td-check"><span class="color-swatch" style="background:#EF4B5E"></span> #EF4B5E (Red)</td>
+                <td class="td-fynd val-cell">
+                    <strong>1 element</strong><br>
+                    "SALE" link in navigation<br>
+                    <span class="mismatch">Not in spec palette. Spec error color is #BB2131.</span>
+                </td>
+                <td class="td-tumi val-cell">
+                    <strong>Not observed</strong>
+                </td>
+                <td class="td-spec val-cell">
+                    Error/accent: <span class="color-swatch" style="background:#BB2131"></span><strong>#BB2131</strong> only
+                </td>
+                <td class="td-status"><span class="status-badge fail">FAIL</span></td>
+            </tr>
+            <tr>
+                <td class="td-check"><span class="color-swatch" style="background:#000000"></span> #000000 (Pure black)</td>
+                <td class="td-fynd val-cell">
+                    <strong>1 element</strong><br>
+                    "Shop Alpha" category card CTA<br>
+                    <span class="mismatch">Should be #1B1C1E</span>
+                </td>
+                <td class="td-tumi val-cell">
+                    <strong>9 elements</strong><br>
+                    All are "View Item" links in product bestsellers carousel<br>
+                    <span class="mismatch">Should be #1B1C1E</span>
+                    <table class="el-table">
+                        <thead><tr><th>#</th><th>Tag</th><th>Text</th><th>Size</th><th>Wt</th></tr></thead>
+                        <tbody>
+                            <tr><td>1-9</td><td class="tag">&lt;a&gt;</td><td>"View Item" (x9)</td><td><code>15px</code></td><td>400</td></tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td class="td-spec val-cell">
+                    <strong>#000000 is NOT in the spec palette.</strong><br>
+                    Use #1B1C1E instead.
+                </td>
+                <td class="td-status"><span class="status-badge fail">FAIL</span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- ======================== SECTION 10: BROKEN IMAGES ======================== -->
+<div class="section">
+    <h2>10. Broken Images — Full List</h2>
+    <div class="section-desc">All images that failed to load.</div>
+
+    <table class="three-col-table">
+        <thead>
+            <tr>
+                <th class="th-check">Image</th>
+                <th class="th-fynd">tumidesign.fynd.io (Fynd) — 15 broken</th>
+                <th class="th-tumi">www.tumi.sg (Tumi)</th>
+                <th class="th-spec">Design Spec</th>
+                <th class="th-status">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="td-check"><span class="sev-indicator critical"></span>SVG Error (#1)</td>
+                <td class="td-fynd val-cell">
+                    <strong>Alt:</strong> "close"<br>
+                    <strong>URL:</strong> <span class="mono">function(e){return Wa.createElement("svg"...</span><br>
+                    <span class="mismatch">URL contains JavaScript function code instead of image path — code bug in React SVG rendering</span>
+                </td>
+                <td class="td-tumi val-cell" rowspan="3">
+                    <strong>No broken images detected.</strong><br><br>
+                    All images load successfully on the live site.<br><br>
+                    <span class="match">All images load correctly</span>
+                </td>
+                <td class="td-spec val-cell" rowspan="3">
+                    All images must load successfully.<br><br>
+                    No broken image icons should appear.<br><br>
+                    All images should have meaningful alt text for accessibility.
+                </td>
+                <td class="td-status"><span class="status-badge fail">FAIL</span></td>
+            </tr>
+            <tr>
+                <td class="td-check"><span class="sev-indicator major"></span>CDN Product Images (#2-15)</td>
+                <td class="td-fynd val-cell">
+                    <strong>14 product images from CDN returning 404/broken:</strong>
+                    <table class="el-table">
+                        <thead><tr><th>#</th><th>Alt</th><th>Image URL (truncated)</th><th>Type</th></tr></thead>
+                        <tbody>
+                            <tr><td>2</td><td>(empty)</td><td class="mono">cdn.fynd.com/.../coach/29CBN71TEM/...</td><td>Coach product</td></tr>
+                            <tr><td>3</td><td>(empty)</td><td class="mono">cdn.fynd.com/.../original/-lY1Yj5rh-product.png</td><td>Product</td></tr>
+                            <tr><td>4</td><td>(empty)</td><td class="mono">cdn.fynd.com/.../original/EW21OSh3_-product.png</td><td>Product</td></tr>
+                            <tr><td>5</td><td>(empty)</td><td class="mono">cdn.fynd.com/.../original/9d1AuZvKZ-product.png</td><td>Product</td></tr>
+                            <tr><td>6</td><td>(empty)</td><td class="mono">cdn.fynd.com/.../original/SNTJ5r5jd-product.png</td><td>Product</td></tr>
+                            <tr><td>7</td><td>(empty)</td><td class="mono">cdn.fynd.com/.../original/STQPZAl4X-product.png</td><td>Product</td></tr>
+                            <tr><td>8</td><td>(empty)</td><td class="mono">cdn.fynd.com/.../original/LqZ9VGJkT-product.png</td><td>Product</td></tr>
+                            <tr><td>9</td><td>(empty)</td><td class="mono">cdn.fynd.com/.../original/RMu6eG8GT-product.png</td><td>Product</td></tr>
+                            <tr><td>10</td><td>(empty)</td><td class="mono">cdn.fynd.com/.../original/Pi65EO8N_-product.png</td><td>Product</td></tr>
+                            <tr><td>11</td><td>(empty)</td><td class="mono">cdn.fynd.com/.../original/lTFTQDTe7-product.png</td><td>Product</td></tr>
+                            <tr><td>12</td><td>(empty)</td><td class="mono">cdn.fynd.com/.../000000410541435001/...</td><td>Product</td></tr>
+                            <tr><td>13</td><td>(empty)</td><td class="mono">cdn.fynd.com/.../000000410541434001/...</td><td>Product</td></tr>
+                            <tr><td>14</td><td>(empty)</td><td class="mono">cdn.fynd.com/.../000000410464249001/...</td><td>Product</td></tr>
+                            <tr><td>15</td><td>(empty)</td><td class="mono">cdn.fynd.com/.../000000410464248001/...</td><td>Product</td></tr>
+                        </tbody>
+                    </table>
+                    <span class="mismatch">All 15 images have empty alt text (accessibility issue)</span>
+                </td>
+                <td class="td-status"><span class="status-badge fail">FAIL</span></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="note"><strong>Image #1</strong> is a code bug — React SVG component function is being set as img src. <strong>Images #2-15</strong> are CDN product images (test catalogue) returning 404. All 15 have empty alt text.</div>
+</div>
+
+<!-- ======================== SECTION 11: NON-STANDARD SIZES ======================== -->
+<div class="section">
+    <h2>11. Non-Standard Font Sizes — Element Details</h2>
+    <div class="section-desc">Elements using sizes outside the spec scale (54, 42, 30, 24, 20, 15, 14, 13, 12 px).</div>
+
+    <table class="three-col-table">
+        <thead>
+            <tr>
+                <th class="th-check">Non-Standard Size</th>
+                <th class="th-fynd">tumidesign.fynd.io (Fynd)</th>
+                <th class="th-tumi">www.tumi.sg (Tumi)</th>
+                <th class="th-spec">Design Spec</th>
+                <th class="th-status">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="td-check"><span class="sev-indicator major"></span>13.33px (Fynd) / 19.2px (Tumi)</td>
+                <td class="td-fynd val-cell">
+                    <strong>13.33px — 10 elements:</strong>
+                    <table class="el-table">
+                        <thead><tr><th>#</th><th>Tag</th><th>Text</th><th>Wt</th></tr></thead>
+                        <tbody>
+                            <tr><td>1-8</td><td class="tag">&lt;button&gt;</td><td>(empty — icon-only buttons)</td><td>400</td></tr>
+                            <tr><td>9-10</td><td class="tag">&lt;div&gt;</td><td>(empty — spacer/container divs)</td><td>400</td></tr>
+                        </tbody>
+                    </table>
+                    <span class="pass">Low severity — no visible text affected. Likely from calc()/rem rounding.</span>
+                </td>
+                <td class="td-tumi val-cell">
+                    <strong>19.2px — 14 elements:</strong>
+                    <table class="el-table">
+                        <thead><tr><th>#</th><th>Tag</th><th>Text</th><th>Wt</th></tr></thead>
+                        <tbody>
+                            <tr><td>1-8</td><td class="tag">&lt;a&gt;</td><td>"Shop Now", "Shop the New Collection", "Shop Voyageur"...</td><td>300</td></tr>
+                            <tr><td>9-14</td><td class="tag">&lt;h4&gt;</td><td>"PRESENTING", "THE NEXT DESTINATION", "HELLO 2026"...</td><td>300</td></tr>
+                        </tbody>
+                    </table>
+                    <span class="warn">Closest spec size is 20px. Likely viewport-relative unit scaling.</span>
+                </td>
+                <td class="td-spec val-cell">
+                    Closest valid sizes:<br>
+                    <code>13px</code> (Body 13)<br>
+                    <code>20px</code> (Header 20)<br><br>
+                    No 13.33px or 19.2px in spec scale.
+                </td>
+                <td class="td-status"><span class="status-badge warn">WARN</span></td>
+            </tr>
+            <tr>
+                <td class="td-check"><span class="sev-indicator critical"></span>36px (Fynd) / 67-77px (Tumi)</td>
+                <td class="td-fynd val-cell">
+                    <strong>36px — 1 element:</strong>
+                    <table class="el-table">
+                        <thead><tr><th>Tag</th><th>Text</th><th>Wt</th><th>Issue</th></tr></thead>
+                        <tbody>
+                            <tr><td class="tag">&lt;h1&gt;</td><td>"TUMI Redesign React"</td><td>700</td><td class="fail">Debug text, 36px not in spec</td></tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td class="td-tumi val-cell">
+                    <strong>Non-standard large sizes:</strong>
+                    <table class="el-table">
+                        <thead><tr><th>Size</th><th>Count</th><th>Text Samples</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>67.2px</code></td><td>3</td><td>"Mediterranean Escape", "Where Style Meets Precision"</td></tr>
+                            <tr><td><code>72.96px</code></td><td>2</td><td>"TUMI eGift Card"</td></tr>
+                            <tr><td><code>76.8px</code></td><td>1</td><td>"The Q Tote"</td></tr>
+                            <tr><td><code>22.08px</code></td><td>1</td><td>"MADE TO MOVE"</td></tr>
+                        </tbody>
+                    </table>
+                    <span class="warn">All likely from viewport-relative scaling</span>
+                </td>
+                <td class="td-spec val-cell">
+                    Valid sizes:<br>
+                    <code>54, 42, 30, 24, 20, 15, 14, 13, 12</code> px<br><br>
+                    No 36, 67, 73, 77px in the design system.
+                </td>
+                <td class="td-status"><span class="status-badge fail">FAIL</span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- ======================== SECTION 12: TUMI CTA DETAILS ======================== -->
+<div class="section">
+    <h2>12. Tumi CTA Links at 19.2px — Full Element List</h2>
+    <div class="section-desc">8 CTA links on tumi.sg render at 19.2px instead of spec CTA size of 15px.</div>
+
+    <table class="three-col-table">
+        <thead>
+            <tr>
+                <th class="th-check">#</th>
+                <th class="th-fynd">Fynd Equivalent</th>
+                <th class="th-tumi">www.tumi.sg (Tumi) — Actual Values</th>
+                <th class="th-spec">Design Spec</th>
+                <th class="th-status">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="td-check">1</td>
+                <td class="td-fynd val-cell">
+                    "Explore Race-car Resilience" button<br>
+                    Size: <code>15px</code>, Weight: 400<br>
+                    <span class="match">Matches spec</span>
+                </td>
+                <td class="td-tumi val-cell">
+                    <strong>"Shop Now"</strong><br>
+                    Size: <code>19.2px</code> <span class="mismatch">+4.2px over spec</span><br>
+                    Weight: <code>300</code> <span class="mismatch">should be 400</span><br>
+                    Color: rgb(255,255,255)
+                </td>
+                <td class="td-spec val-cell" rowspan="5">
+                    CTA / Button text:<br>
+                    <code>15px, Regular (400)</code><br>
+                    Title Case<br><br>
+                    19.2px is closest to Header 20 - Regular but doesn't match any spec size exactly.
+                </td>
+                <td class="td-status"><span class="status-badge fail">FAIL</span></td>
+            </tr>
+            <tr>
+                <td class="td-check">2</td>
+                <td class="td-fynd val-cell">N/A — no equivalent</td>
+                <td class="td-tumi val-cell">
+                    <strong>"Shop the New Collection"</strong><br>
+                    Size: <code>19.2px</code> | Weight: <code>300</code> | Color: rgb(255,255,255)
+                </td>
+                <td class="td-status"><span class="status-badge fail">FAIL</span></td>
+            </tr>
+            <tr>
+                <td class="td-check">3</td>
+                <td class="td-fynd val-cell">N/A — no equivalent</td>
+                <td class="td-tumi val-cell">
+                    <strong>"Shop the New TUMI Alpha collection"</strong><br>
+                    Size: <code>19.2px</code> | Weight: <code>300</code> | Color: rgb(255,255,255)
+                </td>
+                <td class="td-status"><span class="status-badge fail">FAIL</span></td>
+            </tr>
+            <tr>
+                <td class="td-check">4</td>
+                <td class="td-fynd val-cell">N/A — no equivalent</td>
+                <td class="td-tumi val-cell">
+                    <strong>"Shop Voyageur"</strong><br>
+                    Size: <code>19.2px</code> | Weight: <code>300</code> | Color: <strong>rgb(27,28,30)</strong> (dark bg variant)
+                </td>
+                <td class="td-status"><span class="status-badge fail">FAIL</span></td>
+            </tr>
+            <tr>
+                <td class="td-check">5-8</td>
+                <td class="td-fynd val-cell">N/A — no equivalent</td>
+                <td class="td-tumi val-cell">
+                    <strong>"Shop TUMI Belts"</strong>, <strong>"Shop Now" (x2)</strong>, <strong>"Shop the New Collection"</strong> (duplicates)<br>
+                    Size: <code>19.2px</code> | Weight: <code>300</code> | Color: rgb(255,255,255)
+                </td>
+                <td class="td-status"><span class="status-badge fail">FAIL</span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- ======================== SECTION 13: PURE BLACK ======================== -->
+<div class="section">
+    <h2>13. Pure Black (#000000) Elements — Both Brands</h2>
+    <div class="section-desc">Spec uses #1B1C1E (near-black), not #000000 (pure black). Any pure black is off-spec.</div>
+
+    <table class="three-col-table">
+        <thead>
+            <tr>
+                <th class="th-check">Brand</th>
+                <th class="th-fynd">tumidesign.fynd.io (Fynd) — 1 element</th>
+                <th class="th-tumi">www.tumi.sg (Tumi) — 9 elements</th>
+                <th class="th-spec">Design Spec</th>
+                <th class="th-status">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="td-check"><span class="sev-indicator minor"></span>All #000000 Elements</td>
+                <td class="td-fynd val-cell">
+                    <table class="el-table">
+                        <thead><tr><th>Tag</th><th>Text</th><th>Size</th><th>Wt</th><th>Location</th></tr></thead>
+                        <tbody>
+                            <tr><td class="tag">&lt;a&gt;</td><td>"Shop Alpha"</td><td><code>16px</code></td><td>400</td><td>Category card CTA</td></tr>
+                        </tbody>
+                    </table>
+                    <span class="mismatch">Should be rgb(27,28,30) = #1B1C1E</span>
+                </td>
+                <td class="td-tumi val-cell">
+                    <table class="el-table">
+                        <thead><tr><th>#</th><th>Tag</th><th>Text</th><th>Size</th><th>Wt</th><th>Location</th></tr></thead>
+                        <tbody>
+                            <tr><td>1-9</td><td class="tag">&lt;a&gt;</td><td>"View Item" (x9)</td><td><code>15px</code></td><td>400</td><td>Bestsellers carousel</td></tr>
+                        </tbody>
+                    </table>
+                    <span class="mismatch">All 9 "View Item" links use pure black instead of #1B1C1E.</span><br>
+                    Visual difference is minimal (rgb values differ by 27-30) but technically off-spec.
+                </td>
+                <td class="td-spec val-cell">
+                    <span class="color-swatch" style="background:#1B1C1E"></span><strong>#1B1C1E</strong> (Near-black)<br><br>
+                    <strong>#000000 is NOT in the 8-color spec palette.</strong><br>
+                    Always use #1B1C1E for dark text/elements.
+                </td>
+                <td class="td-status"><span class="status-badge fail">FAIL</span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</div>
+
+<div class="report-footer">
+    TUMI Detailed ATD Report — 3-Column Element-Level Analysis | Generated July 13, 2026 | VERIFIED<br>
+    Design spec: TUMI Design System Reference (Google Doc) | 500 elements per page via Playwright | Computed CSS values<br>
+    All bugs verified against live scraped data
+</div>
+
+</body>
+</html>
