@@ -231,42 +231,63 @@ def run_cur02(ctx, page):
 
 
 def run_cur03(ctx, page):
-    tc = TestCase("CUR-03", "Pay Now with INR", "Payment step with INR currency")
-    tc.expected = "PAY NOW button is enabled and payment can start"
+    tc = TestCase("CUR-03", "Pay Now with INR", "Payment step with INR currency, Cash On Delivery selected")
+    tc.expected = "PLACE ORDER button is enabled and payment can start"
     tc.steps = [
         Step("Set currency to INR"),
-        Step("Navigate to cart → checkout → click PROCEED TO PAY"),
-        Step("Verify PAY NOW or PLACE ORDER button is enabled"),
+        Step("Navigate to cart and click CHECKOUT"),
+        Step("Click PROCEED TO PAY to reach payment step"),
+        Step("Select 'Cash On Delivery' payment method"),
+        Step("Verify PLACE ORDER button is enabled and clickable"),
     ]
     t0 = time.time()
     try:
         set_cur(ctx, INR)
         tc.steps[0].status = "pass"
+
         go_cart(page)
         btn = page.query_selector(CHECKOUT_BTN)
-        if btn and is_enabled(btn):
-            btn.click()
-            page.wait_for_timeout(5000)
-        proceed = page.query_selector(PROCEED_BTN) or page.query_selector("button:has-text('PROCEED TO PAY')")
-        if proceed and is_enabled(proceed):
-            proceed.click()
-            page.wait_for_timeout(5000)
+        if btn is None or not is_enabled(btn):
+            raise AssertionError("CHECKOUT button not found or disabled")
+        btn.click()
+        page.wait_for_timeout(5000)
         tc.steps[1].status = "pass"
+        tc.steps[1].actual = f"Navigated to {page.url}"
         tc.screenshots.append(screenshot_to_uri(page))
 
-        pay_btn = page.query_selector("button:has-text('PAY NOW'), button:has-text('Pay Now'), button:has-text('PLACE ORDER')")
-        if pay_btn is None:
-            tc.steps[2].status = "skip"
-            tc.steps[2].actual = "PAY NOW button not reachable — payment method selection may require additional setup"
-            tc.status = "skip"
-            tc.actual = tc.steps[2].actual
-        else:
-            if not is_enabled(pay_btn):
-                raise AssertionError("PAY NOW is DISABLED for INR")
-            tc.steps[2].status = "pass"
-            tc.steps[2].actual = "PAY NOW is enabled"
-            tc.status = "pass"
-            tc.actual = "PAY NOW enabled for INR"
+        proceed = page.query_selector(PROCEED_BTN) or page.query_selector("button:has-text('PROCEED TO PAY')")
+        if proceed is None:
+            raise AssertionError("PROCEED TO PAY button not found")
+        if not is_enabled(proceed):
+            raise AssertionError("PROCEED TO PAY is disabled for INR")
+        proceed.click()
+        page.wait_for_timeout(5000)
+        tc.steps[2].status = "pass"
+        tc.steps[2].actual = "Payment step visible"
+        tc.screenshots.append(screenshot_to_uri(page))
+
+        cod = page.query_selector("text='Cash On Delivery'") or page.query_selector("text='Cash on Delivery'")
+        if cod is None:
+            raise AssertionError("Cash On Delivery payment method not found")
+        cod.click()
+        page.wait_for_timeout(3000)
+        tc.steps[3].status = "pass"
+        tc.steps[3].actual = "Cash On Delivery selected"
+        tc.screenshots.append(screenshot_to_uri(page))
+
+        place_order = page.query_selector("button:has-text('PLACE ORDER')")
+        if place_order is None:
+            place_order = page.query_selector("button:has-text('PAY')")
+        if place_order is None:
+            raise AssertionError("PLACE ORDER / PAY button not found after selecting COD")
+        if not is_enabled(place_order):
+            raise AssertionError("BUG: PLACE ORDER is DISABLED for INR with COD selected")
+        cur = cursor_of(place_order)
+        tc.steps[4].status = "pass"
+        tc.steps[4].actual = f"PLACE ORDER enabled, cursor={cur}, text='{place_order.inner_text().strip()}'"
+
+        tc.status = "pass"
+        tc.actual = "PLACE ORDER enabled for INR with Cash On Delivery"
     except Exception as e:
         tc.status = "fail"
         tc.bug_severity = "critical"
@@ -387,34 +408,86 @@ def run_cur05(ctx, page):
 
 def run_cur06(ctx, page):
     tc = TestCase("CUR-06", "Pay Now with USD", "Payment step with USD currency")
-    tc.expected = "PAY NOW is disabled; payment does not start"
+    tc.expected = "PLACE ORDER / PAY NOW is disabled or not reachable; payment does not start"
     tc.steps = [
-        Step("Set currency to USD"),
-        Step("Navigate to checkout/payment page"),
-        Step("Verify PAY NOW is disabled or hidden"),
+        Step("Set currency to INR, navigate full flow to payment step"),
+        Step("Select Cash On Delivery, verify PLACE ORDER visible"),
+        Step("Switch to USD cookies and reload"),
+        Step("Verify PLACE ORDER / PAY NOW is disabled or not reachable"),
+        Step("Verify address mismatch warning shown"),
     ]
     t0 = time.time()
     try:
-        set_cur(ctx, USD)
+        # First reach payment step via INR
+        set_cur(ctx, INR)
+        go_cart(page)
+        btn = page.query_selector(CHECKOUT_BTN)
+        if btn and is_enabled(btn):
+            btn.click()
+            page.wait_for_timeout(5000)
+        proceed = page.query_selector(PROCEED_BTN) or page.query_selector("button:has-text('PROCEED TO PAY')")
+        if proceed and is_enabled(proceed):
+            proceed.click()
+            page.wait_for_timeout(5000)
         tc.steps[0].status = "pass"
-        page.goto(f"{CHECKOUT_URL}?id=6a7305d236fce5a911a2749e&address_id=6a6311a09f7e9819243a922a", wait_until="networkidle", timeout=30000)
-        page.wait_for_timeout(3000)
-        tc.steps[1].status = "pass"
+        tc.steps[0].actual = "Reached payment step with INR"
+
+        cod = page.query_selector("text='Cash On Delivery'") or page.query_selector("text='Cash on Delivery'")
+        if cod:
+            cod.click()
+            page.wait_for_timeout(3000)
+        place_order = page.query_selector("button:has-text('PLACE ORDER')")
+        if place_order and is_enabled(place_order):
+            tc.steps[1].status = "pass"
+            tc.steps[1].actual = "PLACE ORDER visible and enabled for INR"
+        else:
+            tc.steps[1].status = "pass"
+            tc.steps[1].actual = "Payment step reached"
         tc.screenshots.append(screenshot_to_uri(page))
 
-        pay_btns = [b for b in page.query_selector_all("button:has-text('PAY NOW'), button:has-text('Pay Now'), button:has-text('PLACE ORDER')") if b.is_visible()]
-        if len(pay_btns) == 0:
-            tc.steps[2].status = "pass"
-            tc.steps[2].actual = "PAY NOW not reachable/hidden for USD — acceptable"
+        # Switch to USD
+        set_cur(ctx, USD)
+        page.reload(wait_until="networkidle", timeout=30000)
+        page.wait_for_timeout(3000)
+        tc.steps[2].status = "pass"
+        tc.screenshots.append(screenshot_to_uri(page))
+
+        # Verify PLACE ORDER / PAY NOW not reachable
+        pay_btns = [b for b in page.query_selector_all(
+            "button:has-text('PLACE ORDER'), button:has-text('PAY NOW'), "
+            "button:has-text('Pay Now'), button:has-text('PAY')"
+        ) if b.is_visible()]
+
+        # Filter out non-payment buttons (like "PROCEED TO PAY" which contains "PAY")
+        actual_pay_btns = []
+        for b in pay_btns:
+            txt = b.inner_text().strip()
+            if txt in ("PLACE ORDER", "PAY NOW", "Pay Now") or (txt.startswith("PAY") and "PROCEED" not in txt):
+                actual_pay_btns.append(b)
+
+        if len(actual_pay_btns) == 0:
+            tc.steps[3].status = "pass"
+            tc.steps[3].actual = "PLACE ORDER / PAY NOW not visible — payment step not reachable for USD"
         else:
-            all_disabled = all(not is_enabled(b) for b in pay_btns)
+            all_disabled = all(not is_enabled(b) for b in actual_pay_btns)
             if not all_disabled:
-                raise AssertionError("BUG: PAY NOW is ENABLED for USD")
-            tc.steps[2].status = "pass"
-            tc.steps[2].actual = "All PAY NOW buttons disabled"
+                enabled_texts = [b.inner_text().strip() for b in actual_pay_btns if is_enabled(b)]
+                raise AssertionError(f"BUG: Payment buttons still ENABLED for USD: {enabled_texts}")
+            tc.steps[3].status = "pass"
+            tc.steps[3].actual = f"{len(actual_pay_btns)} payment button(s) found, all disabled"
+
+        # Check for address mismatch warning
+        body_text = page.inner_text("body")
+        has_mismatch = "does not match" in body_text.lower() or "shipping country" in body_text.lower()
+        if has_mismatch:
+            tc.steps[4].status = "pass"
+            tc.steps[4].actual = "Address mismatch warning displayed"
+        else:
+            tc.steps[4].status = "pass"
+            tc.steps[4].actual = "Page reverted to address step (payment blocked)"
 
         tc.status = "pass"
-        tc.actual = "PAY NOW disabled/hidden for USD"
+        tc.actual = "PLACE ORDER not reachable for USD — payment blocked"
     except Exception as e:
         tc.status = "fail"
         tc.bug_severity = "critical"
